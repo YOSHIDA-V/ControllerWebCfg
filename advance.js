@@ -1169,7 +1169,7 @@ export function btConn() {
             + ']<br> Current Game: ' + gamename + ' (' + gameid + ')';
         try {
             if (app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>Download latest FW ' + latest_ver + ' from <a href=\'https://darthcloud.itch.io/blueretro\' target=\'_blank\'>itch.io</a>';
+                document.getElementById("divInfo").innerHTML += '<br><br>Download latest FW ' + latest_ver + ' from <a href=\'https://github.com/darthcloud/BlueRetro/releases\' target=\'_blank\'>GitHub</a>';
             }
         }
         catch (e) {
