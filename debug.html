@@ -1,5 +1,5 @@
 ---
-feature_name: BlueRetro Debug
+feature_name: BlueRetro デバッグ
 icon_url: icon.png
 index: index.html
 ---
@@ -8,21 +8,21 @@ index: index.html
 
 <p align="center"><a href="https://blueretro.com/products/brx"><img src="brx_banner.png"/></a></p><br>
 
-Please consult the documentation found on the wiki:<br>
-<a href="https://github.com/darthcloud/BlueRetroWiki/blob/master/Debug-trace.md" target="_blank">Debug Trace Documentation</a><br><br>
+ドキュメント（Wiki）を参照してください:<br>
+<a href="https://github.com/darthcloud/BlueRetroWiki/blob/master/Debug-trace.md" target="_blank">デバッグトレース ドキュメント</a><br><br>
 
 <!-- Base on https://www.html5rocks.com/en/tutorials/file/dndfiles// -->
 <div id="divBtConn">
-    <button id="btConn">Connect BlueRetro</button><br>
-    <small><i>Disconnect all controllers from BlueRetro before connecting for debug.</i></small>
+    <button id="btConn">VS-C4に接続</button><br>
+    <small><i>デバッグのために接続する前に、BlueRetro からすべてのコントローラーを切断してください。</i></small>
 </div>
 <div id="divInfo" style="display:none;margin-bottom:1em;"></div>
 <div id="divFileSelect" style="display:none;margin-bottom:1em;">
-    <button id="btnPakRead">Download debug trace</button>
+    <button id="btnPakRead">デバッグトレースをダウンロード</button>
 </div>
 <div id="divFileTransfer" style="display:none;margin-bottom:1em;">
     <div id="progress_bar"><div class="percent"></div></div>
-    <button id="btnFileTransferCancel">Cancel</button>
+    <button id="btnFileTransferCancel">キャンセル</button>
 </div>
 
 {% include output_helper.html %}

@@ -5,8 +5,8 @@
     if (navigator.bluetooth) {
       return true;
     } else {
-      ChromeSamples.setStatus('Web Bluetooth API is not available.\n' +
-          'Please make sure the "Experimental Web Platform features" flag is enabled.');
+      ChromeSamples.setStatus('Web Bluetooth API を利用できません。\n' +
+          'Chrome のフラグ「Experimental Web Platform features」が有効になっていることを確認してください。');
       return false;
     }
   }
