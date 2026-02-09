@@ -30,10 +30,13 @@ Please consult the documentation found on the wiki:<br>
 <script src='sql.js/sql-wasm.js'></script>
 <script type="module">
   import { btConn } from './advance.js';
+  import { isWebBluetoothEnabled } from './utils/isWebBluetoothEnabled.js';
 
   document.getElementById("btConn").addEventListener('click', function() {
     if (isWebBluetoothEnabled()) {
-      ChromeSamples.clearLog();
+      if (window.ChromeSamples && typeof window.ChromeSamples.clearLog === 'function') {
+        window.ChromeSamples.clearLog();
+      }
       btConn();
     }
   });
