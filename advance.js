@@ -52,7 +52,11 @@ function initGlobalCfg() {
     label.setAttribute("for", "systemCfg");
 
     var sel = document.createElement("select");
+
+    const allowedSystem = new Set([0, 11, 17]);
     for (var i = 0; i < systemCfg.length; i++) {
+        if (!allowedSystem.has(i)) continue;
+
         var option  = document.createElement("option");
         option.value = i;
         option.text = systemCfg[i];
@@ -715,6 +719,11 @@ function loadGlobalCfg() {
         .then(value => {
             log('グローバル設定サイズ: ' + value.byteLength);
             document.getElementById("systemCfg").value = value.getUint8(0);
+            // If current system code is not in UI list, fall back to Auto(0)
+            const sysSel = document.getElementById("systemCfg");
+            if (sysSel.selectedIndex === -1) {
+                sysSel.value = 0;
+            }
             document.getElementById("multitapCfg").value = value.getUint8(1);
             if (apiVersion > 0) {
                 document.getElementById("inquiryMode").value = value.getUint8(2);
