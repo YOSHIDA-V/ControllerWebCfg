@@ -147,7 +147,7 @@ export function btConn() {
     log('Bluetooth デバイスを要求しています...');
     navigator.bluetooth.requestDevice(
         {filters: [{namePrefix: 'BlueRetro'}],
-        オプションalServices: [brUuid[0]]})
+        optionalServices: [brUuid[0]]})
     .then(device => {
         log('GATT サーバーに接続しています...');
         log('デバイス名: ' + device.name);

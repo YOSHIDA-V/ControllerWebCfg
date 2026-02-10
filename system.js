@@ -3,7 +3,7 @@
 import { brUuid } from './utils/constants.js';
 import { getLatestRelease } from './utils/getLatestRelease.js';
 import { getAppVersion } from './utils/getAppVersion.js';
-import { BDアドレス取得: } from './utils/getBdAddr.js';
+import { getBdAddr } from './utils/getBdAddr.js';
 import { setDeepSleep } from './utils/setDeepSleep.js';
 import { setReset } from './utils/setReset.js';
 import { setFactoryReset } from './utils/setFactoryReset.js';
@@ -40,7 +40,7 @@ export function btConn() {
     log('Bluetooth デバイスを要求しています...');
     navigator.bluetooth.requestDevice(
         {filters: [{namePrefix: 'BlueRetro'}],
-        オプションalServices: [brUuid[0]]})
+        optionalServices: [brUuid[0]]})
     .then(device => {
         log('GATT サーバーに接続しています...');
         log('デバイス名: ' + device.name);
@@ -59,7 +59,7 @@ export function btConn() {
         throw 'VS-C4 に接続できませんでした';
     })
     .then(service => {
-        log('BDアドレス取得: ' + service);
+        log('getBdAddr ' + service);
         brService = service;
         return getBdAddr(brService);
     })

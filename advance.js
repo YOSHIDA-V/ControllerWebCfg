@@ -53,7 +53,7 @@ function initGlobalCfg() {
 
     var sel = document.createElement("select");
     for (var i = 0; i < systemCfg.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = systemCfg[i];
         sel.add(option);
@@ -73,7 +73,7 @@ function initGlobalCfg() {
 
     sel = document.createElement("select");
     for (var i = 0; i < multitapCfg.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = multitapCfg[i];
         sel.add(option);
@@ -94,7 +94,7 @@ function initGlobalCfg() {
 
         sel = document.createElement("select");
         for (var i = 0; i < inquiryMode.length; i++) {
-            var option  = document.createElement("オプション");
+            var option  = document.createElement("option");
             option.value = i;
             option.text = inquiryMode[i];
             sel.add(option);
@@ -116,12 +116,12 @@ function initGlobalCfg() {
 
         sel = document.createElement("select");
         for (var i = 0; i < 4; i++) {
-            var option  = document.createElement("オプション");
+            var option  = document.createElement("option");
             option.value = i;
             option.text = 'バンク ' + eval(i + 1);
             sel.add(option);
         }
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = 0xDB;
         option.text = 'デバッグモード';
         sel.add(option);
@@ -176,7 +176,7 @@ function initOutputSelect() {
 
     var main = document.createElement("select");
     for (var i = 0; i < maxOutput; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = "出力 " + (i + 1);
         main.add(option);
@@ -203,7 +203,7 @@ function initOutputMode() {
 
     var main = document.createElement("select");
     for (var i = 0; i < devCfg.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = devCfg[i];
         main.add(option);
@@ -223,7 +223,7 @@ function initOutputMode() {
 
     main = document.createElement("select");
     for (var i = 0; i < accCfg.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = accCfg[i];
         main.add(option);
@@ -291,7 +291,7 @@ function initInputSelect() {
 
     var main = document.createElement("select");
     for (var i = 0; i < maxMainInput; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = "デバイス " + (i + 1);
         main.add(option);
@@ -313,7 +313,7 @@ function initLabelSelect() {
 
     var main = document.createElement("select");
     for (var i = 0; i < labelName.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = labelName[i];
         main.add(option);
@@ -335,7 +335,7 @@ function initLabelSelect() {
 
     main = document.createElement("select");
     for (var i = 0; i < labelName.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = labelName[i];
         main.add(option);
@@ -361,7 +361,7 @@ function initFirstOutputMapping() {
 
     var src = document.createElement("select");
     for (var i = 0; i < btnList.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = btnList[i][srcLabel];
         src.add(option);
@@ -395,7 +395,7 @@ function initFirstOutputMapping() {
 
     var destId = document.createElement("select");
     for (var i = 0; i < maxOutput; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = "出力 " + (i + 1);
         destId.add(option);
@@ -415,7 +415,7 @@ function initFirstOutputMapping() {
 
     var max = document.createElement("select");
     for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = i + "%";
         max.add(option);
@@ -436,7 +436,7 @@ function initFirstOutputMapping() {
 
     var thres = document.createElement("select");
     for (var i = 0; i <= maxThres; i += 5) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = i + "%";
         thres.add(option);
@@ -457,7 +457,7 @@ function initFirstOutputMapping() {
 
     var dz = document.createElement("select");
     for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = i/10000 + "%";
         dz.add(option);
@@ -478,7 +478,7 @@ function initFirstOutputMapping() {
 
     var turbo = document.createElement("select");
     for (var key in turboMask) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = turboMask[key];
         option.text = key;
         turbo.add(option);
@@ -498,7 +498,7 @@ function initFirstOutputMapping() {
 
     var sca = document.createElement("select");
     for (var i = 0; i < scaling.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = scaling[i];
         sca.add(option);
@@ -519,7 +519,7 @@ function initFirstOutputMapping() {
     var diag = document.createElement("select");
     diag.setAttribute("style", "max-width:100%;");
     for (var i = 0; i < diagScaling.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = diagScaling[i];
         diag.add(option);
@@ -574,7 +574,7 @@ function initOutputMapping() {
     src.setAttribute("style", "max-width:10%;");
     src.title = "Bluetoothコントローラ側の入力（ボタン/軸）です。";
     for (var i = 0; i < btnList.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = btnList[i][srcLabel];
         src.add(option);
@@ -593,7 +593,7 @@ function initOutputMapping() {
     destId.setAttribute("style", "max-width:10%;");
     destId.title = "有線インターフェースのIDです。";
     for (var i = 0; i < maxOutput; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = "出力 " + (i + 1);
         destId.add(option);
@@ -606,7 +606,7 @@ function initOutputMapping() {
     max.setAttribute("style", "max-width:10%;");
     max.title = "入力と出力が軸の場合: 出力最大値を基準にしたスケーリング率。入力がボタンで出力が軸の場合: 出力最大値を基準に軸へ設定する値。";
     for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = i + "%";
         max.add(option);
@@ -620,7 +620,7 @@ function initOutputMapping() {
     thres.setAttribute("style", "thres-width:10%;");
     thres.title = "入力が軸で出力がボタンの場合: 入力軸がこの割合を超えるとボタン押下とみなします。";
     for (var i = 0; i <= maxThres; i += 5) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = i + "%";
         thres.add(option);
@@ -634,7 +634,7 @@ function initOutputMapping() {
     dz.setAttribute("style", "dz-width:10%;");
     dz.title = "軸のニュートラル付近のデッドゾーンです。";
     for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = i/10000 + "%";
         dz.add(option);
@@ -648,7 +648,7 @@ function initOutputMapping() {
     turbo.setAttribute("style", "max-width:10%;");
     turbo.title = "システムのフレームレートを基準にした連射設定です。";
     for (var key in turboMask) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = turboMask[key];
         option.text = key;
         turbo.add(option);
@@ -661,7 +661,7 @@ function initOutputMapping() {
     sca.setAttribute("style", "max-width:10%;");
     sca.title = "スケーリング用の応答曲線です。（Passthrough / Linear のみ。他は未確定）";
     for (var i = 0; i < scaling.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = scaling[i];
         sca.add(option);
@@ -674,7 +674,7 @@ function initOutputMapping() {
     diag.setAttribute("style", "max-width:10%;");
     diag.title = "ジョイスティック種別間の斜め補正設定です。（未実装）";
     for (var i = 0; i < diagScaling.length; i++) {
-        var option  = document.createElement("オプション");
+        var option  = document.createElement("option");
         option.value = i;
         option.text = diagScaling[i];
         diag.add(option);

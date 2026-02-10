@@ -1,8 +1,8 @@
-import { brUuid, maxMain入力 } from './utils/constants.js';
+import { brUuid, maxMainInput } from './utils/constants.js';
 import { getLatestRelease } from './utils/getLatestRelease.js';
 import { getAppVersion } from './utils/getAppVersion.js';
 import { getBdAddr } from './utils/getBdAddr.js';
-import { savePreset入力 } from './utils/savePresetInput.js';
+import { savePresetInput } from './utils/savePresetInput.js';
 import { getGameId } from './utils/getGameId.js';
 import { getGameName } from './utils/getGameName.js';
 import { getCfgSrc } from './utils/getCfgSrc.js';
