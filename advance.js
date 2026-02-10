@@ -89,7 +89,7 @@ function initGlobalCfg() {
 
         /* Inquiry mode */
         label = document.createElement("label");
-        label.innerText = '問い合わせモード: ';
+        label.innerText = 'ペアリングモード: ';
         label.setAttribute("for", "inquiryMode");
 
         sel = document.createElement("select");
@@ -308,7 +308,7 @@ function initLabelSelect() {
     var div = document.createElement("div");
 
     var label = document.createElement("label");
-    label.innerText = 'ソースラベル: ';
+    label.innerText = '入力コントローラ タイプ: ';
     label.setAttribute("for", "srcLabel");
 
     var main = document.createElement("select");
@@ -330,7 +330,7 @@ function initLabelSelect() {
     div.setAttribute("style", "margin-bottom:1em;");
 
     label = document.createElement("label");
-    label.innerText = '宛先ラベル: ';
+    label.innerText = '出力コントローラタイプ: ';
     label.setAttribute("for", "dstLabel");
 
     main = document.createElement("select");
@@ -374,7 +374,7 @@ function initFirstOutputMapping() {
     /* Dest */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "有線インターフェース側の出力（ボタン/軸）です。";
+    span.title = "コントローラの出力側（ボタン/軸）";
     label = document.createElement("label");
     label.innerText = '出力';
     label.setAttribute("style", "display:block;");
@@ -388,7 +388,7 @@ function initFirstOutputMapping() {
     /* Dest ID */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "有線インターフェースのIDです。";
+    span.title = "コントローラの出力側のIDです。";
     label = document.createElement("label");
     label.innerText = '出力ID';
     label.setAttribute("style", "display:block;");
@@ -401,6 +401,8 @@ function initFirstOutputMapping() {
         destId.add(option);
     }
     destId.setAttribute("class", "destId");
+    destId.style.display = "none";
+    span.style.display = "none";
     span.appendChild(label);
     span.appendChild(destId);
     mappingElement.appendChild(span);
@@ -422,6 +424,8 @@ function initFirstOutputMapping() {
     }
     max.setAttribute("class", "max");
     max.value = 100;
+    max.style.display = "none";
+    span.style.display = "none";
     span.appendChild(label);
     span.appendChild(max);
     mappingElement.appendChild(span);
@@ -443,6 +447,8 @@ function initFirstOutputMapping() {
     }
     thres.setAttribute("class", "thres");
     thres.value = 50;
+    thres.style.display = "none";
+    span.style.display = "none";
     span.appendChild(label);
     span.appendChild(thres);
     mappingElement.appendChild(span);
@@ -471,9 +477,9 @@ function initFirstOutputMapping() {
     /* Turbo */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "システムのフレームレートを基準にしたTurbo機能(連射設定)です。";
+    span.title = "システムのフレームレートを基準にした連射設定";
     label = document.createElement("label");
-    label.innerText = 'Turbo機能(連射設定)';
+    label.innerText = 'Turbo機能';
     label.setAttribute("style", "display:block;");
 
     var turbo = document.createElement("select");
@@ -585,13 +591,13 @@ function initOutputMapping() {
     /* Dest */
     var dest = src.cloneNode(true);
     dest.setAttribute("class", "dest");
-    dest.title = "有線インターフェース側の出力（ボタン/軸）です。";
+    dest.title = "コントローラの出力側（ボタン/軸）";
     mappingElement.appendChild(dest);
 
     /* Dest ID */
     var destId = document.createElement("select");
     destId.setAttribute("style", "max-width:10%;");
-    destId.title = "有線インターフェースのIDです。";
+    destId.title = "コントローラの出力側のIDです。";
     for (var i = 0; i < maxOutput; i++) {
         var option  = document.createElement("option");
         option.value = i;
@@ -599,6 +605,7 @@ function initOutputMapping() {
         destId.add(option);
     }
     destId.setAttribute("class", "destId");
+    destId.style.display = "none";
     mappingElement.appendChild(destId);
 
     /* Max */
@@ -613,6 +620,7 @@ function initOutputMapping() {
     }
     max.setAttribute("class", "max");
     max.value = 100;
+    max.style.display = "none";
     mappingElement.appendChild(max);
 
     /* Threshold */
@@ -627,6 +635,7 @@ function initOutputMapping() {
     }
     thres.setAttribute("class", "thres");
     thres.value = 50;
+    thres.style.display = "none";
     mappingElement.appendChild(thres);
 
     /* Deadone */
@@ -646,7 +655,7 @@ function initOutputMapping() {
     /* Turbo */
     var turbo = document.createElement("select");
     turbo.setAttribute("style", "max-width:10%;");
-    turbo.title = "システムのフレームレートを基準にした連射設定です。";
+    turbo.title = "システムのフレームレートを基準にした連射設定";
     for (var key in turboMask) {
         var option  = document.createElement("option");
         option.value = turboMask[key];
@@ -1165,8 +1174,8 @@ export function btConn() {
         return loadInputCfg(0);
     })
     .then(() => {
-        document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver
-            + ']<br> 現在のゲーム: ' + gamename + ' (' + gameid + ')';
+        document.getElementById("divInfo").innerHTML = '接続先情報: ' + name + ' (' + bdaddr + ') [' + app_ver
+            + ']<br> 現在のゲームモード: ' + gamename + ' (' + gameid + ')';
         try {
             if (app_ver.indexOf(latest_ver) == -1) {
                 document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\' target=\'_blank\'>GitHub</a> からダウンロード';
