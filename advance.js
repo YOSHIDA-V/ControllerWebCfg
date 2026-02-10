@@ -38,22 +38,22 @@ function initGlobalCfg() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'Global Config';
+    header.innerText = 'グローバル設定';
 
     divGlobalCfg.appendChild(header);
 
-    divGlobalCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#22---global-config" target="_blank">Wiki doc for Global config</a><br><br>'
+    divGlobalCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#22---global-config" target="_blank">グローバル設定のWiki</a><br><br>'
 
     var div = document.createElement("div");
 
     /* System */
     var label = document.createElement("label");
-    label.innerText = 'System: ';
+    label.innerText = 'システム: ';
     label.setAttribute("for", "systemCfg");
 
     var sel = document.createElement("select");
     for (var i = 0; i < systemCfg.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = systemCfg[i];
         sel.add(option);
@@ -68,12 +68,12 @@ function initGlobalCfg() {
 
     /* Multitap */
     label = document.createElement("label");
-    label.innerText = 'Multitap: ';
+    label.innerText = 'マルチタップ: ';
     label.setAttribute("for", "multitapCfg");
 
     sel = document.createElement("select");
     for (var i = 0; i < multitapCfg.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = multitapCfg[i];
         sel.add(option);
@@ -89,12 +89,12 @@ function initGlobalCfg() {
 
         /* Inquiry mode */
         label = document.createElement("label");
-        label.innerText = 'Inquiry mode: ';
+        label.innerText = '問い合わせモード: ';
         label.setAttribute("for", "inquiryMode");
 
         sel = document.createElement("select");
         for (var i = 0; i < inquiryMode.length; i++) {
-            var option  = document.createElement("option");
+            var option  = document.createElement("オプション");
             option.value = i;
             option.text = inquiryMode[i];
             sel.add(option);
@@ -111,19 +111,19 @@ function initGlobalCfg() {
 
         /* Banksel */
         label = document.createElement("label");
-        label.innerText = 'Memory Card Bank: ';
+        label.innerText = 'メモリーカードバンク: ';
         label.setAttribute("for", "banksel");
 
         sel = document.createElement("select");
         for (var i = 0; i < 4; i++) {
-            var option  = document.createElement("option");
+            var option  = document.createElement("オプション");
             option.value = i;
-            option.text = 'Bank ' + eval(i + 1);
+            option.text = 'バンク ' + eval(i + 1);
             sel.add(option);
         }
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = 0xDB;
-        option.text = 'Debug mode';
+        option.text = 'デバッグモード';
         sel.add(option);
         sel.id = "banksel";
         div.appendChild(label);
@@ -148,7 +148,7 @@ function initGlobalCfg() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:red;");
-    p.innerText = "Config saved, power cycle BlueRetro adapter for change to take effect.";
+    p.innerText = "設定を保存しました。反映にはVS-C4の再起動が必要です。";
 
     div.appendChild(p);
     divGlobalCfg.appendChild(div);
@@ -161,24 +161,24 @@ function initOutputSelect() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'Output Config';
+    header.innerText = '出力設定';
 
     divOutputCfg.appendChild(header);
 
-    divOutputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#23---output-config" target="_blank">Wiki doc for Output config</a><br><br>'
+    divOutputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#23---output-config" target="_blank">出力設定のWiki</a><br><br>'
 
     var div = document.createElement("div");
 
     /* Output select */
     var label = document.createElement("label");
-    label.innerText = 'Select output: ';
+    label.innerText = '出力を選択: ';
     label.setAttribute("for", "outputSelect");
 
     var main = document.createElement("select");
     for (var i = 0; i < maxOutput; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
-        option.text = "Output " + (i + 1);
+        option.text = "出力 " + (i + 1);
         main.add(option);
     }
     main.id = "outputSelect";
@@ -197,13 +197,13 @@ function initOutputMode() {
     var span = document.createElement("span");
     span.setAttribute("style", "display:inline-block;");
     var label = document.createElement("label");
-    label.innerText = 'Mode';
+    label.innerText = 'モード';
     label.setAttribute("for", "outputMode");
     label.setAttribute("style", "display:block;");
 
     var main = document.createElement("select");
     for (var i = 0; i < devCfg.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = devCfg[i];
         main.add(option);
@@ -217,13 +217,13 @@ function initOutputMode() {
     span = document.createElement("span");
     span.setAttribute("style", "display:inline-block;");
     label = document.createElement("label");
-    label.innerText = 'Accessories';
+    label.innerText = 'アクセサリ';
     label.setAttribute("for", "outputAcc");
     label.setAttribute("style", "display:block;");
 
     main = document.createElement("select");
     for (var i = 0; i < accCfg.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = accCfg[i];
         main.add(option);
@@ -252,7 +252,7 @@ function initOutputMode() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:red;");
-    p.innerText = "Config saved, power cycle BlueRetro adapter for Mode change to take effect.";
+    p.innerText = "設定を保存しました。モード変更を反映するにはVS-C4の再起動が必要です。";
 
     div.appendChild(p);
     divOutputCfg.appendChild(div);
@@ -262,7 +262,7 @@ function initOutputMode() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:orange;");
-    p.innerText = "Mouse mode require setting <Default Mouse> preset.";
+    p.innerText = "マウスモードは「<Default Mouse>」プリセットの設定が必要です。";
 
     div.appendChild(p);
     divOutputCfg.appendChild(div);
@@ -275,25 +275,25 @@ function initInputSelect() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'Mapping Config';
+    header.innerText = 'マッピング設定';
 
     divInputCfg.appendChild(header);
 
-    divInputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#24---mapping-config" target="_blank">Wiki doc for Mapping config</a><br><br>'
+    divInputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#24---mapping-config" target="_blank">マッピング設定のWiki</a><br><br>';
 
     var div = document.createElement("div");
     div.setAttribute("style", "margin-bottom:1em;");
 
     /* Input select */
     var label = document.createElement("label");
-    label.innerText = 'Select Bluetooth device: ';
+    label.innerText = 'Bluetoothデバイスを選択: ';
     label.setAttribute("for", "inputSelect");
 
     var main = document.createElement("select");
     for (var i = 0; i < maxMainInput; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
-        option.text = "Device " + (i + 1);
+        option.text = "デバイス " + (i + 1);
         main.add(option);
     }
     main.id = "inputSelect";
@@ -308,12 +308,12 @@ function initLabelSelect() {
     var div = document.createElement("div");
 
     var label = document.createElement("label");
-    label.innerText = 'Src label: ';
+    label.innerText = 'ソースラベル: ';
     label.setAttribute("for", "srcLabel");
 
     var main = document.createElement("select");
     for (var i = 0; i < labelName.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = labelName[i];
         main.add(option);
@@ -330,12 +330,12 @@ function initLabelSelect() {
     div.setAttribute("style", "margin-bottom:1em;");
 
     label = document.createElement("label");
-    label.innerText = 'Dst label: ';
+    label.innerText = '宛先ラベル: ';
     label.setAttribute("for", "dstLabel");
 
     main = document.createElement("select");
     for (var i = 0; i < labelName.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = labelName[i];
         main.add(option);
@@ -354,14 +354,14 @@ function initFirstOutputMapping() {
     /* Src */
     var span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "This is the source button/axis on the Bluetooth controller";
+    span.title = "Bluetoothコントローラ側の入力（ボタン/軸）です。";
     var label = document.createElement("label");
-    label.innerText = 'Src';
+    label.innerText = '入力';
     label.setAttribute("style", "display:block;");
 
     var src = document.createElement("select");
     for (var i = 0; i < btnList.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = btnList[i][srcLabel];
         src.add(option);
@@ -374,9 +374,9 @@ function initFirstOutputMapping() {
     /* Dest */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "This is the destination button/axis on the wired interface.";
+    span.title = "有線インターフェース側の出力（ボタン/軸）です。";
     label = document.createElement("label");
-    label.innerText = 'Dest';
+    label.innerText = '出力';
     label.setAttribute("style", "display:block;");
 
     var dest = src.cloneNode(true);
@@ -388,16 +388,16 @@ function initFirstOutputMapping() {
     /* Dest ID */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "This is the ID of the wired interface.";
+    span.title = "有線インターフェースのIDです。";
     label = document.createElement("label");
-    label.innerText = 'Dest ID';
+    label.innerText = '出力ID';
     label.setAttribute("style", "display:block;");
 
     var destId = document.createElement("select");
     for (var i = 0; i < maxOutput; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
-        option.text = "Output " + (i + 1);
+        option.text = "出力 " + (i + 1);
         destId.add(option);
     }
     destId.setAttribute("class", "destId");
@@ -408,14 +408,14 @@ function initFirstOutputMapping() {
     /* Max */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "If source & destination is an axis then this is the scaling factor base on the destination maximum. If source is a button & destination is an axis then this is the value base on destination maximum that the axis will be set.";
+    span.title = "入力と出力が軸の場合: 出力最大値を基準にしたスケーリング率。入力がボタンで出力が軸の場合: 出力最大値を基準に軸へ設定する値。";
     label = document.createElement("label");
-    label.innerText = 'Max';
+    label.innerText = '最大';
     label.setAttribute("style", "display:block;");
 
     var max = document.createElement("select");
     for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = i + "%";
         max.add(option);
@@ -429,14 +429,14 @@ function initFirstOutputMapping() {
     /* Threshold */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "If source is an axis and destination is a button, this is the threshold requires on the source axis before the button is pressed.";
+    span.title = "入力が軸で出力がボタンの場合: 入力軸がこの割合を超えるとボタン押下とみなします。";
     label = document.createElement("label");
-    label.innerText = 'Thres';
+    label.innerText = 'しきい値';
     label.setAttribute("style", "display:block;");
 
     var thres = document.createElement("select");
     for (var i = 0; i <= maxThres; i += 5) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = i + "%";
         thres.add(option);
@@ -450,14 +450,14 @@ function initFirstOutputMapping() {
     /* Deadone */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "This is the axis dead zone around reset value.";
+    span.title = "軸のニュートラル付近のデッドゾーンです。";
     label = document.createElement("label");
-    label.innerText = 'Deadzone';
+    label.innerText = 'デッドゾーン';
     label.setAttribute("style", "display:block;");
 
     var dz = document.createElement("select");
     for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = i/10000 + "%";
         dz.add(option);
@@ -471,14 +471,14 @@ function initFirstOutputMapping() {
     /* Turbo */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "Turbo function base on the system frame rate.";
+    span.title = "システムのフレームレートを基準にしたTurbo機能(連射設定)です。";
     label = document.createElement("label");
-    label.innerText = 'Turbo';
+    label.innerText = 'Turbo機能(連射設定)';
     label.setAttribute("style", "display:block;");
 
     var turbo = document.createElement("select");
     for (var key in turboMask) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = turboMask[key];
         option.text = key;
         turbo.add(option);
@@ -491,14 +491,14 @@ function initFirstOutputMapping() {
     /* Scaling */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "Various response curve for scaling. (Only Passthrough and Linear, others TBD)";
+    span.title = "スケーリング用の応答カーブです。（Passthrough / Linear のみ。他は未確定）";
     label = document.createElement("label");
-    label.innerText = 'Scaling';
+    label.innerText = 'スケーリング';
     label.setAttribute("style", "display:block;");
 
     var sca = document.createElement("select");
     for (var i = 0; i < scaling.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = scaling[i];
         sca.add(option);
@@ -511,15 +511,15 @@ function initFirstOutputMapping() {
     /* Scaling diag */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "Diagonal scaling options between joystick type. (TBD Not implemented yet)";
+    span.title = "ジョイスティック種別間の斜め補正設定です。（未実装）";
     label = document.createElement("label");
-    label.innerText = 'Diagonal';
+    label.innerText = '斜め補正';
     label.setAttribute("style", "display:block;");
 
     var diag = document.createElement("select");
     diag.setAttribute("style", "max-width:100%;");
     for (var i = 0; i < diagScaling.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = diagScaling[i];
         diag.add(option);
@@ -549,7 +549,7 @@ function initFirstOutputMapping() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:green;");
-    p.innerText = "Config saved, mapping changes take effect immediately.";
+    p.innerText = "設定を保存しました。マッピングは即時反映されます。";
 
     div.appendChild(p);
     divSave.appendChild(div);
@@ -572,9 +572,9 @@ function initOutputMapping() {
     /* Src */
     var src = document.createElement("select");
     src.setAttribute("style", "max-width:10%;");
-    src.title = "This is the source button/axis on the Bluetooth controller";
+    src.title = "Bluetoothコントローラ側の入力（ボタン/軸）です。";
     for (var i = 0; i < btnList.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = btnList[i][srcLabel];
         src.add(option);
@@ -585,17 +585,17 @@ function initOutputMapping() {
     /* Dest */
     var dest = src.cloneNode(true);
     dest.setAttribute("class", "dest");
-    dest.title = "This is the destination button/axis on the wired interface.";
+    dest.title = "有線インターフェース側の出力（ボタン/軸）です。";
     mappingElement.appendChild(dest);
 
     /* Dest ID */
     var destId = document.createElement("select");
     destId.setAttribute("style", "max-width:10%;");
-    destId.title = "This is the ID of the wired interface.";
+    destId.title = "有線インターフェースのIDです。";
     for (var i = 0; i < maxOutput; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
-        option.text = "Output " + (i + 1);
+        option.text = "出力 " + (i + 1);
         destId.add(option);
     }
     destId.setAttribute("class", "destId");
@@ -604,9 +604,9 @@ function initOutputMapping() {
     /* Max */
     var max = document.createElement("select");
     max.setAttribute("style", "max-width:10%;");
-    max.title = "If source & destination is an axis then this is the scaling factor base on the destination maximum. If source is a button & destination is an axis then this is the value base on destination maximum that the axis will be set.";
+    max.title = "入力と出力が軸の場合: 出力最大値を基準にしたスケーリング率。入力がボタンで出力が軸の場合: 出力最大値を基準に軸へ設定する値。";
     for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = i + "%";
         max.add(option);
@@ -618,9 +618,9 @@ function initOutputMapping() {
     /* Threshold */
     var thres = document.createElement("select");
     thres.setAttribute("style", "thres-width:10%;");
-    thres.title = "If source is an axis and destination is a button, this is the threshold requires on the source axis before the button is pressed.";
+    thres.title = "入力が軸で出力がボタンの場合: 入力軸がこの割合を超えるとボタン押下とみなします。";
     for (var i = 0; i <= maxThres; i += 5) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = i + "%";
         thres.add(option);
@@ -632,9 +632,9 @@ function initOutputMapping() {
     /* Deadone */
     var dz = document.createElement("select");
     dz.setAttribute("style", "dz-width:10%;");
-    dz.title = "This is the axis dead zone around reset value.";
+    dz.title = "軸のニュートラル付近のデッドゾーンです。";
     for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = i/10000 + "%";
         dz.add(option);
@@ -646,9 +646,9 @@ function initOutputMapping() {
     /* Turbo */
     var turbo = document.createElement("select");
     turbo.setAttribute("style", "max-width:10%;");
-    turbo.title = "Turbo function base on the system frame rate.";
+    turbo.title = "システムのフレームレートを基準にした連射設定です。";
     for (var key in turboMask) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = turboMask[key];
         option.text = key;
         turbo.add(option);
@@ -659,9 +659,9 @@ function initOutputMapping() {
     /* Scaling */
     var sca = document.createElement("select");
     sca.setAttribute("style", "max-width:10%;");
-    sca.title = "Various response curve for scaling. (Only Passthrough and Linear, others TBD)";
+    sca.title = "スケーリング用の応答曲線です。（Passthrough / Linear のみ。他は未確定）";
     for (var i = 0; i < scaling.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = scaling[i];
         sca.add(option);
@@ -672,9 +672,9 @@ function initOutputMapping() {
     /* Scaling diag */
     var diag = document.createElement("select");
     diag.setAttribute("style", "max-width:10%;");
-    diag.title = "Diagonal scaling options between joystick type. (TBD Not implemented yet)";
+    diag.title = "ジョイスティック種別間の斜め補正設定です。（未実装）";
     for (var i = 0; i < diagScaling.length; i++) {
-        var option  = document.createElement("option");
+        var option  = document.createElement("オプション");
         option.value = i;
         option.text = diagScaling[i];
         diag.add(option);
@@ -697,14 +697,14 @@ function initBlueRetroCfg() {
 
 function loadGlobalCfg() {
     return new Promise(function(resolve, reject) {
-        log('Get Global Config CHRC...');
+        log('グローバル設定の CHRC を取得...');
         brService.getCharacteristic(brUuid[1])
         .then(chrc => {
-            log('Reading Global Config...');
+            log('グローバル設定を読み込み中...');
             return chrc.readValue();
         })
         .then(value => {
-            log('Global Config size: ' + value.byteLength);
+            log('グローバル設定サイズ: ' + value.byteLength);
             document.getElementById("systemCfg").value = value.getUint8(0);
             document.getElementById("multitapCfg").value = value.getUint8(1);
             if (apiVersion > 0) {
@@ -723,24 +723,24 @@ function loadGlobalCfg() {
 
 function loadOutputCfg(cfgId) {
     return new Promise(function(resolve, reject) {
-        log('Get Output ' + cfgId + ' CTRL CHRC...');
+        log('出力 ' + cfgId + ' の CTRL CHRC を取得...');
         brService.getCharacteristic(brUuid[2])
         .then(chrc => {
-            log('Set Output ' + cfgId + ' on CTRL chrc...');
+            log('CTRL chrc に出力 ' + cfgId + ' を設定...');
             var outputCtrl = new Uint16Array(1);
             outputCtrl[0] = Number(cfgId);
             return chrc.writeValue(outputCtrl);
         })
         .then(_ => {
-            log('Get Output ' + cfgId + ' DATA CHRC...');
+            log('出力 ' + cfgId + ' の DATA CHRC を取得...');
             return brService.getCharacteristic(brUuid[3]);
         })
         .then(chrc => {
-            log('Reading Output ' + cfgId + ' Config...');
+            log('出力 ' + cfgId + ' の設定を読み込み中...');
             return chrc.readValue();
         })
         .then(value => {
-            log('Output ' + cfgId + ' Config size: ' + value.byteLength);
+            log('出力 ' + cfgId + ' 設定サイズ: ' + value.byteLength);
             document.getElementById("outputMode").value = value.getUint8(0);
             document.getElementById("outputAcc").value = value.getUint8(1);
             resolve();
@@ -753,17 +753,17 @@ function loadOutputCfg(cfgId) {
 
 function writeReadRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
     return new Promise(function(resolve, reject) {
-        log('Set Input Ctrl CHRC... ' + inputCtrl[1]);
+        log('入力 CTRL CHRC を設定... ' + inputCtrl[1]);
         ctrl_chrc.writeValue(inputCtrl)
         .then(_ => {
-            log('Reading Input Data CHRC...');
+            log('入力 DATA CHRC を読み込み中...');
             return data_chrc.readValue();
         })
         .then(value => {
-            log('Got Input Data ' + value.byteLength);
+            log('入力 DATA 取得: ' + value.byteLength);
             var tmp = new Uint8Array(value.buffer);
             cfg.set(tmp, inputCtrl[1]);
-            log('Got Input Data ' + cfg[2] + ' ' + value.getUint8(2));
+            log('入力 DATA 取得: ' + cfg[2] + ' ' + value.getUint8(2));
             if (value.byteLength == 512) {
                 inputCtrl[1] += Number(512);
                 resolve(writeReadRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc));
@@ -795,7 +795,7 @@ function readInputCfg(cfgId, cfg) {
             return writeReadRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc);
         })
         .then(value => {
-            log('Input ' + cfgId + ' Config size: ' + cfg.byteLength);
+            log('入力 ' + cfgId + ' 設定サイズ: ' + cfg.byteLength);
             resolve(cfg);
         })
         .catch(error => {
@@ -807,10 +807,10 @@ function readInputCfg(cfgId, cfg) {
 function loadInputCfg(cfgId) {
     return new Promise(function(resolve, reject) {
         var cfg = new Uint8Array(2051);
-        log('Get Input ' + cfgId + ' Config CHRC...');
+        log('入力 ' + cfgId + ' 設定の CHRC を取得...');
         readInputCfg(cfgId, cfg)
         .then(value => {
-            log('Input ' + cfgId + ' Config size: ' + value.byteLength);
+            log('入力 ' + cfgId + ' 設定サイズ: ' + value.byteLength);
             //document.getElementById("mainInput").value = value[0];
             //document.getElementById("subInput").value = value[1];
 
@@ -838,7 +838,7 @@ function loadInputCfg(cfgId) {
             var scaling = document.getElementsByClassName("scaling");
             var diag = document.getElementsByClassName("diag");
 
-            log('Loading Mapping Found: ' + src.length + ' nbMapping: ' + nbMapping + ' cfg: ' + value[2]);
+            log('マッピング読み込み: ' + src.length + ' 件 / nbMapping: ' + nbMapping + ' / cfg: ' + value[2]);
 
             var j = 3;
             for (var i = 0; i < nbMapping; i++) {
@@ -883,7 +883,7 @@ function saveGlobal() {
         saveGlobalCfg(brService, data)
         .then(_ => {
             document.getElementById("globalSaveText").style.display = 'block';
-            log('Global Config saved');
+            log('グローバル設定を保存しました');
             resolve();
         })
         .catch(error => {
@@ -906,7 +906,7 @@ function saveOutput() {
             if (data[0] == 3) {
                 document.getElementById("outputSaveMouse").style.display = 'block';
             }
-            log('Output ' + cfgId + ' Config saved');
+            log('出力 ' + cfgId + ' 設定を保存しました');
             resolve();
         })
         .catch(error => {
@@ -917,10 +917,10 @@ function saveOutput() {
 
 function writeWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
     return new Promise(function(resolve, reject) {
-        log('Set Input Ctrl CHRC... ' + inputCtrl[1]);
+        log('入力 CTRL CHRC を設定... ' + inputCtrl[1]);
         ctrl_chrc.writeValue(inputCtrl)
         .then(_ => {
-            log('Writing Input Data CHRC...');
+            log('入力 DATA CHRC を書き込み中...');
             var tmpViewSize = cfg.byteLength - inputCtrl[1];
             if (tmpViewSize > 512) {
                 tmpViewSize = 512;
@@ -929,7 +929,7 @@ function writeWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
             return data_chrc.writeValue(tmpView);
         })
         .then(_ => {
-            log('Input Data Written');
+            log('入力 DATA を書き込みました');
             inputCtrl[1] += Number(512);
             if (inputCtrl[1] < cfg.byteLength) {
                 resolve(writeWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc));
@@ -1005,7 +1005,7 @@ function saveInput() {
         writeInputCfg(cfgId, cfg)
         .then(_ => {
             document.getElementById("inputSaveText").style.display = 'block';
-            log('Input ' + cfgId + ' Config saved');
+            log('入力 ' + cfgId + ' 設定を保存しました');
             resolve();
         })
         .catch(error => {
@@ -1015,7 +1015,7 @@ function saveInput() {
 }
 
 function onDisconnected() {
-    log('> Bluetooth Device disconnected');
+    log('> Bluetooth デバイスが切断されました');
     document.getElementById("divBtConn").style.display = 'block';
     document.getElementById("divInfo").style.display = 'none';
     document.getElementById("divCfgSel").style.display = 'none';
@@ -1070,26 +1070,26 @@ function initCfgSelection() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'Config Selection';
+    header.innerText = '設定選択';
 
     divCfgSel.appendChild(header);
 
-    divCfgSel.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#21---config-selection" target="_blank">Wiki doc for Config Selection</a><br><br>'
+    divCfgSel.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#21---config-selection" target="_blank">設定選択のWiki</a><br><br>'
 
     cfgBtn.id = "cfgSw";
 
     if (current_cfg == 0) {
-        cfgBtn.innerText += 'Switch to GameID';
+        cfgBtn.innerText += 'GameIDへ切替';
         cfgBtn.addEventListener("click", swGameIdCfg);
-        divCfgSel.innerHTML += 'Current config: Global';
+        divCfgSel.innerHTML += '現在の設定: グローバル';
         if (gameid.length) {
             cfgSw.appendChild(cfgBtn);
         }
     }
     else {
-        cfgBtn.innerText = 'Switch to Global';
+        cfgBtn.innerText = 'グローバルへ切替';
         cfgBtn.addEventListener("click", swDefaultCfg);
-        divCfgSel.innerHTML += 'Current config: GameID';
+        divCfgSel.innerHTML += '現在の設定: GameID';
         cfgSw.appendChild(cfgBtn);
     }
     cfgSw.setAttribute("style", "margin-top:1em;");
@@ -1097,24 +1097,24 @@ function initCfgSelection() {
 }
 
 export function btConn() {
-    log('Requesting Bluetooth Device...');
+    log('Bluetooth デバイスを要求中...');
     navigator.bluetooth.requestDevice(
         {filters: [{namePrefix: 'BlueRetro'}],
         optionalServices: [brUuid[0]]})
     .then(device => {
-        log('Connecting to GATT Server...');
+        log('GATT サーバへ接続中...');
         name = device.name;
         bluetoothDevice = device;
         bluetoothDevice.addEventListener('gattserverdisconnected', onDisconnected);
         return bluetoothDevice.gatt.connect();
     })
     .then(server => {
-        log('Getting BlueRetro Service...');
+        log('VS-C4 のサービスを取得中...');
         return server.getPrimaryService(brUuid[0]);
     })
     .catch(error => {
         log(error.name);
-        throw 'Couldn\'t connect to BlueRetro';
+        throw 'VS-C4 に接続できませんでした';
     })
     .then(service => {
         brService = service;
@@ -1153,8 +1153,8 @@ export function btConn() {
     })
     .then(value => {
         current_cfg = value;
-        log("ABI version: " + apiVersion);
-        log('Init Cfg DOM...');
+        log("API バージョン: " + apiVersion);
+        log('設定画面を初期化中...');
         initBlueRetroCfg();
         return loadGlobalCfg();
     })
@@ -1165,11 +1165,11 @@ export function btConn() {
         return loadInputCfg(0);
     })
     .then(() => {
-        document.getElementById("divInfo").innerHTML = 'Connected to: ' + name + ' (' + bdaddr + ') [' + app_ver
-            + ']<br> Current Game: ' + gamename + ' (' + gameid + ')';
+        document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver
+            + ']<br> 現在のゲーム: ' + gamename + ' (' + gameid + ')';
         try {
             if (app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>Download latest FW ' + latest_ver + ' from <a href=\'https://github.com/darthcloud/BlueRetro/releases\' target=\'_blank\'>GitHub</a>';
+                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\' target=\'_blank\'>GitHub</a> からダウンロード';
             }
         }
         catch (e) {
@@ -1184,7 +1184,7 @@ export function btConn() {
         document.getElementById("divInputCfg").style.display = 'block';
     })
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー: ' + error);
     });
 }
 

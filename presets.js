@@ -1,8 +1,8 @@
-import { brUuid, maxMainInput } from './utils/constants.js';
+import { brUuid, maxMain入力 } from './utils/constants.js';
 import { getLatestRelease } from './utils/getLatestRelease.js';
 import { getAppVersion } from './utils/getAppVersion.js';
 import { getBdAddr } from './utils/getBdAddr.js';
-import { savePresetInput } from './utils/savePresetInput.js';
+import { savePreset入力 } from './utils/savePresetInput.js';
 import { getGameId } from './utils/getGameId.js';
 import { getGameName } from './utils/getGameName.js';
 import { getCfgSrc } from './utils/getCfgSrc.js';
@@ -29,8 +29,8 @@ function initInputSelect() {
     }
     //filter out non-unique items
     consoles = consoles.filter(onlyUnique)
-    //set placeholder description
-    document.getElementById("desc").textContent = "Select a system and then preset";
+    //set placeholder 説明
+    document.getElementById("desc").textContent = "システムを選択してからプリセットを選択してください";
     var div = document.createElement("outputandconsole");
     var main = document.createElement("select");
 
@@ -87,7 +87,7 @@ function initOutputMapping() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:green;");
-    p.innerText = "Config saved, mapping changes take effect immediately.";
+    p.innerText = "マッピングは即時反映されます。";
 
     div.appendChild(p);
     divSave.appendChild(div);
@@ -151,7 +151,7 @@ function initBlueRetroCfg() {
         pageInit = 1;
     })
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー:' + error);
     });
 }
 
@@ -159,7 +159,7 @@ function saveInput() {
     document.getElementById("inputSaveText").style.display = 'none';
     //get preset index
     var preset_idx = Number(document.getElementById("presetsName").value);
-    //make sure preset is not placeholder before we do anything
+    //make sure preset is not placeholder （要文言確定）
     if (preset_idx != -1) {
         var preset = presets[preset_idx];
         var cfgId = Number(document.getElementById("inputSelect").value);
@@ -172,7 +172,7 @@ function saveInput() {
 }
 
 function onDisconnected() {
-    log('> Bluetooth Device disconnected');
+    log('> Bluetooth デバイスが切断されました');
     document.getElementById("divBtConn").style.display = 'block';
     document.getElementById("divInfo").style.display = 'none';
     document.getElementById("divCfgSel").style.display = 'none';
@@ -210,24 +210,24 @@ function initCfgSelection() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'Config Selection';
+    header.innerText = '設定選択';
 
     divCfgSel.appendChild(header);
 
     cfgBtn.id = "cfgSw";
 
     if (current_cfg == 0) {
-        cfgBtn.innerText += 'Switch to GameID';
+        cfgBtn.innerText += 'GameIDへ切替';
         cfgBtn.addEventListener("click", swGameIdCfg);
-        divCfgSel.innerHTML += 'Current config: Global';
+        divCfgSel.innerHTML += '現在の設定: Global';
         if (gameid.length) {
             cfgSw.appendChild(cfgBtn);
         }
     }
     else {
-        cfgBtn.innerText = 'Switch to Global';
+        cfgBtn.innerText = 'グローバルへ切替';
         cfgBtn.addEventListener("click", swDefaultCfg);
-        divCfgSel.innerHTML += 'Current config: GameID';
+        divCfgSel.innerHTML += '現在の設定: GameID';
         cfgSw.appendChild(cfgBtn);
     }
     cfgSw.setAttribute("style", "margin-top:1em;");
@@ -235,27 +235,27 @@ function initCfgSelection() {
 }
 
 export function btConn() {
-    log('Requesting Bluetooth Device...');
+    log('Bluetooth デバイスを要求しています...');
     navigator.bluetooth.requestDevice(
         {filters: [{namePrefix: 'BlueRetro'}],
         optionalServices: [brUuid[0]]})
     .then(device => {
-        log('Connecting to GATT Server...');
+        log('GATT サーバーに接続しています...');
         name = device.name;
         bluetoothDevice = device;
         bluetoothDevice.addEventListener('gattserverdisconnected', onDisconnected);
         return bluetoothDevice.gatt.connect();
     })
     .then(server => {
-        log('Getting BlueRetro Service...');
+        log('VS-C4 サービスを取得しています...');
         return server.getPrimaryService(brUuid[0]);
     })
     .catch(error => {
         log(error.name);
-        throw 'Couldn\'t connect to BlueRetro';
+        throw 'VS-C4 に接続できませんでした';
     })
     .then(service => {
-        log('Init Cfg DOM...');
+        log('設定UIを初期化中...');
         brService = service;
         if (!pageInit) {
             initBlueRetroCfg();
@@ -291,11 +291,11 @@ export function btConn() {
     })
     .then(value => {
         current_cfg = value;
-        document.getElementById("divInfo").innerHTML = 'Connected to: ' + name + ' (' + bdaddr + ') [' + app_ver
+        document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver
             + ']<br> Current Game: ' + gamename + ' (' + gameid + ')';
         try {
             if (app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>Download latest FW ' + latest_ver + ' from <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
+                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
             }
         }
         catch (e) {
@@ -308,14 +308,14 @@ export function btConn() {
         initCfgSelection();
     })
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー:' + error);
     });
 }
 
 function selectInput() {
-    //only change the description if selected input is not the placeholder
+    //only change the 説明 if selected input is not the placeholder
     if (Number(document.getElementById("presetsName").value) == -1) {
-        document.getElementById("desc").textContent = "Select a console and preset!";
+        document.getElementById("desc").textContent = "本体とプリセットを選択してください";
     }
     else {
         document.getElementById("desc").textContent = presets[Number(this.value)].desc;
@@ -323,19 +323,19 @@ function selectInput() {
 }
 
 function clearConsolePresets() {
-    //clear the presets list then change the description to "select a console and preset!"
+    //clear the presets list then change the 説明 to "select a console and preset!"
     var presetsList = document.getElementById("presetsName");
     var presetsListLength = presetsList.length;
     for (var i = 0; i < presetsListLength; i++) {
         presetsList.remove(0);
     }
-    document.getElementById("desc").textContent = "Select a console and preset!";
+    document.getElementById("desc").textContent = "本体とプリセットを選択してください";
 }
 
 function populateConsolePresets(selectedConsole) {
     //add "select preset first as -1 to prevent trying to save the placeholder"
     var list = document.getElementById("presetsName")
-    list.add(new Option("Select preset", -1));
+    list.add(new Option("プリセットを選択", -1));
     //add presets to the list that match the selected console type
     if (selectedConsole != undefined) {
         for (var i = 0; i < presets.length; i++) {

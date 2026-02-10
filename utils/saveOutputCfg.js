@@ -3,7 +3,7 @@ import ChromeSamples from "../utils/ChromeSamples.js"
 
 export const saveOutputCfg = (brService, data, cfgId) => {
     return new Promise((resolve, reject) => {
-      ChromeSamples.log("Get Output " + cfgId + " CTRL CHRC...");
+      ChromeSamples.log("出力 " + cfgId + " CTRL CHRC...");
       brService
         .getCharacteristic(brUuid[2])
         .then((chrc) => {
@@ -13,11 +13,11 @@ export const saveOutputCfg = (brService, data, cfgId) => {
           return chrc.writeValue(outputCtrl);
         })
         .then((_) => {
-          ChromeSamples.log("Get Output " + cfgId + " DATA CHRC...");
+          ChromeSamples.log("出力 " + cfgId + " DATA CHRC を取得中...");
           return brService.getCharacteristic(brUuid[3]);
         })
         .then((chrc) => {
-          ChromeSamples.log("Writing Output " + cfgId + " Config...");
+          ChromeSamples.log("出力 " + cfgId + " 設定を書き込み中...");
           return chrc.writeValue(data);
         })
         .then((_) => {

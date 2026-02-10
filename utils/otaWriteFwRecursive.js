@@ -3,7 +3,7 @@ import { mtu } from "../utils/constants.js";
 const otaWriteFwRecursive = (chrc, data, offset, setProgress, cancel) => {
     return new Promise(function (resolve, reject) {
       if (cancel.current === 1) {
-        throw new Error("Cancelled");
+        throw new Error("キャンセルされました");
       }
       setProgress(Math.round((offset / data.byteLength) * 100));
       var tmpViewSize = data.byteLength - offset;

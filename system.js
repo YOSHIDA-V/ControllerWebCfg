@@ -3,7 +3,7 @@
 import { brUuid } from './utils/constants.js';
 import { getLatestRelease } from './utils/getLatestRelease.js';
 import { getAppVersion } from './utils/getAppVersion.js';
-import { getBdAddr } from './utils/getBdAddr.js';
+import { BDアドレス取得: } from './utils/getBdAddr.js';
 import { setDeepSleep } from './utils/setDeepSleep.js';
 import { setReset } from './utils/setReset.js';
 import { setFactoryReset } from './utils/setFactoryReset.js';
@@ -16,7 +16,7 @@ var name = '';
 let brService = null;
 
 function onDisconnected() {
-    log('> Bluetooth Device disconnected');
+    log('> Bluetooth デバイスが切断されました');
     document.getElementById("divBtConn").style.display = 'block';
     document.getElementById("divInfo").style.display = 'none';
     document.getElementById("divSleep").style.display = 'none';
@@ -37,29 +37,29 @@ export function setFactoryResetEvent() {
 }
 
 export function btConn() {
-    log('Requesting Bluetooth Device...');
+    log('Bluetooth デバイスを要求しています...');
     navigator.bluetooth.requestDevice(
         {filters: [{namePrefix: 'BlueRetro'}],
-        optionalServices: [brUuid[0]]})
+        オプションalServices: [brUuid[0]]})
     .then(device => {
-        log('Connecting to GATT Server...');
-        log('Device name: ' + device.name);
-        log('Device id: ' + device.id);
+        log('GATT サーバーに接続しています...');
+        log('デバイス名: ' + device.name);
+        log('デバイスID: ' + device.id);
         name = device.name;
         bluetoothDevice = device;
         bluetoothDevice.addEventListener('gattserverdisconnected', onDisconnected);
         return bluetoothDevice.gatt.connect();
     })
     .then(server => {
-        log('Getting BlueRetro Service...');
+        log('VS-C4 サービスを取得しています...');
         return server.getPrimaryService(brUuid[0]);
     })
     .catch(error => {
         log(error.name);
-        throw 'Couldn\'t connect to BlueRetro';
+        throw 'VS-C4 に接続できませんでした';
     })
     .then(service => {
-        log('getBdAddr ' + service);
+        log('BDアドレス取得: ' + service);
         brService = service;
         return getBdAddr(brService);
     })
@@ -80,16 +80,16 @@ export function btConn() {
     })
     .then(value => {
         app_ver = value;
-        document.getElementById("divInfo").innerHTML = 'Connected to: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
+        document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
         try {
             if (app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>Download latest FW ' + latest_ver + ' from <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
+                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
             }
         }
         catch (e) {
             // Just move on
         }
-        log('Init Cfg DOM...');
+        log('設定UIを初期化中...');
         document.getElementById("divBtConn").style.display = 'none';
         document.getElementById("divInfo").style.display = 'block';
         document.getElementById("divSleep").style.display = 'block';
@@ -97,6 +97,6 @@ export function btConn() {
         document.getElementById("divFactory").style.display = 'block';
     })
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー:' + error);
     });
 }

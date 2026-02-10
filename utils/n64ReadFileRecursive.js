@@ -3,7 +3,7 @@ import { pakSize } from "../utils/constants.js";
 export const n64ReadFileRecursive = (chrc, data, offset, setProgress, cancel) => {
     return new Promise(function (resolve, reject) {
       if (cancel.current === 1) {
-        throw new Error("Cancelled");
+        throw new Error("キャンセルされました");
       }
       setProgress(Math.round((offset / pakSize) * 100));
       chrc

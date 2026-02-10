@@ -26,15 +26,15 @@ export function abortFileTransfer() {
 function errorHandler(evt) {
     switch(evt.target.error.code) {
         case evt.target.error.NOT_FOUND_ERR:
-            log('File Not Found!');
+            log('ファイルが見つかりません');
             break;
         case evt.target.error.NOT_READABLE_ERR:
-            log('File is not readable');
+            log('ファイルを読み取れません');
             break;
         case evt.target.error.ABORT_ERR:
             break; // noop
         default:
-            log('An error occurred reading this file.');
+            log('ファイル読み込み中にエラーが発生しました');
     };
 }
 
@@ -58,7 +58,7 @@ export function pakRead(evt) {
         document.getElementById("divFileTransfer").style.display = 'none';
     })
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー:' + error);
         document.getElementById("divBtConn").style.display = 'none';
         document.getElementById("divInfo").style.display = 'block';
         document.getElementById("divFileSelect").style.display = 'block';
@@ -75,7 +75,7 @@ export function pakWrite(evt) {
     reader = new FileReader();
     reader.onerror = errorHandler;
     reader.onabort = function(e) {
-        log('File read cancelled');
+        log('ファイル読み込みをキャンセルしました');
     };
     reader.onload = function(e) {
         writeFile(reader.result.slice(0, pakSize));
@@ -122,7 +122,7 @@ function writeFile(data) {
         document.getElementById("divFileTransfer").style.display = 'none';
     })
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー:' + error);
         document.getElementById("divBtConn").style.display = 'none';
         document.getElementById("divInfo").style.display = 'block';
         document.getElementById("divFileSelect").style.display = 'block';
@@ -132,7 +132,7 @@ function writeFile(data) {
 }
 
 function onDisconnected() {
-    log('> Bluetooth Device disconnected');
+    log('> Bluetooth デバイスが切断されました');
     cancel = 0;
     document.getElementById("divBtConn").style.display = 'block';
     document.getElementById("divInfo").style.display = 'none';
@@ -141,24 +141,24 @@ function onDisconnected() {
 }
 
 export function btConn() {
-    log('Requesting Bluetooth Device...');
+    log('Bluetooth デバイスを要求しています...');
     navigator.bluetooth.requestDevice(
         {filters: [{namePrefix: 'BlueRetro'}],
-        optionalServices: [brUuid[0]]})
+        オプションalServices: [brUuid[0]]})
     .then(device => {
-        log('Connecting to GATT Server...');
+        log('GATT サーバーに接続しています...');
         name = device.name;
         bluetoothDevice = device;
         bluetoothDevice.addEventListener('gattserverdisconnected', onDisconnected);
         return bluetoothDevice.gatt.connect();
     })
     .then(server => {
-        log('Getting BlueRetro Service...');
+        log('BlueRetro サービスを取得しています...');
         return server.getPrimaryService(brUuid[0]);
     })
     .catch(error => {
         log(error.name);
-        throw 'Couldn\'t connect to BlueRetro';
+        throw 'BlueRetro に接続できませんでした';
     })
     .then(service => {
         brService = service;
@@ -181,22 +181,22 @@ export function btConn() {
     })
     .then(value => {
         app_ver = value;
-        document.getElementById("divInfo").innerHTML = 'Connected to: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
+        document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
         try {
             if (app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>Download latest FW ' + latest_ver + ' from <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
+                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
             }
         }
         catch (e) {
             // Just move on
         }
-        log('Init Cfg DOM...');
+        log('設定UIを初期化中...');
         document.getElementById("divBtConn").style.display = 'none';
         document.getElementById("divInfo").style.display = 'block';
         document.getElementById("divFileSelect").style.display = 'block';
         document.getElementById("divFileTransfer").style.display = 'none';
     })
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー:' + error);
     });
 }

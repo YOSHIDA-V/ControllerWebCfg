@@ -4,7 +4,7 @@ export const dcWriteRecursive = (chrc, data, offset, transferProgressHook, cance
     return new Promise(function (resolve, reject) {
       var curBlock = ~~(offset / block) + 1;
       if (cancelRef.current === 1) {
-        throw new Error("Cancelled");
+        throw new Error("キャンセルされました");
       }
       transferProgressHook(progress(data.byteLength, offset));
       let tmpViewSize = curBlock * block - offset;

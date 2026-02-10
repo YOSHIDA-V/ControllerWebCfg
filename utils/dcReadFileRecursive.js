@@ -3,7 +3,7 @@ import { vmuSize } from "../utils/constants.js";
 export const dcReadFileRecursive = (chrc, data, offset, setProgress, cancel) => {
     return new Promise(function (resolve, reject) {
       if (cancel.current === 1) {
-        throw new Error("Cancelled");
+        throw new Error("キャンセルされました");
       }
       setProgress(Math.round((offset / vmuSize) * 100));
       chrc

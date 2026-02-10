@@ -2,11 +2,11 @@ import ChromeSamples from "./ChromeSamples.js";
 
 export function presetWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
     return new Promise((resolve, reject) => {
-      ChromeSamples.log("Set Input Ctrl CHRC... " + inputCtrl[1]);
+      ChromeSamples.log("入力 CTRL CHRC を設定... " + inputCtrl[1]);
       ctrl_chrc
         .writeValue(inputCtrl)
         .then((_) => {
-          ChromeSamples.log("Writing Input Data CHRC...");
+          ChromeSamples.log("入力データ CHRC を書き込み中...");
           var tmpViewSize = cfg.byteLength - inputCtrl[1];
           if (tmpViewSize > 512) {
             tmpViewSize = 512;
@@ -15,7 +15,7 @@ export function presetWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
           return data_chrc.writeValue(tmpView);
         })
         .then((_) => {
-          ChromeSamples.log("Input Data Written");
+          ChromeSamples.log("入力データを書き込みました");
           inputCtrl[1] += Number(512);
           if (inputCtrl[1] < cfg.byteLength) {
             resolve(presetWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc));

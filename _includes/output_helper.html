@@ -26,7 +26,7 @@
   };
 </script>
 
-<h3>Live Output</h3>
+<h3>出力</h3>
 <div id="output" class="output">
   <div id="content">{{ include.initial_output_content }}</div>
   <div id="status"></div>
@@ -39,7 +39,7 @@
     // Let's log a warning if the sample is not supposed to execute on this
     // version of Chrome.
     if ({{ page.chrome_version }} > parseInt(RegExp.$1)) {
-      ChromeSamples.setStatus('Warning! Keep in mind this sample has been tested with Chrome ' + {{ page.chrome_version }} + '.');
+      ChromeSamples.setStatus('警告: このサンプルは Chrome ' + {{ page.chrome_version }} + '.');
     }
   }
 </script>

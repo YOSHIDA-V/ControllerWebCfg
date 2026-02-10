@@ -12,7 +12,7 @@ export function setReset(brService) {
         return ctrl_chrc.writeValue(cmd);
       })
       .catch((error) => {
-        ChromeSamples.log("Argh! " + error);
+        ChromeSamples.log("エラー:" + error);
         return ctrl_chrc.writeValue(cmd);
       });
   }

@@ -27,7 +27,7 @@ export function savePresetInput(preset, brService, input) {
       return new Promise(function (resolve, reject) {
         writeInputCfg(cfgId, cfg, brService)
           .then((_) => {
-            ChromeSamples.log("Input " + cfgId + " Config saved");
+            ChromeSamples.log("入力 " + cfgId + " のマッピング変更は即時反映されます。");
             resolve();
           })
           .catch((error) => {

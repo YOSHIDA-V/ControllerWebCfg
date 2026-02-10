@@ -6,7 +6,7 @@ export const getApiVersion = (service) => {
       service
         .getCharacteristic(brUuid[6])
         .then((chrc) => {
-          ChromeSamples.log("Reading Api version...");
+          ChromeSamples.log("API バージョンを読み込み中...");
           return chrc.readValue();
         })
         .then((value) => {

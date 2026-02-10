@@ -31,15 +31,15 @@ function setProgress(percent) {
 function errorHandler(evt) {
     switch(evt.target.error.code) {
         case evt.target.error.NOT_FOUND_ERR:
-            log('File Not Found!');
+            log('ファイルが見つかりません');
             break;
         case evt.target.error.NOT_READABLE_ERR:
-            log('File is not readable');
+            log('ファイルを読み取れません');
             break;
         case evt.target.error.ABORT_ERR:
             break; // noop
         default:
-            log('An error occurred reading this file.');
+            log('ファイル読み込み中にエラーが発生しました');
     };
 }
 
@@ -60,20 +60,20 @@ export function firmwareUpdate(evt) {
     reader = new FileReader();
     reader.onerror = errorHandler;
     reader.onabort = function(e) {
-        log('File read cancelled');
+        log('ファイル読み込みをキャンセルしました');
     };
     reader.onload = function(e) {
         var decoder = new TextDecoder("utf-8");
         var header = decoder.decode(reader.result.slice(0, 256));
         let new_fw_is_hw2 = (header.indexOf('hw2') != -1);
 
-        log("new_fw_is_hw2: " + new_fw_is_hw2);
+        log("HW2判定(new_fw): " + new_fw_is_hw2);
 
         if (cur_fw_is_hw2 == new_fw_is_hw2) {
             writeFirmware(reader.result, 0);
         }
         else {
-            log("Hardware and firmware mismatch!");
+            log("ハードウェアとファームウェアが一致しません");
         }
     }
 
@@ -85,7 +85,7 @@ export function firmwareUpdate(evt) {
         reader.readAsArrayBuffer(document.getElementById("fwFile").files[0]);
     }
     else {
-        log("Invalid file format. Make sure to unzip the archive!");
+        log("ファイル形式が対応している形式ではありません。zipを展開してから指定してください");
     }
 }
 
@@ -97,7 +97,7 @@ function writeFirmware(data) {
     document.getElementById("divFwUpdate").style.display = 'block';
     otaWriteFirmware(brService, data, setProgress, cancel)
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー:' + error);
         document.getElementById("divBtConn").style.display = 'none';
         document.getElementById("divInfo").style.display = 'block';
         document.getElementById("divFwSelect").style.display = 'block';
@@ -106,7 +106,7 @@ function writeFirmware(data) {
 }
 
 function onDisconnected() {
-    log('> Bluetooth Device disconnected');
+    log('> Bluetooth デバイスが切断されました');
     cancel = 0;
     document.getElementById("divBtConn").style.display = 'block';
     document.getElementById("divInfo").style.display = 'none';
@@ -115,24 +115,24 @@ function onDisconnected() {
 }
 
 export function btConn() {
-    log('Requesting Bluetooth Device...');
+    log('Bluetooth デバイスを要求しています...');
     navigator.bluetooth.requestDevice(
         {filters: [{namePrefix: 'BlueRetro'}],
-        optionalServices: [brUuid[0]]})
+        オプションalServices: [brUuid[0]]})
     .then(device => {
-        log('Connecting to GATT Server...');
+        log('GATT サーバーに接続しています...');
         name = device.name;
         bluetoothDevice = device;
         bluetoothDevice.addEventListener('gattserverdisconnected', onDisconnected);
         return bluetoothDevice.gatt.connect();
     })
     .then(server => {
-        log('Getting BlueRetro Service...');
+        log('VS-C4 サービスを取得しています...');
         return server.getPrimaryService(brUuid[0]);
     })
     .catch(error => {
         log(error.name);
-        throw 'Couldn\'t connect to BlueRetro';
+        throw 'VS-C4 に接続できませんでした';
     })
     .then(service => {
         brService = service;
@@ -166,10 +166,10 @@ export function btConn() {
     })
     .then(value => {
         app_name = value;
-        document.getElementById("divInfo").innerHTML = 'Connected to: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
+        document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
         try {
             if (app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>Download latest FW ' + latest_ver + ' from <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
+                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
             }
         }
         catch (e) {
@@ -178,17 +178,17 @@ export function btConn() {
         cur_fw_is_hw2 = 0;
         let app_ver_is_hw2 = (app_ver.indexOf('hw2') != -1);
         let app_name_is_hw2 = (app_name.indexOf('hw2') != -1);
-        log("app_ver_is_hw2: " + app_ver_is_hw2 + " app_name_is_hw2: " + app_name_is_hw2);
+        log("HW2判定(app_ver): " + app_ver_is_hw2 + " HW2判定(app_name): " + app_name_is_hw2);
         if (app_ver_is_hw2 || app_name_is_hw2) {
             cur_fw_is_hw2 = 1;
         }
-        log('Init Cfg DOM...');
+        log('設定UIを初期化中...');
         document.getElementById("divBtConn").style.display = 'none';
         document.getElementById("divInfo").style.display = 'block';
         document.getElementById("divFwSelect").style.display = 'block';
         document.getElementById("divFwUpdate").style.display = 'none';
     })
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー:' + error);
     });
 }

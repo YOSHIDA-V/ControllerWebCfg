@@ -6,7 +6,7 @@ export const getAppVersion = (service) => {
     service
       .getCharacteristic(brUuid[9])
       .then((chrc) => {
-        ChromeSamples.log("Reading App version...");
+        ChromeSamples.log("アプリバージョンを読み込み中...");
         return chrc.readValue();
       })
       .then((value) => {
