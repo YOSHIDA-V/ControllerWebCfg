@@ -59,7 +59,7 @@ export function btConn() {
         throw 'VS-C4 に接続できませんでした';
     })
     .then(service => {
-        log('getBdAddr ' + service);
+        log('アドレス: ' + service);
         brService = service;
         return getBdAddr(brService);
     })
