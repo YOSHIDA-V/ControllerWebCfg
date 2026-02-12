@@ -407,6 +407,8 @@ export const systemCfg = [
     "Parallel_1P_OD",
     "Parallel_2P_OD",
     "SEA Board",
+    "VS-C4m3",
+    "VS-C4m2",
 ];
 
 export const multitapCfg = [
