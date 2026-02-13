@@ -11,9 +11,7 @@ import { getBdAddr } from './utils/getBdAddr.js';
 import { getApiVersion } from './utils/getApiVersion.js';
 import { getGameId } from './utils/getGameId.js';
 import { getGameName } from './utils/getGameName.js';
-import { getCfgSrc } from './utils/getCfgSrc.js';
 import { setDefaultCfg } from './utils/setDefaultCfg.js';
-import { setGameIdCfg } from './utils/setGameIdCfg.js';
 
 var apiVersion = 0;
 var bluetoothDevice;
@@ -29,7 +27,6 @@ var latest_ver = '';
 var name = '';
 var gameid = '';
 var gamename = '';
-var current_cfg = 0;
 
 function initGlobalCfg() {
     var divGlobalCfg = document.getElementById("divGlobalCfg");
@@ -549,6 +546,7 @@ function initFirstOutputMapping() {
     }
     diag.setAttribute("class", "diag");
     diag.value = 0; // force Passthrough
+    span.style.display = "none";
     diag.style.display = "none";
     span.appendChild(label);
     span.appendChild(diag);
@@ -591,124 +589,6 @@ function initFirstOutputMapping() {
     divInputCfg.appendChild(divMappingGrp);
 }
 
-function initOutputMapping() {
-    mappingElement = document.createElement("div");
-
-    /* Src */
-    var src = document.createElement("select");
-    src.setAttribute("style", "max-width:10%;");
-    src.title = "Bluetoothコントローラ側の入力（ボタン/軸）です。";
-    for (var i = 0; i < btnList.length; i++) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = btnList[i][srcLabel];
-        src.add(option);
-    }
-    src.setAttribute("class", "src");
-    mappingElement.appendChild(src);
-
-    /* Dest */
-    var dest = src.cloneNode(true);
-    dest.setAttribute("class", "dest");
-    dest.title = "コントローラの出力側（ボタン/軸）";
-    mappingElement.appendChild(dest);
-
-    /* Dest ID */
-    var destId = document.createElement("select");
-    destId.setAttribute("style", "max-width:10%;");
-    destId.title = "コントローラの出力側のIDです。";
-    for (var i = 0; i < maxOutput; i++) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = "出力 " + (i + 1);
-        destId.add(option);
-    }
-    destId.setAttribute("class", "destId");
-    destId.style.display = "none";
-    mappingElement.appendChild(destId);
-
-    /* Max */
-    var max = document.createElement("select");
-    max.setAttribute("style", "max-width:10%;");
-    max.title = "入力と出力が軸の場合: 出力最大値を基準にしたスケーリング率。入力がボタンで出力が軸の場合: 出力最大値を基準に軸へ設定する値。";
-    for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = i + "%";
-        max.add(option);
-    }
-    max.setAttribute("class", "max");
-    max.value = 100;
-    max.style.display = "none";
-    mappingElement.appendChild(max);
-
-    /* Threshold */
-    var thres = document.createElement("select");
-    thres.setAttribute("style", "thres-width:10%;");
-    thres.title = "入力が軸で出力がボタンの場合: 入力軸がこの割合を超えるとボタン押下とみなします。";
-    for (var i = 0; i <= maxThres; i += 5) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = i + "%";
-        thres.add(option);
-    }
-    thres.setAttribute("class", "thres");
-    thres.value = 50;
-    thres.style.display = "none";
-    mappingElement.appendChild(thres);
-
-    /* Deadone */
-    var dz = document.createElement("select");
-    dz.setAttribute("style", "dz-width:10%;");
-    dz.title = "軸のニュートラル付近のデッドゾーンです。";
-    for (var i = 0; i <= maxMax; i += 5) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = i/10000 + "%";
-        dz.add(option);
-    }
-    dz.setAttribute("class", "dz");
-    dz.value = 135;
-    mappingElement.appendChild(dz);
-
-    /* Turbo */
-    var turbo = document.createElement("select");
-    turbo.setAttribute("style", "max-width:10%;");
-    turbo.title = "システムのフレームレートを基準にした連射設定";
-    for (var key in turboMask) {
-        var option  = document.createElement("option");
-        option.value = turboMask[key];
-        option.text = key;
-        turbo.add(option);
-    }
-    turbo.setAttribute("class", "turbo");
-    mappingElement.appendChild(turbo);
-
-    /* Scaling */
-    var sca = document.createElement("select");
-    sca.setAttribute("style", "max-width:10%;");
-    sca.title = "スケーリング用の応答曲線です。（Passthrough / Linear のみ。他は未確定）";
-    for (var i = 0; i < scaling.length; i++) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = scaling[i];
-        sca.add(option);
-    }
-    sca.setAttribute("class", "scaling");
-    mappingElement.appendChild(sca);
-
-    /* Scaling diag */
-    var diag = document.createElement("select");
-    diag.setAttribute("style", "max-width:10%;");
-    diag.title = "ジョイスティック種別間の斜め補正設定です。（未実装）";
-    for (var i = 0; i < diagScaling.length; i++) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = diagScaling[i];
-        diag.add(option);
-    }
-    diag.setAttribute("class", "diag");
-    mappingElement.appendChild(diag);
 }
 
 function initBlueRetroCfg() {
@@ -718,7 +598,6 @@ function initBlueRetroCfg() {
     initInputSelect();
     initLabelSelect();
     initFirstOutputMapping();
-    initOutputMapping();
     initCfgSelection();
     nbMapping = 1;
 }
@@ -1063,75 +942,22 @@ function onDisconnected() {
     document.getElementById("divInputCfg").style.display = 'none';
 }
 
-function swGameIdCfg() {
-    setGameIdCfg(brService)
-    .then(_ => {
-        return getCfgSrc(brService);
-    })
-    .then(value => {
-        current_cfg = value;
-        initBlueRetroCfg();
-        return loadGlobalCfg();
-    })
-    .then(() => {
-        return loadOutputCfg(0);
-    })
-    .then(() => {
-        return loadInputCfg(0);
-    })
-}
-
-function swDefaultCfg() {
-    setDefaultCfg(brService)
-    .then(_ => {
-        return getCfgSrc(brService);
-    })
-    .then(value => {
-        current_cfg = value;
-        initBlueRetroCfg();
-        return loadGlobalCfg();
-    })
-    .then(() => {
-        return loadOutputCfg(0);
-    })
-    .then(() => {
-        return loadInputCfg(0);
-    })
-}
-
 function initCfgSelection() {
-    let divCfgSel = document.getElementById("divCfgSel");
-    let cfgSw = document.createElement("div");
-    let cfgBtn = document.createElement("button");
-
+    const divCfgSel = document.getElementById("divCfgSel");
     divCfgSel.innerHTML = '';
 
-    let header = document.createElement("h2");
+    const header = document.createElement("h2");
     header.style.margin = 0;
     header.innerText = '設定選択';
-
     divCfgSel.appendChild(header);
 
-    divCfgSel.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#21---config-selection" target="_blank">設定選択のWiki</a><br><br>'
+    const notice = document.createElement("p");
+    notice.style.marginTop = "0.5em";
+    notice.innerText = 'VS-C4 固有FWでは常にグローバル設定のみ使用します。GameID切替は無効化済みです。';
+    divCfgSel.appendChild(notice);
 
-    cfgBtn.id = "cfgSw";
-
-    if (current_cfg == 0) {
-        cfgBtn.innerText += 'GameIDへ切替';
-        cfgBtn.addEventListener("click", swGameIdCfg);
-        divCfgSel.innerHTML += '現在の設定: グローバル';
-        if (gameid.length) {
-            cfgSw.appendChild(cfgBtn);
-        }
-    }
-    else {
-        cfgBtn.innerText = 'グローバルへ切替';
-        cfgBtn.addEventListener("click", swDefaultCfg);
-        divCfgSel.innerHTML += '現在の設定: GameID';
-        cfgSw.appendChild(cfgBtn);
-    }
-    cfgSw.setAttribute("style", "margin-top:1em;");
-    divCfgSel.append(cfgSw);
+    // Hide the entire block since the mode is fixed
+    divCfgSel.style.display = 'none';
 }
 
 export function btConn() {
@@ -1182,17 +1008,10 @@ export function btConn() {
     })
     .then(value => {
         gamename = value;
-        return getCfgSrc(brService);
+        log('グローバル設定を強制適用します...');
+        return setDefaultCfg(brService);
     })
-    .catch(error => {
-        if (error.name == 'NotFoundError'
-          || error.name == 'NotSupportedError') {
-            return 0;
-        }
-        throw error;
-    })
-    .then(value => {
-        current_cfg = value;
+    .then(() => {
         log("API バージョン: " + apiVersion);
         log('設定画面を初期化中...');
         initBlueRetroCfg();
@@ -1218,7 +1037,7 @@ export function btConn() {
         document.getElementById("divBtConn").style.display = 'none';
         //document.getElementById("divBtDisconn").style.display = 'block';
         document.getElementById("divInfo").style.display = 'block';
-        document.getElementById("divCfgSel").style.display = 'block';
+        document.getElementById("divCfgSel").style.display = 'none';
         document.getElementById("divGlobalCfg").style.display = 'block';
         document.getElementById("divOutputCfg").style.display = 'block';
         document.getElementById("divInputCfg").style.display = 'block';
