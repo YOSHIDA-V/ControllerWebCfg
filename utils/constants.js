@@ -394,13 +394,13 @@ export const systemCfg = [
     'CD32',
     '3DO',
     'Jaguar',
-    'VS-C4 SPI3',//PSX
+    'SPI2',//PSX
     'Saturn',
     'PC-FX',
     'JVS',
     'N64',
     'DC',
-    'VS-C4 SPI3',//PS2
+    'SPI3',//PS2
     'GC',
     'Wii-Ext',
     "VB",
