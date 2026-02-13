@@ -394,21 +394,19 @@ export const systemCfg = [
     'CD32',
     '3DO',
     'Jaguar',
-    'PSX',
+    'VS-C4 SPI3',//PSX
     'Saturn',
     'PC-FX',
     'JVS',
     'N64',
     'DC',
-    'PS2',
+    'VS-C4 SPI3',//PS2
     'GC',
     'Wii-Ext',
     "VB",
     "Parallel_1P_OD",
     "Parallel_2P_OD",
     "SEA Board",
-    "VS-C4m3",
-    "VS-C4m2",
 ];
 
 export const multitapCfg = [

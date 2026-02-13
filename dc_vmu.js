@@ -145,7 +145,9 @@ function onDisconnected() {
 export function btConn() {
     log('Bluetooth デバイスを要求しています...');
     navigator.bluetooth.requestDevice(
-        {filters: [{namePrefix: 'BlueRetro'}],
+        {
+        // Filter so that only VS-C4 devices are shown in the chooser
+        filters: [{namePrefix: 'VS-C4'}],
         optionalServices: [brUuid[0]]})
     .then(device => {
         log('GATT サーバーに接続しています...');

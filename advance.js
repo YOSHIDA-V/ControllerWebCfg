@@ -53,7 +53,7 @@ function initGlobalCfg() {
 
     var sel = document.createElement("select");
 
-    const allowedSystem = new Set([0, 11, 17, 24, 25]);
+    const allowedSystem = new Set([11, 17]);
     for (var i = 0; i < systemCfg.length; i++) {
         if (!allowedSystem.has(i)) continue;
 
@@ -1117,7 +1117,9 @@ function initCfgSelection() {
 export function btConn() {
     log('Bluetooth デバイスを要求中...');
     navigator.bluetooth.requestDevice(
-        {filters: [{namePrefix: 'BlueRetro'}],
+        {
+        // Filter so that only VS-C4 devices are shown in the chooser
+        filters: [{namePrefix: 'VS-C4'}],
         optionalServices: [brUuid[0]]})
     .then(device => {
         log('GATT サーバへ接続中...');
