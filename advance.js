@@ -28,12 +28,9 @@ var name = '';
 var gameid = '';
 var gamename = '';
 
-const allowedSrcLabelNames = [
-    'PSX / PS2',
-];
+const allowedSrcLabelNames = [];
 
 const allowedDestLabelNames = [
-    'Default',
     'PSX / PS2',
 ];
 
@@ -372,6 +369,10 @@ function initLabelSelect() {
     div.appendChild(label);
     div.appendChild(main);
 
+    if (main.options.length > 0) {
+        destLabel = Number(main.options[0].value);
+    }
+
     divInputCfg.appendChild(div);
 }
 
@@ -406,8 +407,10 @@ function initFirstOutputMapping() {
     label.innerText = '出力';
     label.setAttribute("style", "display:block;");
 
-    var dest = src.cloneNode(true);
+    var dest = document.createElement("select");
     dest.setAttribute("class", "dest");
+    dest.setAttribute("style", "width:100%;");
+    fillDestOptions(dest);
     span.appendChild(label);
     span.appendChild(dest);
     mappingElement.appendChild(span);
@@ -1112,20 +1115,42 @@ function changeSrcLabel() {
     mappingElement.querySelector('.src').innerHTML = str;
 }
 
-function changeDstLabel() {
-    var select = document.getElementsByClassName("dest");
-    var str = ""
-    var tmp;
-
-    destLabel = this.value;
+function fillDestOptions(selectEl, previousValue) {
+    selectEl.innerHTML = '';
+    var firstValue = null;
+    var hasPrevious = false;
 
     for (var i = 0; i < btnList.length; i++) {
-        str += "<option value=\"" + i + "\">" + btnList[i][destLabel] + "</option>";
+        var btnName = btnList[i][destLabel];
+        if (!btnName) {
+            continue;
+        }
+        var option = document.createElement("option");
+        option.value = i;
+        option.text = btnName;
+        selectEl.add(option);
+        if (firstValue === null) {
+            firstValue = i;
+        }
+        if (previousValue !== undefined && String(i) === String(previousValue)) {
+            hasPrevious = true;
+        }
     }
+
+    if (previousValue !== undefined && hasPrevious) {
+        selectEl.value = previousValue;
+    }
+    else if (firstValue !== null) {
+        selectEl.value = firstValue;
+    }
+}
+
+function changeDstLabel() {
+    var select = document.getElementsByClassName("dest");
+    destLabel = Number(this.value);
+
     for (var i = 0; i < select.length; i++) {
-        tmp = select[i].value;
-        select[i].innerHTML = str;
-        select[i].value = tmp;
+        var previous = select[i].value;
+        fillDestOptions(select[i], previous);
     }
-    mappingElement.querySelector('.dest').innerHTML = str;
 }
