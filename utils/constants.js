@@ -410,100 +410,100 @@ export const systemCfg = [
 ];
 
 export const multitapCfg = [
-    'None',
-    'Slot 1',
-    'Slot 2',
-    'Dual',
-    'Alt',
+    '無効',     //None
+    'Slot 1',   //VS-C4では無効
+    'Slot 2',   //VS-C4では無効
+    'Dual',     //VS-C4では無効
+    'Alt',      //VS-C4では無効
 ];
 
 export const inquiryMode = [
     'Auto',
-    'Manual',
+    'ボタンペアリング',//Manual
 ];
 
 export const devCfg = [
-    'GamePad',
-    'GamePadAlt',
-    'Keyboard',
-    'Mouse',
+    'GamePad',      //DualShock 2 コントローラーをエミュレート
+    'GamePadAlt',   //VS-C4では無効
+    'キーボード',    //VS-C4では無効
+    'マウス',        //VS-C4では無効
 ];
 
 export const accCfg = [
-    'None',
-    'Memory',
-    'Rumble',
-    'Both',
+    'なし',     //振動を無効にした DualShock 2 コントローラー
+    'Memory',   //VS-C4では無効
+    '振動',     //振動対応の DualShock 2 コントローラーをエミュレート
+    'Both',     //VS-C4では無効
 ];
 
 export const turboMask = {
-    'Disable': 0,
-    '1/2 frames': (1 << 1) | 0,
-    '1/4 frames': (3 << 1) | 0,
-    '2/4 frames': (2 << 1) | 0,
-    '3/4 frames': (3 << 1) | 1,
-    '1/8 frames': (7 << 1) | 0,
-    '2/8 frames': (6 << 1) | 0,
-    '4/8 frames': (4 << 1) | 0,
-    '6/8 frames': (6 << 1) | 1,
-    '7/8 frames': (7 << 1) | 1,
-    '1/16 frames': (15 << 1) | 0,
-    '2/16 frames': (14 << 1) | 0,
-    '4/16 frames': (12 << 1) | 0,
-    '8/16 frames': (8 << 1) | 0,
-    '12/16 frames': (12 << 1) | 1,
-    '14/16 frames': (14 << 1) | 1,
-    '15/16 frames': (15 << 1) | 1,
-    '1/32 frames': (31 << 1) | 0,
-    '2/32 frames': (30 << 1) | 0,
-    '4/32 frames': (28 << 1) | 0,
-    '8/32 frames': (24 << 1) | 0,
-    '16/32 frames': (16 << 1) | 0,
-    '24/32 frames': (24 << 1) | 1,
-    '28/32 frames': (28 << 1) | 1,
-    '30/32 frames': (30 << 1) | 1,
-    '31/32 frames': (31 << 1) | 1,
-    '1/64 frames': (63 << 1) | 0,
-    '2/64 frames': (62 << 1) | 0,
-    '4/64 frames': (60 << 1) | 0,
-    '8/64 frames': (56 << 1) | 0,
-    '16/64 frames': (48 << 1) | 0,
-    '32/64 frames': (32 << 1) | 0,
-    '48/64 frames': (48 << 1) | 1,
-    '56/64 frames': (56 << 1) | 1,
-    '60/64 frames': (60 << 1) | 1,
-    '62/64 frames': (62 << 1) | 1,
-    '63/64 frames': (63 << 1) | 1,
-    '1/128 frames': (127 << 1) | 0,
-    '2/128 frames': (126 << 1) | 0,
-    '4/128 frames': (124 << 1) | 0,
-    '8/128 frames': (120 << 1) | 0,
-    '16/128 frames': (112 << 1) | 0,
-    '32/128 frames': (96 << 1) | 0,
-    '64/128 frames': (64 << 1) | 0,
-    '96/128 frames': (96 << 1) | 1,
-    '112/128 frames': (112 << 1) | 1,
-    '120/128 frames': (120 << 1) | 1,
-    '124/128 frames': (124 << 1) | 1,
-    '126/128 frames': (126 << 1) | 1,
-    '127/128 frames': (127 << 1) | 1,
+    '無効': 0,//Disable
+    '1/2 frames': (1 << 1) | 0,         //VS-C4では無効
+    '1/4 frames': (3 << 1) | 0,         //VS-C4では無効
+    '2/4 frames': (2 << 1) | 0,         //VS-C4では無効
+    '3/4 frames': (3 << 1) | 1,         //VS-C4では無効
+    '1/8 frames': (7 << 1) | 0,         //VS-C4では無効
+    '2/8 frames': (6 << 1) | 0,         //VS-C4では無効
+    '4/8 frames': (4 << 1) | 0,         //VS-C4では無効
+    '6/8 frames': (6 << 1) | 1,         //VS-C4では無効
+    '7/8 frames': (7 << 1) | 1,         //VS-C4では無効
+    '1/16 frames': (15 << 1) | 0,       //VS-C4では無効
+    '2/16 frames': (14 << 1) | 0,       //VS-C4では無効
+    '4/16 frames': (12 << 1) | 0,       //VS-C4では無効
+    '8/16 frames': (8 << 1) | 0,        //VS-C4では無効
+    '12/16 frames': (12 << 1) | 1,      //VS-C4では無効
+    '14/16 frames': (14 << 1) | 1,      //VS-C4では無効
+    '15/16 frames': (15 << 1) | 1,      //VS-C4では無効
+    '1/32 frames': (31 << 1) | 0,       //VS-C4では無効
+    '2/32 frames': (30 << 1) | 0,       //VS-C4では無効
+    '4/32 frames': (28 << 1) | 0,       //VS-C4では無効
+    '8/32 frames': (24 << 1) | 0,       //VS-C4では無効
+    '16/32 frames': (16 << 1) | 0,      //VS-C4では無効
+    '24/32 frames': (24 << 1) | 1,      //VS-C4では無効
+    '28/32 frames': (28 << 1) | 1,      //VS-C4では無効
+    '30/32 frames': (30 << 1) | 1,      //VS-C4では無効
+    '31/32 frames': (31 << 1) | 1,      //VS-C4では無効
+    '1/64 frames': (63 << 1) | 0,       //VS-C4では無効
+    '2/64 frames': (62 << 1) | 0,       //VS-C4では無効
+    '4/64 frames': (60 << 1) | 0,       //VS-C4では無効
+    '8/64 frames': (56 << 1) | 0,       //VS-C4では無効
+    '16/64 frames': (48 << 1) | 0,      //VS-C4では無効
+    '32/64 frames': (32 << 1) | 0,      //VS-C4では無効
+    '48/64 frames': (48 << 1) | 1,      //VS-C4では無効
+    '56/64 frames': (56 << 1) | 1,      //VS-C4では無効
+    '60/64 frames': (60 << 1) | 1,      //VS-C4では無効
+    '62/64 frames': (62 << 1) | 1,      //VS-C4では無効
+    '63/64 frames': (63 << 1) | 1,      //VS-C4では無効
+    '1/128 frames': (127 << 1) | 0,     //VS-C4では無効
+    '2/128 frames': (126 << 1) | 0,     //VS-C4では無効
+    '4/128 frames': (124 << 1) | 0,     //VS-C4では無効
+    '8/128 frames': (120 << 1) | 0,     //VS-C4では無効
+    '16/128 frames': (112 << 1) | 0,    //VS-C4では無効
+    '32/128 frames': (96 << 1) | 0,     //VS-C4では無効
+    '64/128 frames': (64 << 1) | 0,     //VS-C4では無効
+    '96/128 frames': (96 << 1) | 1,     //VS-C4では無効
+    '112/128 frames': (112 << 1) | 1,   //VS-C4では無効
+    '120/128 frames': (120 << 1) | 1,   //VS-C4では無効
+    '124/128 frames': (124 << 1) | 1,   //VS-C4では無効
+    '126/128 frames': (126 << 1) | 1,   //VS-C4では無効
+    '127/128 frames': (127 << 1) | 1,   //VS-C4では無効
 };
 
 export const scaling = [
-    'Linear',
-    'Aggressive',
-    'Relaxed',
-    'Wide',
-    'S-Curve',
-    'Passthrough',
+    'リニア',       //Linear
+    'Aggressive',   //アグレッシブ  //VS-C4では無効
+    'Relaxed',      //リラックス    //VS-C4では無効
+    'Wide',         //ワイド        //VS-C4では無効
+    'S-Curve',      //S字カーブ     //VS-C4では無効
+    'パススルー',    //Passthrough
 ];
 
 export const diagScaling = [
-    'Passthrough',
-    'Circular->Square',
-    'Circular->N64 Hexagone',
-    'Square->Circular',
-    'Square->N64 Hexagone'
+    'Passthrough',              //パススルー        //VS-C4では無効
+    'Circular->Square',         //円形->正方形      //VS-C4では無効
+    'Circular->N64 Hexagone',   //円形->N64六角形   //VS-C4では無効
+    'Square->Circular',         //正方形->円形      //VS-C4では無効
+    'Square->N64 Hexagone',     //正方形->N64六角形 //VS-C4では無効
 ];
 
 export const maxMainInput = 12;

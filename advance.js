@@ -76,13 +76,14 @@ function initGlobalCfg() {
     label.setAttribute("for", "multitapCfg");
 
     sel = document.createElement("select");
-    for (var i = 0; i < multitapCfg.length; i++) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = multitapCfg[i];
-        sel.add(option);
-    }
+    var option0 = document.createElement("option");
+    option0.value = 0;
+    option0.text = '無効';
+    sel.add(option0);
     sel.id = "multitapCfg";
+    sel.value = 0;
+    sel.disabled = true;
+    div.style.display = "none";
     div.appendChild(label);
     div.appendChild(sel);
 
@@ -179,14 +180,14 @@ function initOutputSelect() {
     label.setAttribute("for", "outputSelect");
 
     var main = document.createElement("select");
-    for (var i = 0; i < maxOutput; i++) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = "出力 " + (i + 1);
-        main.add(option);
-    }
+    var option  = document.createElement("option");
+    option.value = 0;
+    option.text = "出力 1";
+    main.add(option);
     main.id = "outputSelect";
-    main.addEventListener("change", selectOutput);
+    main.value = 0;
+    main.disabled = true;
+    div.style.display = "none";
     div.appendChild(label);
     div.appendChild(main);
 
@@ -206,13 +207,16 @@ function initOutputMode() {
     label.setAttribute("style", "display:block;");
 
     var main = document.createElement("select");
+    const allowedModes = new Set([0]); // GamePad only
     for (var i = 0; i < devCfg.length; i++) {
+        if (!allowedModes.has(i)) continue;
         var option  = document.createElement("option");
         option.value = i;
         option.text = devCfg[i];
         main.add(option);
     }
     main.id = "outputMode";
+    main.value = 0;
     span.appendChild(label);
     span.appendChild(main);
     div.appendChild(span);
@@ -226,12 +230,16 @@ function initOutputMode() {
     label.setAttribute("style", "display:block;");
 
     main = document.createElement("select");
-    for (var i = 0; i < accCfg.length; i++) {
+    const accDisplay = [
+        {idx: 0, label: 'なし'},
+        {idx: 2, label: '振動'},
+    ];
+    accDisplay.forEach(entry => {
         var option  = document.createElement("option");
-        option.value = i;
-        option.text = accCfg[i];
+        option.value = entry.idx;
+        option.text = entry.label;
         main.add(option);
-    }
+    });
     main.id = "outputAcc";
     span.appendChild(label);
     span.appendChild(main);
@@ -357,7 +365,7 @@ function initFirstOutputMapping() {
 
     /* Src */
     var span = document.createElement("span");
-    span.setAttribute("style", "max-width:10%;display:inline-block;");
+    span.setAttribute("style", "max-width:10%;display:none;");
     span.title = "Bluetoothコントローラ側の入力（ボタン/軸）です。";
     var label = document.createElement("label");
     label.innerText = '入力';
@@ -494,6 +502,9 @@ function initFirstOutputMapping() {
         turbo.add(option);
     }
     turbo.setAttribute("class", "turbo");
+    turbo.value = turboMask['Disable'];
+    span.style.display = "none";
+    turbo.style.display = "none";
     span.appendChild(label);
     span.appendChild(turbo);
     mappingElement.appendChild(span);
@@ -507,7 +518,9 @@ function initFirstOutputMapping() {
     label.setAttribute("style", "display:block;");
 
     var sca = document.createElement("select");
+    const allowedScaling = new Set([0, 5]); // Linear / Passthrough only
     for (var i = 0; i < scaling.length; i++) {
+        if (!allowedScaling.has(i)) continue;
         var option  = document.createElement("option");
         option.value = i;
         option.text = scaling[i];
@@ -535,6 +548,8 @@ function initFirstOutputMapping() {
         diag.add(option);
     }
     diag.setAttribute("class", "diag");
+    diag.value = 0; // force Passthrough
+    diag.style.display = "none";
     span.appendChild(label);
     span.appendChild(diag);
     mappingElement.appendChild(span);
@@ -759,8 +774,11 @@ function loadOutputCfg(cfgId) {
         })
         .then(value => {
             log('出力 ' + cfgId + ' 設定サイズ: ' + value.byteLength);
-            document.getElementById("outputMode").value = value.getUint8(0);
-            document.getElementById("outputAcc").value = value.getUint8(1);
+            const modeSel = document.getElementById("outputMode");
+            modeSel.value = 0;
+            const accSel = document.getElementById("outputAcc");
+            const accVal = value.getUint8(1);
+            accSel.value = (accVal === 2) ? 2 : 0;
             resolve();
         })
         .catch(error => {
@@ -866,9 +884,11 @@ function loadInputCfg(cfgId) {
                 max[i].value = value[j++];
                 thres[i].value = value[j++];
                 dz[i].value = value[j++];
-                turbo[i].value = value[j++];
+                j++; // ignore turbo value from device, keep Disabled
+                turbo[i].value = turboMask['Disable'];
                 scaling[i].value = value[j] & 0xF;
-                diag[i].value = value[j++] >> 4;
+                j++; // ignore diag scaling, keep Passthrough
+                diag[i].value = 0;
             }
             resolve();
         })
@@ -1015,8 +1035,8 @@ function saveInput() {
         cfg[j++] = max[i].value;
         cfg[j++] = thres[i].value;
         cfg[j++] = dz[i].value;
-        cfg[j++] = turbo[i].value;
-        cfg[j++] = Number(scaling[i].value) | (Number(diag[i].value) << 4);
+        cfg[j++] = turboMask['Disable'];
+        cfg[j++] = Number(scaling[i].value) | (0 << 4);
     }
 
     return new Promise(function(resolve, reject) {
@@ -1220,6 +1240,8 @@ function addInput() {
         newSubDiv.querySelector('.max').value = 100;
         newSubDiv.querySelector('.thres').value = 50;
         newSubDiv.querySelector('.dz').value = 135;
+        newSubDiv.querySelector('.turbo').value = turboMask['Disable'];
+        newSubDiv.querySelector('.diag').value = 0;
         div.appendChild(newSubDiv);
     }
 }
