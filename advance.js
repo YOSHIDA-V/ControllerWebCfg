@@ -589,8 +589,6 @@ function initFirstOutputMapping() {
     divInputCfg.appendChild(divMappingGrp);
 }
 
-}
-
 function initBlueRetroCfg() {
     initGlobalCfg();
     initOutputSelect();
