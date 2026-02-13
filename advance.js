@@ -341,6 +341,9 @@ function initLabelSelect() {
     }
     main.id = "srcLabel";
     main.addEventListener("change", changeSrcLabel);
+    if (main.options.length > 0) {
+        srcLabel = Number(main.options[0].value);
+    }
     div.appendChild(label);
     div.appendChild(main);
 
@@ -388,13 +391,8 @@ function initFirstOutputMapping() {
     label.setAttribute("style", "display:block;");
 
     var src = document.createElement("select");
-    for (var i = 0; i < btnList.length; i++) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = btnList[i][srcLabel];
-        src.add(option);
-    }
     src.setAttribute("class", "src");
+    fillSrcOptions(src, srcLabel);
     span.appendChild(label);
     span.appendChild(src);
     mappingElement.appendChild(span);
@@ -417,7 +415,7 @@ function initFirstOutputMapping() {
 
     /* Dest ID */
     span = document.createElement("span");
-    span.setAttribute("style", "max-width:15%;display:inline-block;");
+    span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "コントローラの出力側のIDです。";
     label = document.createElement("label");
     label.innerText = '出力ID';
@@ -439,7 +437,7 @@ function initFirstOutputMapping() {
 
     /* Max */
     span = document.createElement("span");
-    span.setAttribute("style", "max-width:15%;display:inline-block;");
+    span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "入力と出力が軸の場合: 出力最大値を基準にしたスケーリング率。入力がボタンで出力が軸の場合: 出力最大値を基準に軸へ設定する値。";
     label = document.createElement("label");
     label.innerText = '最大';
@@ -489,7 +487,7 @@ function initFirstOutputMapping() {
     span.title = "軸のニュートラル付近のデッドゾーンです。";
     label = document.createElement("label");
     label.innerText = 'デッドゾーン';
-    label.setAttribute("style", "display:block;");
+    label.setAttribute("style", "display:block;font-size:0.8em;");
 
     var dz = document.createElement("select");
     for (var i = 0; i <= maxMax; i += 5) {
@@ -533,7 +531,7 @@ function initFirstOutputMapping() {
     span.title = "スケーリング用の応答カーブです。（Passthrough / Linear のみ。他は未確定）";
     label = document.createElement("label");
     label.innerText = 'スケーリング';
-    label.setAttribute("style", "display:block;");
+    label.setAttribute("style", "display:block;font-size:0.8em;");
 
     var sca = document.createElement("select");
     const allowedScaling = new Set([0, 5]); // Linear / Passthrough only
@@ -1097,43 +1095,96 @@ function selectInput() {
     loadInputCfg(this.value);
 }
 
-function changeSrcLabel() {
-    var select = document.getElementsByClassName("src");
-    var str = ""
-    var tmp;
+function captureMappings() {
+    var data = [];
+    var src = document.getElementsByClassName("src");
+    var dest = document.getElementsByClassName("dest");
+    var destId = document.getElementsByClassName("destId");
+    var max = document.getElementsByClassName("max");
+    var thres = document.getElementsByClassName("thres");
+    var dz = document.getElementsByClassName("dz");
+    var scaling = document.getElementsByClassName("scaling");
 
-    srcLabel = this.value;
-
-    for (var i = 0; i < btnList.length; i++) {
-        str += "<option value=\"" + i + "\">" + btnList[i][srcLabel] + "</option>";
+    for (var i = 0; i < nbMapping; i++) {
+        data.push({
+            src: src[i] ? src[i].value : undefined,
+            dest: dest[i] ? dest[i].value : undefined,
+            destId: destId[i] ? destId[i].value : undefined,
+            max: max[i] ? max[i].value : undefined,
+            thres: thres[i] ? thres[i].value : undefined,
+            dz: dz[i] ? dz[i].value : undefined,
+            scaling: scaling[i] ? scaling[i].value : undefined,
+        });
     }
-    for (var i = 0; i < select.length; i++) {
-        tmp = select[i].value;
-        select[i].innerHTML = str;
-        select[i].value = tmp;
-    }
-    mappingElement.querySelector('.src').innerHTML = str;
+    return data;
 }
 
-function fillDestOptions(selectEl, previousValue) {
+function restoreMappingFields(data) {
+    var destId = document.getElementsByClassName("destId");
+    var max = document.getElementsByClassName("max");
+    var thres = document.getElementsByClassName("thres");
+    var dz = document.getElementsByClassName("dz");
+    var scaling = document.getElementsByClassName("scaling");
+
+    for (var i = 0; i < nbMapping; i++) {
+        var item = data[i];
+        if (item) {
+            if (destId[i]) { destId[i].value = item.destId; }
+            if (max[i]) { max[i].value = item.max; }
+            if (thres[i]) { thres[i].value = item.thres; }
+            if (dz[i]) { dz[i].value = item.dz; }
+            if (scaling[i]) { scaling[i].value = item.scaling; }
+        }
+        else {
+            if (destId[i]) { destId[i].selectedIndex = 0; }
+            if (max[i]) { max[i].value = 100; }
+            if (thres[i]) { thres[i].value = 50; }
+            if (dz[i]) { dz[i].value = 135; }
+            if (scaling[i]) { scaling[i].selectedIndex = 0; }
+        }
+    }
+}
+
+function getValidBtnEntries(labelIdx) {
+    var entries = [];
+    if (labelIdx === undefined || labelIdx === null || labelIdx < 0) {
+        return entries;
+    }
+    for (var i = 0; i < btnList.length; i++) {
+        var name = btnList[i][labelIdx];
+        if (name) {
+            entries.push({ index: i, text: name });
+        }
+    }
+    return entries;
+}
+
+function fillSrcOptions(selectEl, labelIdx, previousValue) {
+    var entries = getValidBtnEntries(labelIdx);
     selectEl.innerHTML = '';
     var firstValue = null;
     var hasPrevious = false;
 
-    for (var i = 0; i < btnList.length; i++) {
-        var btnName = btnList[i][destLabel];
-        if (!btnName) {
-            continue;
-        }
+    if (entries.length === 0) {
         var option = document.createElement("option");
-        option.value = i;
-        option.text = btnName;
+        option.value = 0;
+        option.text = 'N/A';
         selectEl.add(option);
-        if (firstValue === null) {
-            firstValue = i;
-        }
-        if (previousValue !== undefined && String(i) === String(previousValue)) {
-            hasPrevious = true;
+        firstValue = 0;
+    }
+    else {
+        for (var i = 0; i < entries.length; i++) {
+            var entry = entries[i];
+            var opt = document.createElement("option");
+            opt.value = entry.index;
+            opt.text = entry.text;
+            selectEl.add(opt);
+            if (firstValue === null) {
+                firstValue = entry.index;
+            }
+            if (previousValue !== undefined && String(entry.index) === String(previousValue)) {
+                hasPrevious = true;
+            }
         }
     }
 
@@ -1145,12 +1196,93 @@ function fillDestOptions(selectEl, previousValue) {
     }
 }
 
-function changeDstLabel() {
-    var select = document.getElementsByClassName("dest");
-    destLabel = Number(this.value);
+function fillDestOptions(selectEl, previousValue) {
+    var entries = getValidBtnEntries(destLabel);
+    selectEl.innerHTML = '';
+    var firstValue = null;
+    var hasPrevious = false;
 
-    for (var i = 0; i < select.length; i++) {
-        var previous = select[i].value;
-        fillDestOptions(select[i], previous);
+    if (entries.length === 0) {
+        var option = document.createElement("option");
+        option.value = 0;
+        option.text = 'N/A';
+        selectEl.add(option);
+        firstValue = 0;
     }
+    else {
+        for (var i = 0; i < entries.length; i++) {
+            var entry = entries[i];
+            var opt = document.createElement("option");
+            opt.value = entry.index;
+            opt.text = entry.text;
+            selectEl.add(opt);
+            if (firstValue === null) {
+                firstValue = entry.index;
+            }
+            if (previousValue !== undefined && String(entry.index) === String(previousValue)) {
+                hasPrevious = true;
+            }
+        }
+    }
+
+    if (previousValue !== undefined && hasPrevious) {
+        selectEl.value = previousValue;
+    }
+    else if (firstValue !== null) {
+        selectEl.value = firstValue;
+    }
+}
+
+function ensureMappingRows(requiredRows) {
+    requiredRows = Math.max(1, requiredRows);
+    var div = document.getElementById("divMapping");
+    while (nbMapping > requiredRows) {
+        div.removeChild(div.lastChild);
+        nbMapping--;
+    }
+    while (nbMapping < requiredRows) {
+        addInput();
+    }
+}
+
+function changeSrcLabel() {
+    var previousMappings = captureMappings();
+    srcLabel = Number(this.value);
+    var validEntries = getValidBtnEntries(srcLabel);
+    ensureMappingRows(Math.max(validEntries.length, 1));
+
+    var srcSelects = document.getElementsByClassName("src");
+    for (var i = 0; i < srcSelects.length; i++) {
+        var prev = previousMappings[i] ? previousMappings[i].src : undefined;
+        fillSrcOptions(srcSelects[i], srcLabel, prev);
+    }
+
+    var destSelects = document.getElementsByClassName("dest");
+    for (var i = 0; i < destSelects.length; i++) {
+        var prevDest = previousMappings[i] ? previousMappings[i].dest : undefined;
+        fillDestOptions(destSelects[i], prevDest);
+    }
+
+    restoreMappingFields(previousMappings);
+}
+
+function changeDstLabel() {
+    var previousMappings = captureMappings();
+    destLabel = Number(this.value);
+    var validEntries = getValidBtnEntries(destLabel);
+    ensureMappingRows(Math.max(validEntries.length, 1));
+
+    var destSelects = document.getElementsByClassName("dest");
+    for (var i = 0; i < destSelects.length; i++) {
+        var prev = previousMappings[i] ? previousMappings[i].dest : undefined;
+        fillDestOptions(destSelects[i], prev);
+    }
+
+    var srcSelects = document.getElementsByClassName("src");
+    for (var i = 0; i < srcSelects.length; i++) {
+        var prevSrc = previousMappings[i] ? previousMappings[i].src : undefined;
+        fillSrcOptions(srcSelects[i], srcLabel, prevSrc);
+    }
+
+    restoreMappingFields(previousMappings);
 }
