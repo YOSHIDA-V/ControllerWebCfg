@@ -28,6 +28,15 @@ var name = '';
 var gameid = '';
 var gamename = '';
 
+const allowedSrcLabelNames = [
+    'PSX / PS2',
+];
+
+const allowedDestLabelNames = [
+    'Default',
+    'PSX / PS2',
+];
+
 function initGlobalCfg() {
     var divGlobalCfg = document.getElementById("divGlobalCfg");
 
@@ -314,6 +323,9 @@ function initInputSelect() {
 }
 
 function initLabelSelect() {
+    const srcAllowedSet = new Set(allowedSrcLabelNames.length ? allowedSrcLabelNames : labelName);
+    const destAllowedSet = new Set(allowedDestLabelNames.length ? allowedDestLabelNames : labelName);
+
     var div = document.createElement("div");
 
     var label = document.createElement("label");
@@ -322,6 +334,9 @@ function initLabelSelect() {
 
     var main = document.createElement("select");
     for (var i = 0; i < labelName.length; i++) {
+        if (!srcAllowedSet.has(labelName[i])) {
+            continue;
+        }
         var option  = document.createElement("option");
         option.value = i;
         option.text = labelName[i];
@@ -344,6 +359,9 @@ function initLabelSelect() {
 
     main = document.createElement("select");
     for (var i = 0; i < labelName.length; i++) {
+        if (!destAllowedSet.has(labelName[i])) {
+            continue;
+        }
         var option  = document.createElement("option");
         option.value = i;
         option.text = labelName[i];
@@ -362,7 +380,7 @@ function initFirstOutputMapping() {
 
     /* Src */
     var span = document.createElement("span");
-    span.setAttribute("style", "max-width:10%;display:none;");
+    span.setAttribute("style", "max-width:20%;display:inline-block;");
     span.title = "Bluetoothコントローラ側の入力（ボタン/軸）です。";
     var label = document.createElement("label");
     label.innerText = '入力';
@@ -382,7 +400,7 @@ function initFirstOutputMapping() {
 
     /* Dest */
     span = document.createElement("span");
-    span.setAttribute("style", "max-width:10%;display:inline-block;");
+    span.setAttribute("style", "max-width:20%;display:inline-block;");
     span.title = "コントローラの出力側（ボタン/軸）";
     label = document.createElement("label");
     label.innerText = '出力';
@@ -396,7 +414,7 @@ function initFirstOutputMapping() {
 
     /* Dest ID */
     span = document.createElement("span");
-    span.setAttribute("style", "max-width:10%;display:inline-block;");
+    span.setAttribute("style", "max-width:15%;display:inline-block;");
     span.title = "コントローラの出力側のIDです。";
     label = document.createElement("label");
     label.innerText = '出力ID';
@@ -418,7 +436,7 @@ function initFirstOutputMapping() {
 
     /* Max */
     span = document.createElement("span");
-    span.setAttribute("style", "max-width:10%;display:inline-block;");
+    span.setAttribute("style", "max-width:15%;display:inline-block;");
     span.title = "入力と出力が軸の場合: 出力最大値を基準にしたスケーリング率。入力がボタンで出力が軸の場合: 出力最大値を基準に軸へ設定する値。";
     label = document.createElement("label");
     label.innerText = '最大';
