@@ -1159,7 +1159,7 @@ function getValidBtnEntries(labelIdx) {
     return entries;
 }
 
-function fillSrcOptions(selectEl, labelIdx, previousValue) {
+function fillSrcOptions(selectEl, labelIdx, previousValue, defaultEntry) {
     var entries = getValidBtnEntries(labelIdx);
     selectEl.innerHTML = '';
     var firstValue = null;
@@ -1191,12 +1191,15 @@ function fillSrcOptions(selectEl, labelIdx, previousValue) {
     if (previousValue !== undefined && hasPrevious) {
         selectEl.value = previousValue;
     }
+    else if (defaultEntry !== undefined) {
+        selectEl.value = defaultEntry;
+    }
     else if (firstValue !== null) {
         selectEl.value = firstValue;
     }
 }
 
-function fillDestOptions(selectEl, previousValue) {
+function fillDestOptions(selectEl, previousValue, defaultEntry) {
     var entries = getValidBtnEntries(destLabel);
     selectEl.innerHTML = '';
     var firstValue = null;
@@ -1228,6 +1231,9 @@ function fillDestOptions(selectEl, previousValue) {
     if (previousValue !== undefined && hasPrevious) {
         selectEl.value = previousValue;
     }
+    else if (defaultEntry !== undefined) {
+        selectEl.value = defaultEntry;
+    }
     else if (firstValue !== null) {
         selectEl.value = firstValue;
     }
@@ -1249,18 +1255,21 @@ function changeSrcLabel() {
     var previousMappings = captureMappings();
     srcLabel = Number(this.value);
     var validEntries = getValidBtnEntries(srcLabel);
+    var destEntries = getValidBtnEntries(destLabel);
     ensureMappingRows(Math.max(validEntries.length, 1));
 
     var srcSelects = document.getElementsByClassName("src");
     for (var i = 0; i < srcSelects.length; i++) {
         var prev = previousMappings[i] ? previousMappings[i].src : undefined;
-        fillSrcOptions(srcSelects[i], srcLabel, prev);
+        var defaultEntry = (i < validEntries.length) ? validEntries[i].index : undefined;
+        fillSrcOptions(srcSelects[i], srcLabel, prev, defaultEntry);
     }
 
     var destSelects = document.getElementsByClassName("dest");
     for (var i = 0; i < destSelects.length; i++) {
         var prevDest = previousMappings[i] ? previousMappings[i].dest : undefined;
-        fillDestOptions(destSelects[i], prevDest);
+        var defaultDest = (i < destEntries.length) ? destEntries[i].index : undefined;
+        fillDestOptions(destSelects[i], prevDest, defaultDest);
     }
 
     restoreMappingFields(previousMappings);
@@ -1270,18 +1279,21 @@ function changeDstLabel() {
     var previousMappings = captureMappings();
     destLabel = Number(this.value);
     var validEntries = getValidBtnEntries(destLabel);
+    var srcEntries = getValidBtnEntries(srcLabel);
     ensureMappingRows(Math.max(validEntries.length, 1));
 
     var destSelects = document.getElementsByClassName("dest");
     for (var i = 0; i < destSelects.length; i++) {
         var prev = previousMappings[i] ? previousMappings[i].dest : undefined;
-        fillDestOptions(destSelects[i], prev);
+        var defaultEntry = (i < validEntries.length) ? validEntries[i].index : undefined;
+        fillDestOptions(destSelects[i], prev, defaultEntry);
     }
 
     var srcSelects = document.getElementsByClassName("src");
     for (var i = 0; i < srcSelects.length; i++) {
         var prevSrc = previousMappings[i] ? previousMappings[i].src : undefined;
-        fillSrcOptions(srcSelects[i], srcLabel, prevSrc);
+        var defaultSrc = (i < srcEntries.length) ? srcEntries[i].index : undefined;
+        fillSrcOptions(srcSelects[i], srcLabel, prevSrc, defaultSrc);
     }
 
     restoreMappingFields(previousMappings);
