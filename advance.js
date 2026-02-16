@@ -413,7 +413,7 @@ function initFirstOutputMapping() {
     span.appendChild(dest);
     mappingElement.appendChild(span);
 
-    /* Dest ID */
+    /* 出力ID */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "コントローラの出力側のIDです。";
@@ -481,7 +481,7 @@ function initFirstOutputMapping() {
     span.appendChild(thres);
     mappingElement.appendChild(span);
 
-    /* Deadone */
+    /* デッドゾーン */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "軸のニュートラル付近のデッドゾーンです。";
@@ -502,7 +502,7 @@ function initFirstOutputMapping() {
     span.appendChild(dz);
     mappingElement.appendChild(span);
 
-    /* Turbo */
+    /* Turbo機能 */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "システムのフレームレートを基準にした連射設定";
@@ -525,7 +525,7 @@ function initFirstOutputMapping() {
     span.appendChild(turbo);
     mappingElement.appendChild(span);
 
-    /* Scaling */
+    /* スケーリング */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "スケーリング用の応答カーブです。（Passthrough / Linear のみ。他は未確定）";
@@ -534,7 +534,7 @@ function initFirstOutputMapping() {
     label.setAttribute("style", "display:block;font-size:0.8em;");
 
     var sca = document.createElement("select");
-    const allowedScaling = new Set([0, 5]); // Linear / Passthrough only
+    const allowedScaling = new Set([0, 5]); // Linear / パススルーのみ
     for (var i = 0; i < scaling.length; i++) {
         if (!allowedScaling.has(i)) continue;
         var option  = document.createElement("option");
@@ -564,7 +564,7 @@ function initFirstOutputMapping() {
         diag.add(option);
     }
     diag.setAttribute("class", "diag");
-    diag.value = 0; // force Passthrough
+    diag.value = 0; // 強制パススルー
     span.style.display = "none";
     diag.style.display = "none";
     span.appendChild(label);
@@ -576,7 +576,7 @@ function initFirstOutputMapping() {
     addButton.innerText = '+';
     addButton.addEventListener("click", addInput);
 
-    /* Save */
+    /* 保存 */
     var divSave = document.createElement("div");
 
     var btn = document.createElement("button");
@@ -596,7 +596,7 @@ function initFirstOutputMapping() {
     div.appendChild(p);
     divSave.appendChild(div);
 
-    /* Append first cfg */
+    /* 最初にcfgを追加する */
     var divMappingGrp = document.createElement("div");
     var divMapping = document.createElement("div");
     divMapping.appendChild(mappingElement);
@@ -630,7 +630,7 @@ function loadGlobalCfg() {
         .then(value => {
             log('グローバル設定サイズ: ' + value.byteLength);
             document.getElementById("systemCfg").value = value.getUint8(0);
-            // If current system code is not in UI list, fall back to Auto(0)
+            // 現在のシステムコードがUIリストにない場合、Auto(0)にフォールバックする
             const sysSel = document.getElementById("systemCfg");
             if (sysSel.selectedIndex === -1) {
                 sysSel.value = 0;
@@ -780,10 +780,10 @@ function loadInputCfg(cfgId) {
                 max[i].value = value[j++];
                 thres[i].value = value[j++];
                 dz[i].value = value[j++];
-                j++; // ignore turbo value from device, keep Disabled
+                j++; // デバイスからの連射設定を無視し、強制的に無効にする
                 turbo[i].value = turboMask['Disable'];
                 scaling[i].value = value[j] & 0xF;
-                j++; // ignore diag scaling, keep Passthrough
+                j++; // スケーリングを無視し、強制的にパススルーにする
                 diag[i].value = 0;
             }
             resolve();
@@ -973,7 +973,7 @@ function initCfgSelection() {
     notice.innerText = 'VS-C4 固有FWでは常にグローバル設定のみ使用します。GameID切替は無効化済みです。';
     divCfgSel.appendChild(notice);
 
-    // Hide the entire block since the mode is fixed
+    // モードが固定　ブロック全体を非表示にする
     divCfgSel.style.display = 'none';
 }
 
@@ -981,7 +981,7 @@ export function btConn() {
     log('Bluetooth デバイスを要求中...');
     navigator.bluetooth.requestDevice(
         {
-        // Filter so that only VS-C4 devices are shown in the chooser
+        // webツールにVS-C4デバイスのみが表示されるようにフィルタリングする
         filters: [{namePrefix: 'VS-C4'}],
         optionalServices: [brUuid[0]]})
     .then(device => {
