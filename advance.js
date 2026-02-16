@@ -11,6 +11,7 @@ import { getBdAddr } from './utils/getBdAddr.js';
 import { getApiVersion } from './utils/getApiVersion.js';
 import { getGameId } from './utils/getGameId.js';
 import { getGameName } from './utils/getGameName.js';
+import { getCfgSrc } from './utils/getCfgSrc.js';
 import { setDefaultCfg } from './utils/setDefaultCfg.js';
 
 var apiVersion = 0;
@@ -27,6 +28,7 @@ var latest_ver = '';
 var name = '';
 var gameid = '';
 var gamename = '';
+var cfgSource = 0;
 
 const allowedSrcLabelNames = [];
 
@@ -1025,7 +1027,29 @@ export function btConn() {
     })
     .then(value => {
         gamename = value;
-        log('グローバル設定を強制適用します...');
+        log('設定ソースを確認中...');
+        return getCfgSrc(brService)
+            .then(src => {
+                cfgSource = src;
+                return src;
+            })
+            .catch(error => {
+                log('設定ソースの取得に失敗しました: ' + error);
+                cfgSource = -1;
+                return -1;
+            });
+    })
+    .then(value => {
+        if (value === 0) {
+            log('現在の設定モード: グローバル');
+            return Promise.resolve();
+        }
+        if (value === 1) {
+            log('GameID設定が有効になっていたため、グローバルに切り替えます...');
+        }
+        else {
+            log('設定モードが不明（値: ' + value + '）のため、グローバルに切り替えます...');
+        }
         return setDefaultCfg(brService);
     })
     .then(() => {
