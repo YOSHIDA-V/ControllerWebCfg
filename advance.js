@@ -30,6 +30,8 @@ var gameid = '';
 var gamename = '';
 var cfgSource = 0;
 
+const fixedWiredIndex = 2; // Web UI uses "デバイス 3" (WIRED2)
+
 const allowedSrcLabelNames = [];
 
 const allowedDestLabelNames = [
@@ -186,15 +188,15 @@ function initOutputSelect() {
 
     var main = document.createElement("select");
     var option  = document.createElement("option");
-    option.value = 0;
-    option.text = "出力 1";
+    option.value = fixedWiredIndex;
+    option.text = "出力 " + (fixedWiredIndex + 1);
     main.add(option);
     main.id = "outputSelect";
-    main.value = 0;
+    main.value = fixedWiredIndex;
     main.disabled = true;
-    div.style.display = "none";
     div.appendChild(label);
     div.appendChild(main);
+    div.style.display = "none";
 
     divOutputCfg.appendChild(div);
 }
@@ -307,16 +309,16 @@ function initInputSelect() {
     label.setAttribute("for", "inputSelect");
 
     var main = document.createElement("select");
-    for (var i = 0; i < maxMainInput; i++) {
-        var option  = document.createElement("option");
-        option.value = i;
-        option.text = "デバイス " + (i + 1);
-        main.add(option);
-    }
+    var option  = document.createElement("option");
+    option.value = fixedWiredIndex;
+    option.text = "デバイス " + (fixedWiredIndex + 1);
+    main.add(option);
     main.id = "inputSelect";
-    main.addEventListener("change", selectInput);
+    main.value = fixedWiredIndex;
+    main.disabled = true;
     div.appendChild(label);
     div.appendChild(main);
+    div.style.display = "none";
 
     divInputCfg.appendChild(div);
 }
@@ -1059,10 +1061,10 @@ export function btConn() {
         return loadGlobalCfg();
     })
     .then(() => {
-        return loadOutputCfg(0);
+        return loadOutputCfg(fixedWiredIndex);
     })
     .then(() => {
-        return loadInputCfg(0);
+        return loadInputCfg(fixedWiredIndex);
     })
     .then(() => {
         document.getElementById("divInfo").innerHTML = '接続先情報: ' + name + ' (' + bdaddr + ') [' + app_ver
