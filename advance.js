@@ -13,6 +13,7 @@ import { getGameId } from './utils/getGameId.js';
 import { getGameName } from './utils/getGameName.js';
 import { getCfgSrc } from './utils/getCfgSrc.js';
 import { setDefaultCfg } from './utils/setDefaultCfg.js';
+import { setGameIdCfg } from './utils/setGameIdCfg.js';
 
 var apiVersion = 0;
 var bluetoothDevice;
@@ -28,13 +29,30 @@ var latest_ver = '';
 var name = '';
 var gameid = '';
 var gamename = '';
-var cfgSource = 0;
+var current_cfg = 0;
 
-const allowedSrcLabelNames = [];
+const customUi = {
+    allowedSystems: [11, 17],
+    hideMultitap: true,
+    hideOutputSelect: true,
+    allowedOutputModes: [0],
+    allowedAccessories: [0, 2],
+    allowedDestLabelNames: ['PSX / PS2'],
+    allowedScalingIdx: [0, 5],
+    hideMappingFields: {
+        destId: true,
+        max: true,
+        thres: true,
+        turbo: true,
+        scalingDiag: true,
+    },
+};
 
-const allowedDestLabelNames = [
-    'PSX / PS2',
-];
+const destLabelAllowedIdx = customUi.allowedDestLabelNames
+    ? customUi.allowedDestLabelNames
+        .map((name) => labelName.indexOf(name))
+        .filter((idx) => idx >= 0)
+    : [];
 
 function initGlobalCfg() {
     var divGlobalCfg = document.getElementById("divGlobalCfg");
@@ -43,25 +61,21 @@ function initGlobalCfg() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'グローバル設定';
+    header.innerText = 'Global Config';
 
     divGlobalCfg.appendChild(header);
 
-    divGlobalCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#22---global-config" target="_blank">グローバル設定のWiki</a><br><br>'
+    divGlobalCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#22---global-config" target="_blank">Wiki doc for Global config</a><br><br>'
 
     var div = document.createElement("div");
 
     /* System */
     var label = document.createElement("label");
-    label.innerText = 'システム: ';
+    label.innerText = 'System: ';
     label.setAttribute("for", "systemCfg");
 
     var sel = document.createElement("select");
-
-    const allowedSystem = new Set([11, 17]);
     for (var i = 0; i < systemCfg.length; i++) {
-        if (!allowedSystem.has(i)) continue;
-
         var option  = document.createElement("option");
         option.value = i;
         option.text = systemCfg[i];
@@ -77,18 +91,17 @@ function initGlobalCfg() {
 
     /* Multitap */
     label = document.createElement("label");
-    label.innerText = 'マルチタップ: ';
+    label.innerText = 'Multitap: ';
     label.setAttribute("for", "multitapCfg");
 
     sel = document.createElement("select");
-    var option0 = document.createElement("option");
-    option0.value = 0;
-    option0.text = '無効';
-    sel.add(option0);
+    for (var i = 0; i < multitapCfg.length; i++) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = multitapCfg[i];
+        sel.add(option);
+    }
     sel.id = "multitapCfg";
-    sel.value = 0;
-    sel.disabled = true;
-    div.style.display = "none";
     div.appendChild(label);
     div.appendChild(sel);
 
@@ -99,7 +112,7 @@ function initGlobalCfg() {
 
         /* Inquiry mode */
         label = document.createElement("label");
-        label.innerText = 'ペアリングモード: ';
+        label.innerText = 'Inquiry mode: ';
         label.setAttribute("for", "inquiryMode");
 
         sel = document.createElement("select");
@@ -121,19 +134,19 @@ function initGlobalCfg() {
 
         /* Banksel */
         label = document.createElement("label");
-        label.innerText = 'メモリーカードバンク: ';
+        label.innerText = 'Memory Card Bank: ';
         label.setAttribute("for", "banksel");
 
         sel = document.createElement("select");
         for (var i = 0; i < 4; i++) {
             var option  = document.createElement("option");
             option.value = i;
-            option.text = 'バンク ' + eval(i + 1);
+            option.text = 'Bank ' + eval(i + 1);
             sel.add(option);
         }
         var option  = document.createElement("option");
         option.value = 0xDB;
-        option.text = 'デバッグモード';
+        option.text = 'Debug mode';
         sel.add(option);
         sel.id = "banksel";
         div.appendChild(label);
@@ -158,10 +171,12 @@ function initGlobalCfg() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:red;");
-    p.innerText = "設定を保存しました。反映にはVS-C4の再起動が必要です。";
+    p.innerText = "Config saved, power cycle BlueRetro adapter for change to take effect.";
 
     div.appendChild(p);
     divGlobalCfg.appendChild(div);
+
+    applyGlobalUiFilters();
 }
 
 function initOutputSelect() {
@@ -171,32 +186,34 @@ function initOutputSelect() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = '出力設定';
+    header.innerText = 'Output Config';
 
     divOutputCfg.appendChild(header);
 
-    divOutputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#23---output-config" target="_blank">出力設定のWiki</a><br><br>'
+    divOutputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#23---output-config" target="_blank">Wiki doc for Output config</a><br><br>'
 
     var div = document.createElement("div");
 
     /* Output select */
     var label = document.createElement("label");
-    label.innerText = '出力を選択: ';
+    label.innerText = 'Select output: ';
     label.setAttribute("for", "outputSelect");
 
     var main = document.createElement("select");
-    var option  = document.createElement("option");
-    option.value = 0;
-    option.text = "出力 1";
-    main.add(option);
+    for (var i = 0; i < maxOutput; i++) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = "Output " + (i + 1);
+        main.add(option);
+    }
     main.id = "outputSelect";
-    main.value = 0;
-    main.disabled = true;
-    div.style.display = "none";
+    main.addEventListener("change", selectOutput);
     div.appendChild(label);
     div.appendChild(main);
 
     divOutputCfg.appendChild(div);
+
+    applyOutputSelectFilter();
 }
 
 function initOutputMode() {
@@ -207,21 +224,18 @@ function initOutputMode() {
     var span = document.createElement("span");
     span.setAttribute("style", "display:inline-block;");
     var label = document.createElement("label");
-    label.innerText = 'モード';
+    label.innerText = 'Mode';
     label.setAttribute("for", "outputMode");
     label.setAttribute("style", "display:block;");
 
     var main = document.createElement("select");
-    const allowedModes = new Set([0]); // GamePad only
     for (var i = 0; i < devCfg.length; i++) {
-        if (!allowedModes.has(i)) continue;
         var option  = document.createElement("option");
         option.value = i;
         option.text = devCfg[i];
         main.add(option);
     }
     main.id = "outputMode";
-    main.value = 0;
     span.appendChild(label);
     span.appendChild(main);
     div.appendChild(span);
@@ -230,21 +244,17 @@ function initOutputMode() {
     span = document.createElement("span");
     span.setAttribute("style", "display:inline-block;");
     label = document.createElement("label");
-    label.innerText = 'アクセサリ';
+    label.innerText = 'Accessories';
     label.setAttribute("for", "outputAcc");
     label.setAttribute("style", "display:block;");
 
     main = document.createElement("select");
-    const accDisplay = [
-        {idx: 0, label: 'なし'},
-        {idx: 2, label: '振動'},
-    ];
-    accDisplay.forEach(entry => {
+    for (var i = 0; i < accCfg.length; i++) {
         var option  = document.createElement("option");
-        option.value = entry.idx;
-        option.text = entry.label;
+        option.value = i;
+        option.text = accCfg[i];
         main.add(option);
-    });
+    }
     main.id = "outputAcc";
     span.appendChild(label);
     span.appendChild(main);
@@ -269,7 +279,7 @@ function initOutputMode() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:red;");
-    p.innerText = "設定を保存しました。モード変更を反映するにはVS-C4の再起動が必要です。";
+    p.innerText = "Config saved, power cycle BlueRetro adapter for Mode change to take effect.";
 
     div.appendChild(p);
     divOutputCfg.appendChild(div);
@@ -279,10 +289,12 @@ function initOutputMode() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:orange;");
-    p.innerText = "マウスモードは「<Default Mouse>」プリセットの設定が必要です。";
+    p.innerText = "Mouse mode require setting <Default Mouse> preset.";
 
     div.appendChild(p);
     divOutputCfg.appendChild(div);
+
+    applyOutputModeFilters();
 }
 
 function initInputSelect() {
@@ -292,25 +304,25 @@ function initInputSelect() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'マッピング設定';
+    header.innerText = 'Mapping Config';
 
     divInputCfg.appendChild(header);
 
-    divInputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#24---mapping-config" target="_blank">マッピング設定のWiki</a><br><br>';
+    divInputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#24---mapping-config" target="_blank">Wiki doc for Mapping config</a><br><br>'
 
     var div = document.createElement("div");
     div.setAttribute("style", "margin-bottom:1em;");
 
     /* Input select */
     var label = document.createElement("label");
-    label.innerText = 'Bluetoothデバイスを選択: ';
+    label.innerText = 'Select Bluetooth device: ';
     label.setAttribute("for", "inputSelect");
 
     var main = document.createElement("select");
     for (var i = 0; i < maxMainInput; i++) {
         var option  = document.createElement("option");
         option.value = i;
-        option.text = "デバイス " + (i + 1);
+        option.text = "Device " + (i + 1);
         main.add(option);
     }
     main.id = "inputSelect";
@@ -319,23 +331,19 @@ function initInputSelect() {
     div.appendChild(main);
 
     divInputCfg.appendChild(div);
+
+    applyInputSelectionUiFilters();
 }
 
 function initLabelSelect() {
-    const srcAllowedSet = new Set(allowedSrcLabelNames.length ? allowedSrcLabelNames : labelName);
-    const destAllowedSet = new Set(allowedDestLabelNames.length ? allowedDestLabelNames : labelName);
-
     var div = document.createElement("div");
 
     var label = document.createElement("label");
-    label.innerText = '入力コントローラ タイプ: ';
+    label.innerText = 'Src label: ';
     label.setAttribute("for", "srcLabel");
 
     var main = document.createElement("select");
     for (var i = 0; i < labelName.length; i++) {
-        if (!srcAllowedSet.has(labelName[i])) {
-            continue;
-        }
         var option  = document.createElement("option");
         option.value = i;
         option.text = labelName[i];
@@ -343,9 +351,6 @@ function initLabelSelect() {
     }
     main.id = "srcLabel";
     main.addEventListener("change", changeSrcLabel);
-    if (main.options.length > 0) {
-        srcLabel = Number(main.options[0].value);
-    }
     div.appendChild(label);
     div.appendChild(main);
 
@@ -356,14 +361,11 @@ function initLabelSelect() {
     div.setAttribute("style", "margin-bottom:1em;");
 
     label = document.createElement("label");
-    label.innerText = '出力コントローラタイプ: ';
+    label.innerText = 'Dst label: ';
     label.setAttribute("for", "dstLabel");
 
     main = document.createElement("select");
     for (var i = 0; i < labelName.length; i++) {
-        if (!destAllowedSet.has(labelName[i])) {
-            continue;
-        }
         var option  = document.createElement("option");
         option.value = i;
         option.text = labelName[i];
@@ -374,11 +376,9 @@ function initLabelSelect() {
     div.appendChild(label);
     div.appendChild(main);
 
-    if (main.options.length > 0) {
-        destLabel = Number(main.options[0].value);
-    }
-
     divInputCfg.appendChild(div);
+
+    applyLabelFilters();
 }
 
 function initFirstOutputMapping() {
@@ -386,53 +386,54 @@ function initFirstOutputMapping() {
 
     /* Src */
     var span = document.createElement("span");
-    span.setAttribute("style", "max-width:20%;display:inline-block;");
-    span.title = "Bluetoothコントローラ側の入力（ボタン/軸）です。";
+    span.setAttribute("style", "max-width:10%;display:inline-block;");
+    span.title = "This is the source button/axis on the Bluetooth controller";
     var label = document.createElement("label");
-    label.innerText = '入力';
+    label.innerText = 'Src';
     label.setAttribute("style", "display:block;");
 
     var src = document.createElement("select");
+    for (var i = 0; i < btnList.length; i++) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = btnList[i][srcLabel];
+        src.add(option);
+    }
     src.setAttribute("class", "src");
-    updateSelectOptions(src, srcLabel);
     span.appendChild(label);
     span.appendChild(src);
     mappingElement.appendChild(span);
 
     /* Dest */
     span = document.createElement("span");
-    span.setAttribute("style", "max-width:20%;display:inline-block;");
-    span.title = "コントローラの出力側（ボタン/軸）";
+    span.setAttribute("style", "max-width:10%;display:inline-block;");
+    span.title = "This is the destination button/axis on the wired interface.";
     label = document.createElement("label");
-    label.innerText = '出力';
+    label.innerText = 'Dest';
     label.setAttribute("style", "display:block;");
 
-    var dest = document.createElement("select");
+    var dest = src.cloneNode(true);
     dest.setAttribute("class", "dest");
-    dest.setAttribute("style", "width:100%;");
-    updateSelectOptions(dest, destLabel);
     span.appendChild(label);
     span.appendChild(dest);
     mappingElement.appendChild(span);
 
-    /* 出力ID */
+    /* Dest ID */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "コントローラの出力側のIDです。";
+    span.title = "This is the ID of the wired interface.";
     label = document.createElement("label");
-    label.innerText = '出力ID';
+    label.innerText = 'Dest ID';
     label.setAttribute("style", "display:block;");
 
     var destId = document.createElement("select");
     for (var i = 0; i < maxOutput; i++) {
         var option  = document.createElement("option");
         option.value = i;
-        option.text = "出力 " + (i + 1);
+        option.text = "Output " + (i + 1);
         destId.add(option);
     }
     destId.setAttribute("class", "destId");
-    destId.style.display = "none";
-    span.style.display = "none";
     span.appendChild(label);
     span.appendChild(destId);
     mappingElement.appendChild(span);
@@ -440,9 +441,9 @@ function initFirstOutputMapping() {
     /* Max */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "入力と出力が軸の場合: 出力最大値を基準にしたスケーリング率。入力がボタンで出力が軸の場合: 出力最大値を基準に軸へ設定する値。";
+    span.title = "If source & destination is an axis then this is the scaling factor base on the destination maximum. If source is a button & destination is an axis then this is the value base on destination maximum that the axis will be set.";
     label = document.createElement("label");
-    label.innerText = '最大';
+    label.innerText = 'Max';
     label.setAttribute("style", "display:block;");
 
     var max = document.createElement("select");
@@ -454,8 +455,6 @@ function initFirstOutputMapping() {
     }
     max.setAttribute("class", "max");
     max.value = 100;
-    max.style.display = "none";
-    span.style.display = "none";
     span.appendChild(label);
     span.appendChild(max);
     mappingElement.appendChild(span);
@@ -463,9 +462,9 @@ function initFirstOutputMapping() {
     /* Threshold */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "入力が軸で出力がボタンの場合: 入力軸がこの割合を超えるとボタン押下とみなします。";
+    span.title = "If source is an axis and destination is a button, this is the threshold requires on the source axis before the button is pressed.";
     label = document.createElement("label");
-    label.innerText = 'しきい値';
+    label.innerText = 'Thres';
     label.setAttribute("style", "display:block;");
 
     var thres = document.createElement("select");
@@ -477,19 +476,17 @@ function initFirstOutputMapping() {
     }
     thres.setAttribute("class", "thres");
     thres.value = 50;
-    thres.style.display = "none";
-    span.style.display = "none";
     span.appendChild(label);
     span.appendChild(thres);
     mappingElement.appendChild(span);
 
-    /* デッドゾーン */
+    /* Deadone */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "軸のニュートラル付近のデッドゾーンです。";
+    span.title = "This is the axis dead zone around reset value.";
     label = document.createElement("label");
-    label.innerText = 'デッドゾーン';
-    label.setAttribute("style", "display:block;font-size:0.8em;");
+    label.innerText = 'Deadzone';
+    label.setAttribute("style", "display:block;");
 
     var dz = document.createElement("select");
     for (var i = 0; i <= maxMax; i += 5) {
@@ -504,12 +501,12 @@ function initFirstOutputMapping() {
     span.appendChild(dz);
     mappingElement.appendChild(span);
 
-    /* Turbo機能 */
+    /* Turbo */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "システムのフレームレートを基準にした連射設定";
+    span.title = "Turbo function base on the system frame rate.";
     label = document.createElement("label");
-    label.innerText = 'Turbo機能';
+    label.innerText = 'Turbo';
     label.setAttribute("style", "display:block;");
 
     var turbo = document.createElement("select");
@@ -520,25 +517,20 @@ function initFirstOutputMapping() {
         turbo.add(option);
     }
     turbo.setAttribute("class", "turbo");
-    turbo.value = turboMask['Disable'];
-    span.style.display = "none";
-    turbo.style.display = "none";
     span.appendChild(label);
     span.appendChild(turbo);
     mappingElement.appendChild(span);
 
-    /* スケーリング */
+    /* Scaling */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "スケーリング用の応答カーブです。（Passthrough / Linear のみ。他は未確定）";
+    span.title = "Various response curve for scaling. (Only Passthrough and Linear, others TBD)";
     label = document.createElement("label");
-    label.innerText = 'スケーリング';
-    label.setAttribute("style", "display:block;font-size:0.8em;");
+    label.innerText = 'Scaling';
+    label.setAttribute("style", "display:block;");
 
     var sca = document.createElement("select");
-    const allowedScaling = new Set([0, 5]); // Linear / パススルーのみ
     for (var i = 0; i < scaling.length; i++) {
-        if (!allowedScaling.has(i)) continue;
         var option  = document.createElement("option");
         option.value = i;
         option.text = scaling[i];
@@ -552,9 +544,9 @@ function initFirstOutputMapping() {
     /* Scaling diag */
     span = document.createElement("span");
     span.setAttribute("style", "max-width:10%;display:inline-block;");
-    span.title = "ジョイスティック種別間の斜め補正設定です。（未実装）";
+    span.title = "Diagonal scaling options between joystick type. (TBD Not implemented yet)";
     label = document.createElement("label");
-    label.innerText = '斜め補正';
+    label.innerText = 'Diagonal';
     label.setAttribute("style", "display:block;");
 
     var diag = document.createElement("select");
@@ -566,19 +558,18 @@ function initFirstOutputMapping() {
         diag.add(option);
     }
     diag.setAttribute("class", "diag");
-    diag.value = 0; // 強制パススルー
-    span.style.display = "none";
-    diag.style.display = "none";
     span.appendChild(label);
     span.appendChild(diag);
     mappingElement.appendChild(span);
+
+    customizeMappingRow(mappingElement);
 
     /* Add button */
     var addButton = document.createElement("button");
     addButton.innerText = '+';
     addButton.addEventListener("click", addInput);
 
-    /* 保存 */
+    /* Save */
     var divSave = document.createElement("div");
 
     var btn = document.createElement("button");
@@ -593,12 +584,12 @@ function initFirstOutputMapping() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:green;");
-    p.innerText = "設定を保存しました。マッピングは即時反映されます。";
+    p.innerText = "Config saved, mapping changes take effect immediately.";
 
     div.appendChild(p);
     divSave.appendChild(div);
 
-    /* 最初にcfgを追加する */
+    /* Append first cfg */
     var divMappingGrp = document.createElement("div");
     var divMapping = document.createElement("div");
     divMapping.appendChild(mappingElement);
@@ -610,6 +601,123 @@ function initFirstOutputMapping() {
     divInputCfg.appendChild(divMappingGrp);
 }
 
+function initOutputMapping() {
+    mappingElement = document.createElement("div");
+
+    /* Src */
+    var src = document.createElement("select");
+    src.setAttribute("style", "max-width:10%;");
+    src.title = "This is the source button/axis on the Bluetooth controller";
+    for (var i = 0; i < btnList.length; i++) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = btnList[i][srcLabel];
+        src.add(option);
+    }
+    src.setAttribute("class", "src");
+    mappingElement.appendChild(src);
+
+    /* Dest */
+    var dest = src.cloneNode(true);
+    dest.setAttribute("class", "dest");
+    dest.title = "This is the destination button/axis on the wired interface.";
+    mappingElement.appendChild(dest);
+
+    /* Dest ID */
+    var destId = document.createElement("select");
+    destId.setAttribute("style", "max-width:10%;");
+    destId.title = "This is the ID of the wired interface.";
+    for (var i = 0; i < maxOutput; i++) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = "Output " + (i + 1);
+        destId.add(option);
+    }
+    destId.setAttribute("class", "destId");
+    mappingElement.appendChild(destId);
+
+    /* Max */
+    var max = document.createElement("select");
+    max.setAttribute("style", "max-width:10%;");
+    max.title = "If source & destination is an axis then this is the scaling factor base on the destination maximum. If source is a button & destination is an axis then this is the value base on destination maximum that the axis will be set.";
+    for (var i = 0; i <= maxMax; i += 5) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = i + "%";
+        max.add(option);
+    }
+    max.setAttribute("class", "max");
+    max.value = 100;
+    mappingElement.appendChild(max);
+
+    /* Threshold */
+    var thres = document.createElement("select");
+    thres.setAttribute("style", "thres-width:10%;");
+    thres.title = "If source is an axis and destination is a button, this is the threshold requires on the source axis before the button is pressed.";
+    for (var i = 0; i <= maxThres; i += 5) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = i + "%";
+        thres.add(option);
+    }
+    thres.setAttribute("class", "thres");
+    thres.value = 50;
+    mappingElement.appendChild(thres);
+
+    /* Deadone */
+    var dz = document.createElement("select");
+    dz.setAttribute("style", "dz-width:10%;");
+    dz.title = "This is the axis dead zone around reset value.";
+    for (var i = 0; i <= maxMax; i += 5) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = i/10000 + "%";
+        dz.add(option);
+    }
+    dz.setAttribute("class", "dz");
+    dz.value = 135;
+    mappingElement.appendChild(dz);
+
+    /* Turbo */
+    var turbo = document.createElement("select");
+    turbo.setAttribute("style", "max-width:10%;");
+    turbo.title = "Turbo function base on the system frame rate.";
+    for (var key in turboMask) {
+        var option  = document.createElement("option");
+        option.value = turboMask[key];
+        option.text = key;
+        turbo.add(option);
+    }
+    turbo.setAttribute("class", "turbo");
+    mappingElement.appendChild(turbo);
+
+    /* Scaling */
+    var sca = document.createElement("select");
+    sca.setAttribute("style", "max-width:10%;");
+    sca.title = "Various response curve for scaling. (Only Passthrough and Linear, others TBD)";
+    for (var i = 0; i < scaling.length; i++) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = scaling[i];
+        sca.add(option);
+    }
+    sca.setAttribute("class", "scaling");
+    mappingElement.appendChild(sca);
+
+    /* Scaling diag */
+    var diag = document.createElement("select");
+    diag.setAttribute("style", "max-width:10%;");
+    diag.title = "Diagonal scaling options between joystick type. (TBD Not implemented yet)";
+    for (var i = 0; i < diagScaling.length; i++) {
+        var option  = document.createElement("option");
+        option.value = i;
+        option.text = diagScaling[i];
+        diag.add(option);
+    }
+    diag.setAttribute("class", "diag");
+    mappingElement.appendChild(diag);
+}
+
 function initBlueRetroCfg() {
     initGlobalCfg();
     initOutputSelect();
@@ -617,26 +725,22 @@ function initBlueRetroCfg() {
     initInputSelect();
     initLabelSelect();
     initFirstOutputMapping();
+    initOutputMapping();
     initCfgSelection();
     nbMapping = 1;
 }
 
 function loadGlobalCfg() {
     return new Promise(function(resolve, reject) {
-        log('グローバル設定の CHRC を取得...');
+        log('Get Global Config CHRC...');
         brService.getCharacteristic(brUuid[1])
         .then(chrc => {
-            log('グローバル設定を読み込み中...');
+            log('Reading Global Config...');
             return chrc.readValue();
         })
         .then(value => {
-            log('グローバル設定サイズ: ' + value.byteLength);
+            log('Global Config size: ' + value.byteLength);
             document.getElementById("systemCfg").value = value.getUint8(0);
-            // 現在のシステムコードがUIリストにない場合、Auto(0)にフォールバックする
-            const sysSel = document.getElementById("systemCfg");
-            if (sysSel.selectedIndex === -1) {
-                sysSel.value = 0;
-            }
             document.getElementById("multitapCfg").value = value.getUint8(1);
             if (apiVersion > 0) {
                 document.getElementById("inquiryMode").value = value.getUint8(2);
@@ -654,29 +758,26 @@ function loadGlobalCfg() {
 
 function loadOutputCfg(cfgId) {
     return new Promise(function(resolve, reject) {
-        log('出力 ' + cfgId + ' の CTRL CHRC を取得...');
+        log('Get Output ' + cfgId + ' CTRL CHRC...');
         brService.getCharacteristic(brUuid[2])
         .then(chrc => {
-            log('CTRL chrc に出力 ' + cfgId + ' を設定...');
+            log('Set Output ' + cfgId + ' on CTRL chrc...');
             var outputCtrl = new Uint16Array(1);
             outputCtrl[0] = Number(cfgId);
             return chrc.writeValue(outputCtrl);
         })
         .then(_ => {
-            log('出力 ' + cfgId + ' の DATA CHRC を取得...');
+            log('Get Output ' + cfgId + ' DATA CHRC...');
             return brService.getCharacteristic(brUuid[3]);
         })
         .then(chrc => {
-            log('出力 ' + cfgId + ' の設定を読み込み中...');
+            log('Reading Output ' + cfgId + ' Config...');
             return chrc.readValue();
         })
         .then(value => {
-            log('出力 ' + cfgId + ' 設定サイズ: ' + value.byteLength);
-            const modeSel = document.getElementById("outputMode");
-            modeSel.value = 0;
-            const accSel = document.getElementById("outputAcc");
-            const accVal = value.getUint8(1);
-            accSel.value = (accVal === 2) ? 2 : 0;
+            log('Output ' + cfgId + ' Config size: ' + value.byteLength);
+            document.getElementById("outputMode").value = value.getUint8(0);
+            document.getElementById("outputAcc").value = value.getUint8(1);
             resolve();
         })
         .catch(error => {
@@ -687,17 +788,17 @@ function loadOutputCfg(cfgId) {
 
 function writeReadRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
     return new Promise(function(resolve, reject) {
-        log('入力 CTRL CHRC を設定... ' + inputCtrl[1]);
+        log('Set Input Ctrl CHRC... ' + inputCtrl[1]);
         ctrl_chrc.writeValue(inputCtrl)
         .then(_ => {
-            log('入力 DATA CHRC を読み込み中...');
+            log('Reading Input Data CHRC...');
             return data_chrc.readValue();
         })
         .then(value => {
-            log('入力 DATA 取得: ' + value.byteLength);
+            log('Got Input Data ' + value.byteLength);
             var tmp = new Uint8Array(value.buffer);
             cfg.set(tmp, inputCtrl[1]);
-            log('入力 DATA 取得: ' + cfg[2] + ' ' + value.getUint8(2));
+            log('Got Input Data ' + cfg[2] + ' ' + value.getUint8(2));
             if (value.byteLength == 512) {
                 inputCtrl[1] += Number(512);
                 resolve(writeReadRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc));
@@ -729,7 +830,7 @@ function readInputCfg(cfgId, cfg) {
             return writeReadRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc);
         })
         .then(value => {
-            log('入力 ' + cfgId + ' 設定サイズ: ' + cfg.byteLength);
+            log('Input ' + cfgId + ' Config size: ' + cfg.byteLength);
             resolve(cfg);
         })
         .catch(error => {
@@ -741,10 +842,10 @@ function readInputCfg(cfgId, cfg) {
 function loadInputCfg(cfgId) {
     return new Promise(function(resolve, reject) {
         var cfg = new Uint8Array(2051);
-        log('入力 ' + cfgId + ' 設定の CHRC を取得...');
+        log('Get Input ' + cfgId + ' Config CHRC...');
         readInputCfg(cfgId, cfg)
         .then(value => {
-            log('入力 ' + cfgId + ' 設定サイズ: ' + value.byteLength);
+            log('Input ' + cfgId + ' Config size: ' + value.byteLength);
             //document.getElementById("mainInput").value = value[0];
             //document.getElementById("subInput").value = value[1];
 
@@ -772,7 +873,7 @@ function loadInputCfg(cfgId) {
             var scaling = document.getElementsByClassName("scaling");
             var diag = document.getElementsByClassName("diag");
 
-            log('マッピング読み込み: ' + src.length + ' 件 / nbMapping: ' + nbMapping + ' / cfg: ' + value[2]);
+            log('Loading Mapping Found: ' + src.length + ' nbMapping: ' + nbMapping + ' cfg: ' + value[2]);
 
             var j = 3;
             for (var i = 0; i < nbMapping; i++) {
@@ -782,11 +883,9 @@ function loadInputCfg(cfgId) {
                 max[i].value = value[j++];
                 thres[i].value = value[j++];
                 dz[i].value = value[j++];
-                j++; // デバイスからの連射設定を無視し、強制的に無効にする
-                turbo[i].value = turboMask['Disable'];
+                turbo[i].value = value[j++];
                 scaling[i].value = value[j] & 0xF;
-                j++; // スケーリングを無視し、強制的にパススルーにする
-                diag[i].value = 0;
+                diag[i].value = value[j++] >> 4;
             }
             resolve();
         })
@@ -819,7 +918,7 @@ function saveGlobal() {
         saveGlobalCfg(brService, data)
         .then(_ => {
             document.getElementById("globalSaveText").style.display = 'block';
-            log('グローバル設定を保存しました');
+            log('Global Config saved');
             resolve();
         })
         .catch(error => {
@@ -842,7 +941,7 @@ function saveOutput() {
             if (data[0] == 3) {
                 document.getElementById("outputSaveMouse").style.display = 'block';
             }
-            log('出力 ' + cfgId + ' 設定を保存しました');
+            log('Output ' + cfgId + ' Config saved');
             resolve();
         })
         .catch(error => {
@@ -853,10 +952,10 @@ function saveOutput() {
 
 function writeWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
     return new Promise(function(resolve, reject) {
-        log('入力 CTRL CHRC を設定... ' + inputCtrl[1]);
+        log('Set Input Ctrl CHRC... ' + inputCtrl[1]);
         ctrl_chrc.writeValue(inputCtrl)
         .then(_ => {
-            log('入力 DATA CHRC を書き込み中...');
+            log('Writing Input Data CHRC...');
             var tmpViewSize = cfg.byteLength - inputCtrl[1];
             if (tmpViewSize > 512) {
                 tmpViewSize = 512;
@@ -865,7 +964,7 @@ function writeWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
             return data_chrc.writeValue(tmpView);
         })
         .then(_ => {
-            log('入力 DATA を書き込みました');
+            log('Input Data Written');
             inputCtrl[1] += Number(512);
             if (inputCtrl[1] < cfg.byteLength) {
                 resolve(writeWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc));
@@ -933,15 +1032,15 @@ function saveInput() {
         cfg[j++] = max[i].value;
         cfg[j++] = thres[i].value;
         cfg[j++] = dz[i].value;
-        cfg[j++] = turboMask['Disable'];
-        cfg[j++] = Number(scaling[i].value) | (0 << 4);
+        cfg[j++] = turbo[i].value;
+        cfg[j++] = Number(scaling[i].value) | (Number(diag[i].value) << 4);
     }
 
     return new Promise(function(resolve, reject) {
         writeInputCfg(cfgId, cfg)
         .then(_ => {
             document.getElementById("inputSaveText").style.display = 'block';
-            log('入力 ' + cfgId + ' 設定を保存しました');
+            log('Input ' + cfgId + ' Config saved');
             resolve();
         })
         .catch(error => {
@@ -951,7 +1050,7 @@ function saveInput() {
 }
 
 function onDisconnected() {
-    log('> Bluetooth デバイスが切断されました');
+    log('> Bluetooth Device disconnected');
     document.getElementById("divBtConn").style.display = 'block';
     document.getElementById("divInfo").style.display = 'none';
     document.getElementById("divCfgSel").style.display = 'none';
@@ -961,45 +1060,96 @@ function onDisconnected() {
     document.getElementById("divInputCfg").style.display = 'none';
 }
 
+function swGameIdCfg() {
+    setGameIdCfg(brService)
+    .then(_ => {
+        return getCfgSrc(brService);
+    })
+    .then(value => {
+        current_cfg = value;
+        initBlueRetroCfg();
+        return loadGlobalCfg();
+    })
+    .then(() => {
+        return loadOutputCfg(0);
+    })
+    .then(() => {
+        return loadInputCfg(0);
+    })
+}
+
+function swDefaultCfg() {
+    setDefaultCfg(brService)
+    .then(_ => {
+        return getCfgSrc(brService);
+    })
+    .then(value => {
+        current_cfg = value;
+        initBlueRetroCfg();
+        return loadGlobalCfg();
+    })
+    .then(() => {
+        return loadOutputCfg(0);
+    })
+    .then(() => {
+        return loadInputCfg(0);
+    })
+}
+
 function initCfgSelection() {
-    const divCfgSel = document.getElementById("divCfgSel");
+    let divCfgSel = document.getElementById("divCfgSel");
+    let cfgSw = document.createElement("div");
+    let cfgBtn = document.createElement("button");
+
     divCfgSel.innerHTML = '';
 
-    const header = document.createElement("h2");
+    let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = '設定選択';
+    header.innerText = 'Config Selection';
+
     divCfgSel.appendChild(header);
 
-    const notice = document.createElement("p");
-    notice.style.marginTop = "0.5em";
-    notice.innerText = 'VS-C4 固有FWでは常にグローバル設定のみ使用します。GameID切替は無効化済みです。';
-    divCfgSel.appendChild(notice);
+    divCfgSel.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#21---config-selection" target="_blank">Wiki doc for Config Selection</a><br><br>'
 
-    // モードが固定　ブロック全体を非表示にする
-    divCfgSel.style.display = 'none';
+    cfgBtn.id = "cfgSw";
+
+    if (current_cfg == 0) {
+        cfgBtn.innerText += 'Switch to GameID';
+        cfgBtn.addEventListener("click", swGameIdCfg);
+        divCfgSel.innerHTML += 'Current config: Global';
+        if (gameid.length) {
+            cfgSw.appendChild(cfgBtn);
+        }
+    }
+    else {
+        cfgBtn.innerText = 'Switch to Global';
+        cfgBtn.addEventListener("click", swDefaultCfg);
+        divCfgSel.innerHTML += 'Current config: GameID';
+        cfgSw.appendChild(cfgBtn);
+    }
+    cfgSw.setAttribute("style", "margin-top:1em;");
+    divCfgSel.append(cfgSw);
 }
 
 export function btConn() {
-    log('Bluetooth デバイスを要求中...');
+    log('Requesting Bluetooth Device...');
     navigator.bluetooth.requestDevice(
-        {
-        // webツールにVS-C4デバイスのみが表示されるようにフィルタリングする
-        filters: [{namePrefix: 'VS-C4'}],
+        {filters: [{namePrefix: 'BlueRetro'}],
         optionalServices: [brUuid[0]]})
     .then(device => {
-        log('GATT サーバへ接続中...');
+        log('Connecting to GATT Server...');
         name = device.name;
         bluetoothDevice = device;
         bluetoothDevice.addEventListener('gattserverdisconnected', onDisconnected);
         return bluetoothDevice.gatt.connect();
     })
     .then(server => {
-        log('VS-C4 のサービスを取得中...');
+        log('Getting BlueRetro Service...');
         return server.getPrimaryService(brUuid[0]);
     })
     .catch(error => {
         log(error.name);
-        throw 'VS-C4 に接続できませんでした';
+        throw 'Couldn\'t connect to BlueRetro';
     })
     .then(service => {
         brService = service;
@@ -1027,34 +1177,19 @@ export function btConn() {
     })
     .then(value => {
         gamename = value;
-        log('設定ソースを確認中...');
-        return getCfgSrc(brService)
-            .then(src => {
-                cfgSource = src;
-                return src;
-            })
-            .catch(error => {
-                log('設定ソースの取得に失敗しました: ' + error);
-                cfgSource = -1;
-                return -1;
-            });
+        return getCfgSrc(brService);
+    })
+    .catch(error => {
+        if (error.name == 'NotFoundError'
+          || error.name == 'NotSupportedError') {
+            return 0;
+        }
+        throw error;
     })
     .then(value => {
-        if (value === 0) {
-            log('現在の設定モード: グローバル');
-            return Promise.resolve();
-        }
-        if (value === 1) {
-            log('GameID設定が有効になっていたため、グローバルに切り替えます...');
-        }
-        else {
-            log('設定モードが不明（値: ' + value + '）のため、グローバルに切り替えます...');
-        }
-        return setDefaultCfg(brService);
-    })
-    .then(() => {
-        log("API バージョン: " + apiVersion);
-        log('設定画面を初期化中...');
+        current_cfg = value;
+        log("ABI version: " + apiVersion);
+        log('Init Cfg DOM...');
         initBlueRetroCfg();
         return loadGlobalCfg();
     })
@@ -1065,11 +1200,11 @@ export function btConn() {
         return loadInputCfg(0);
     })
     .then(() => {
-        document.getElementById("divInfo").innerHTML = '接続先情報: ' + name + ' (' + bdaddr + ') [' + app_ver
-            + ']<br> 現在のゲームモード: ' + gamename + ' (' + gameid + ')';
+        document.getElementById("divInfo").innerHTML = 'Connected to: ' + name + ' (' + bdaddr + ') [' + app_ver
+            + ']<br> Current Game: ' + gamename + ' (' + gameid + ')';
         try {
             if (app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\' target=\'_blank\'>GitHub</a> からダウンロード';
+                document.getElementById("divInfo").innerHTML += '<br><br>Download latest FW ' + latest_ver + ' from <a href=\'https://github.com/darthcloud/BlueRetro/releases\' target=\'_blank\'>GitHub</a>';
             }
         }
         catch (e) {
@@ -1078,14 +1213,177 @@ export function btConn() {
         document.getElementById("divBtConn").style.display = 'none';
         //document.getElementById("divBtDisconn").style.display = 'block';
         document.getElementById("divInfo").style.display = 'block';
-        document.getElementById("divCfgSel").style.display = 'none';
+        document.getElementById("divCfgSel").style.display = 'block';
         document.getElementById("divGlobalCfg").style.display = 'block';
         document.getElementById("divOutputCfg").style.display = 'block';
         document.getElementById("divInputCfg").style.display = 'block';
     })
     .catch(error => {
-        log('エラー: ' + error);
+        log('Argh! ' + error);
     });
+}
+
+function applyGlobalUiFilters() {
+    const systemSelect = document.getElementById("systemCfg");
+    if (systemSelect && customUi.allowedSystems && customUi.allowedSystems.length) {
+        restrictSelectByValue(systemSelect, customUi.allowedSystems.map(String));
+    }
+    if (customUi.hideMultitap) {
+        const multitapSelect = document.getElementById("multitapCfg");
+        if (multitapSelect) {
+            const wrapper = multitapSelect.closest("div");
+            if (wrapper) {
+                wrapper.style.display = "none";
+            }
+            multitapSelect.value = multitapSelect.options.length ? multitapSelect.options[0].value : multitapSelect.value;
+            multitapSelect.disabled = true;
+        }
+    }
+}
+
+function applyOutputSelectFilter() {
+    const outputSelect = document.getElementById("outputSelect");
+    if (!outputSelect) {
+        return;
+    }
+    outputSelect.value = outputSelect.options.length ? outputSelect.options[0].value : outputSelect.value;
+    outputSelect.disabled = true;
+    if (customUi.hideOutputSelect) {
+        const wrapper = outputSelect.closest("div");
+        if (wrapper) {
+            wrapper.style.display = "none";
+        }
+    }
+}
+
+function applyOutputModeFilters() {
+    const outputMode = document.getElementById("outputMode");
+    if (outputMode && customUi.allowedOutputModes && customUi.allowedOutputModes.length) {
+        restrictSelectByValue(outputMode, customUi.allowedOutputModes.map(String));
+        outputMode.disabled = true;
+    }
+    const outputAcc = document.getElementById("outputAcc");
+    if (outputAcc && customUi.allowedAccessories && customUi.allowedAccessories.length) {
+        restrictSelectByValue(outputAcc, customUi.allowedAccessories.map(String));
+    }
+}
+
+function applyInputSelectionUiFilters() {
+    const inputSelect = document.getElementById("inputSelect");
+    if (inputSelect) {
+        inputSelect.value = inputSelect.options.length ? inputSelect.options[0].value : inputSelect.value;
+    }
+}
+
+function applyLabelFilters() {
+    const destSelect = document.getElementById("dstLabel");
+    if (destSelect && destLabelAllowedIdx.length) {
+        restrictSelectByValue(destSelect, destLabelAllowedIdx.map(String));
+        if (destSelect.value !== '' && Number(destSelect.value) !== destLabel) {
+            destLabel = Number(destSelect.value);
+            changeDstLabel.call(destSelect);
+        }
+    }
+}
+
+function customizeMappingRow(row) {
+    if (!row) {
+        return;
+    }
+    const srcSpan = row.querySelector(".src") ? row.querySelector(".src").parentElement : null;
+    if (srcSpan) {
+        srcSpan.style.maxWidth = "25%";
+        srcSpan.style.minWidth = "220px";
+    }
+    const destSpan = row.querySelector(".dest") ? row.querySelector(".dest").parentElement : null;
+    if (destSpan) {
+        destSpan.style.maxWidth = "25%";
+        destSpan.style.minWidth = "220px";
+    }
+    if (customUi.hideMappingFields?.destId) {
+        hideFieldElement(row.querySelector(".destId"));
+    }
+    if (customUi.hideMappingFields?.max) {
+        hideFieldElement(row.querySelector(".max"));
+    }
+    if (customUi.hideMappingFields?.thres) {
+        hideFieldElement(row.querySelector(".thres"));
+    }
+    const deadzoneSpan = row.querySelector(".dz") ? row.querySelector(".dz").parentElement : null;
+    if (deadzoneSpan) {
+        deadzoneSpan.style.maxWidth = "15%";
+    }
+    const scalingSelect = row.querySelector(".scaling");
+    if (scalingSelect && customUi.allowedScalingIdx && customUi.allowedScalingIdx.length) {
+        restrictSelectByValue(scalingSelect, customUi.allowedScalingIdx.map(String), { preserveCurrent: true });
+        const scalingSpan = scalingSelect.parentElement;
+        if (scalingSpan) {
+            scalingSpan.style.maxWidth = "15%";
+        }
+    }
+    if (customUi.hideMappingFields?.turbo) {
+        const turboSelect = row.querySelector(".turbo");
+        if (turboSelect) {
+            turboSelect.value = getTurboDisableValue(turboSelect);
+            hideFieldElement(turboSelect);
+        }
+    }
+    if (customUi.hideMappingFields?.scalingDiag) {
+        const diagSelect = row.querySelector(".diag");
+        if (diagSelect) {
+            diagSelect.value = diagSelect.options.length ? diagSelect.options[0].value : diagSelect.value;
+            hideFieldElement(diagSelect);
+        }
+    }
+}
+
+function hideFieldElement(element) {
+    if (!element) {
+        return;
+    }
+    const wrapper = element.closest("span") || element.parentElement;
+    if (wrapper) {
+        wrapper.style.display = "none";
+    }
+    else {
+        element.style.display = "none";
+    }
+}
+
+function restrictSelectByValue(select, allowedValues, options = {}) {
+    if (!select || !allowedValues || !allowedValues.length) {
+        return;
+    }
+    const preserveCurrent = options.preserveCurrent || false;
+    const allowedSet = new Set(allowedValues.map(String));
+    const currentValue = select.value;
+    Array.from(select.options).forEach((option) => {
+        if (allowedSet.has(option.value) || (preserveCurrent && option.value === currentValue)) {
+            option.hidden = false;
+            option.disabled = false;
+        }
+        else {
+            option.hidden = true;
+            option.disabled = true;
+        }
+    });
+    if (!allowedSet.has(currentValue) && !preserveCurrent) {
+        const firstAllowed = Array.from(select.options).find((option) => !option.disabled && allowedSet.has(option.value));
+        if (firstAllowed) {
+            select.value = firstAllowed.value;
+        }
+    }
+}
+
+function getTurboDisableValue(select) {
+    if (!select) {
+        return '';
+    }
+    if (select.options.length) {
+        return select.options[0].value;
+    }
+    const turboValues = Object.values(turboMask || {});
+    return turboValues.length ? turboValues[0] : '';
 }
 
 function addInput() {
@@ -1093,6 +1391,7 @@ function addInput() {
         nbMapping++;
         var div = document.getElementById("divMapping");
         var newSubDiv = mappingElement.cloneNode(true);
+        customizeMappingRow(newSubDiv);
         var newButton = document.createElement("button");
         newButton.innerText = '-';
         newButton.addEventListener("click", delInput);
@@ -1100,8 +1399,6 @@ function addInput() {
         newSubDiv.querySelector('.max').value = 100;
         newSubDiv.querySelector('.thres').value = 50;
         newSubDiv.querySelector('.dz').value = 135;
-        newSubDiv.querySelector('.turbo').value = turboMask['Disable'];
-        newSubDiv.querySelector('.diag').value = 0;
         div.appendChild(newSubDiv);
     }
 }
@@ -1119,100 +1416,39 @@ function selectInput() {
     loadInputCfg(this.value);
 }
 
-function captureMappings() {
-    var data = [];
-    var src = document.getElementsByClassName("src");
-    var dest = document.getElementsByClassName("dest");
-    var destId = document.getElementsByClassName("destId");
-    var max = document.getElementsByClassName("max");
-    var thres = document.getElementsByClassName("thres");
-    var dz = document.getElementsByClassName("dz");
-    var scaling = document.getElementsByClassName("scaling");
-
-    for (var i = 0; i < nbMapping; i++) {
-        data.push({
-            src: src[i] ? src[i].value : undefined,
-            dest: dest[i] ? dest[i].value : undefined,
-            destId: destId[i] ? destId[i].value : undefined,
-            max: max[i] ? max[i].value : undefined,
-            thres: thres[i] ? thres[i].value : undefined,
-            dz: dz[i] ? dz[i].value : undefined,
-            scaling: scaling[i] ? scaling[i].value : undefined,
-        });
-    }
-    return data;
-}
-
-function restoreMappingFields(data) {
-    var destId = document.getElementsByClassName("destId");
-    var max = document.getElementsByClassName("max");
-    var thres = document.getElementsByClassName("thres");
-    var dz = document.getElementsByClassName("dz");
-    var scaling = document.getElementsByClassName("scaling");
-
-    for (var i = 0; i < nbMapping; i++) {
-        var item = data[i];
-        if (item) {
-            if (destId[i]) { destId[i].value = item.destId; }
-            if (max[i]) { max[i].value = item.max; }
-            if (thres[i]) { thres[i].value = item.thres; }
-            if (dz[i]) { dz[i].value = item.dz; }
-            if (scaling[i]) { scaling[i].value = item.scaling; }
-        }
-        else {
-            if (destId[i]) { destId[i].selectedIndex = 0; }
-            if (max[i]) { max[i].value = 100; }
-            if (thres[i]) { thres[i].value = 50; }
-            if (dz[i]) { dz[i].value = 135; }
-            if (scaling[i]) { scaling[i].selectedIndex = 0; }
-        }
-    }
-}
-
-function updateSelectOptions(selectEl, labelIdx) {
-    selectEl.innerHTML = '';
-    for (var i = 0; i < btnList.length; i++) {
-        var option = document.createElement("option");
-        option.value = i;
-        var text = btnList[i][labelIdx];
-        if (text === undefined || text === null) {
-            text = '';
-        }
-        option.text = text;
-        selectEl.add(option);
-    }
-}
-
 function changeSrcLabel() {
     var select = document.getElementsByClassName("src");
-    srcLabel = Number(this.value);
+    var str = ""
+    var tmp;
 
+    srcLabel = this.value;
+
+    for (var i = 0; i < btnList.length; i++) {
+        str += "<option value=\"" + i + "\">" + btnList[i][srcLabel] + "</option>";
+    }
     for (var i = 0; i < select.length; i++) {
-        var tmp = select[i].value;
-        updateSelectOptions(select[i], srcLabel);
+        tmp = select[i].value;
+        select[i].innerHTML = str;
         select[i].value = tmp;
     }
-    if (mappingElement) {
-        var templateSrc = mappingElement.querySelector(".src");
-        if (templateSrc) {
-            updateSelectOptions(templateSrc, srcLabel);
-        }
-    }
+    mappingElement.querySelector('.src').innerHTML = str;
 }
 
 function changeDstLabel() {
     var select = document.getElementsByClassName("dest");
-    destLabel = Number(this.value);
+    var str = ""
+    var tmp;
 
+    destLabel = this.value;
+
+    for (var i = 0; i < btnList.length; i++) {
+        str += "<option value=\"" + i + "\">" + btnList[i][destLabel] + "</option>";
+    }
     for (var i = 0; i < select.length; i++) {
-        var tmp = select[i].value;
-        updateSelectOptions(select[i], destLabel);
+        tmp = select[i].value;
+        select[i].innerHTML = str;
         select[i].value = tmp;
     }
-    if (mappingElement) {
-        var templateDest = mappingElement.querySelector(".dest");
-        if (templateDest) {
-            updateSelectOptions(templateDest, destLabel);
-        }
-    }
+    mappingElement.querySelector('.dest').innerHTML = str;
 }
+
