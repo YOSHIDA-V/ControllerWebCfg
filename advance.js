@@ -1484,7 +1484,12 @@ function changeSrcLabel() {
         select[i].innerHTML = str;
         select[i].value = tmp;
     }
-    mappingElement.querySelector('.src').innerHTML = str;
+    if (mappingElement) {
+        var tmplSrc = mappingElement.querySelector('.src');
+        if (tmplSrc) {
+            tmplSrc.innerHTML = str;
+        }
+    }
 }
 
 function changeDstLabel() {
@@ -1502,5 +1507,10 @@ function changeDstLabel() {
         select[i].innerHTML = str;
         select[i].value = tmp;
     }
-    mappingElement.querySelector('.dest').innerHTML = str;
+    if (mappingElement) {
+        var tmplDest = mappingElement.querySelector('.dest');
+        if (tmplDest) {
+            tmplDest.innerHTML = str;
+        }
+    }
 }
