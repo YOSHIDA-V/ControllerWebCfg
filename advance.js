@@ -54,6 +54,55 @@ const destLabelAllowedIdx = customUi.allowedDestLabelNames
         .filter((idx) => idx >= 0)
     : [];
 
+const text = {
+    headerGlobal: 'グローバル設定',
+    wikiGlobal: 'グローバル設定のWiki',
+    labelSystem: 'システム: ',
+    labelMultitap: 'マルチタップ: ',
+    labelInquiry: 'ペアリングモード: ',
+    labelBank: 'メモリーカードバンク: ',
+    btnSave: '保存',
+    noticeGlobal: '設定を保存しました。反映にはBlueRetroの再起動が必要です。',
+    headerOutput: '出力設定',
+    wikiOutput: '出力設定のWiki',
+    labelSelectOutput: '出力を選択: ',
+    labelMode: 'モード',
+    labelAccessories: 'アクセサリ',
+    noticeOutput: '設定を保存しました。モード変更を反映するにはBlueRetroの再起動が必要です。',
+    noticeOutputMouse: 'マウスモードでは<Default Mouse>プリセットの設定が必要です。',
+    headerMapping: 'マッピング設定',
+    wikiMapping: 'マッピング設定のWiki',
+    labelSelectDevice: 'Bluetoothデバイスを選択: ',
+    labelSrcType: '入力コントローラタイプ: ',
+    labelDstType: '出力コントローラタイプ: ',
+    labelSrc: '入力',
+    labelDst: '出力',
+    labelDstId: '出力ID',
+    labelMax: '最大',
+    labelThres: 'しきい値',
+    labelDeadzone: 'デッドゾーン',
+    labelTurbo: 'ターボ',
+    labelScaling: 'スケーリング',
+    labelDiag: '斜め補正',
+    btnAdd: '+',
+    noticeMapping: '設定を保存しました。マッピングは即時反映されます。',
+    cfgSelectionHeader: '設定選択',
+    cfgSelectionNotice: 'VS-C4 は常にグローバル設定を使用します。',
+    logRequestDevice: 'Bluetoothデバイスを要求中...',
+    logConnectGatt: 'GATTサーバーへ接続中...',
+    logGetService: 'VS-C4のサービスを取得中...',
+    logCannotConnect: 'VS-C4に接続できませんでした',
+    logInitCfg: '設定画面を初期化中...',
+    logLoadMapping: 'マッピング読み込み: ',
+    logSaveGlobal: 'グローバル設定を保存しました',
+    logSaveOutput: '出力設定を保存しました',
+    logSaveInput: '入力設定を保存しました',
+    infoConnectedPrefix: '接続先情報: ',
+    infoCurrentGame: '現在のゲームモード: ',
+    infoUpdate: '最新FW ',
+    infoUpdateSuffix: ' を GitHub からダウンロード',
+};
+
 function initGlobalCfg() {
     var divGlobalCfg = document.getElementById("divGlobalCfg");
 
@@ -61,17 +110,17 @@ function initGlobalCfg() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'Global Config';
+    header.innerText = text.headerGlobal;
 
     divGlobalCfg.appendChild(header);
 
-    divGlobalCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#22---global-config" target="_blank">Wiki doc for Global config</a><br><br>'
+    divGlobalCfg.innerHTML += `<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#22---global-config" target="_blank">${text.wikiGlobal}</a><br><br>`;
 
     var div = document.createElement("div");
 
     /* System */
     var label = document.createElement("label");
-    label.innerText = 'System: ';
+    label.innerText = text.labelSystem;
     label.setAttribute("for", "systemCfg");
 
     var sel = document.createElement("select");
@@ -91,7 +140,7 @@ function initGlobalCfg() {
 
     /* Multitap */
     label = document.createElement("label");
-    label.innerText = 'Multitap: ';
+    label.innerText = text.labelMultitap;
     label.setAttribute("for", "multitapCfg");
 
     sel = document.createElement("select");
@@ -112,7 +161,7 @@ function initGlobalCfg() {
 
         /* Inquiry mode */
         label = document.createElement("label");
-        label.innerText = 'Inquiry mode: ';
+        label.innerText = text.labelInquiry;
         label.setAttribute("for", "inquiryMode");
 
         sel = document.createElement("select");
@@ -134,7 +183,7 @@ function initGlobalCfg() {
 
         /* Banksel */
         label = document.createElement("label");
-        label.innerText = 'Memory Card Bank: ';
+        label.innerText = text.labelBank;
         label.setAttribute("for", "banksel");
 
         sel = document.createElement("select");
@@ -159,7 +208,7 @@ function initGlobalCfg() {
 
     var btn = document.createElement("button");
     btn.id = "globalSave";
-    btn.innerText = 'Save';
+    btn.innerText = text.btnSave;
     btn.addEventListener("click", saveGlobal);
     div.appendChild(btn);
     div.setAttribute("style", "margin-top:1em;");
@@ -171,7 +220,7 @@ function initGlobalCfg() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:red;");
-    p.innerText = "Config saved, power cycle BlueRetro adapter for change to take effect.";
+    p.innerText = text.noticeGlobal;
 
     div.appendChild(p);
     divGlobalCfg.appendChild(div);
@@ -186,17 +235,17 @@ function initOutputSelect() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'Output Config';
+    header.innerText = text.headerOutput;
 
     divOutputCfg.appendChild(header);
 
-    divOutputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#23---output-config" target="_blank">Wiki doc for Output config</a><br><br>'
+    divOutputCfg.innerHTML += `<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#23---output-config" target="_blank">${text.wikiOutput}</a><br><br>`;
 
     var div = document.createElement("div");
 
     /* Output select */
     var label = document.createElement("label");
-    label.innerText = 'Select output: ';
+    label.innerText = text.labelSelectOutput;
     label.setAttribute("for", "outputSelect");
 
     var main = document.createElement("select");
@@ -224,7 +273,7 @@ function initOutputMode() {
     var span = document.createElement("span");
     span.setAttribute("style", "display:inline-block;");
     var label = document.createElement("label");
-    label.innerText = 'Mode';
+    label.innerText = text.labelMode;
     label.setAttribute("for", "outputMode");
     label.setAttribute("style", "display:block;");
 
@@ -244,7 +293,7 @@ function initOutputMode() {
     span = document.createElement("span");
     span.setAttribute("style", "display:inline-block;");
     label = document.createElement("label");
-    label.innerText = 'Accessories';
+    label.innerText = text.labelAccessories;
     label.setAttribute("for", "outputAcc");
     label.setAttribute("style", "display:block;");
 
@@ -267,7 +316,7 @@ function initOutputMode() {
 
     var btn = document.createElement("button");
     btn.id = "outputSave";
-    btn.innerText = 'Save';
+    btn.innerText = text.btnSave;
     btn.addEventListener("click", saveOutput);
     div.appendChild(btn);
     div.setAttribute("style", "margin-top:1em;");
@@ -279,7 +328,7 @@ function initOutputMode() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:red;");
-    p.innerText = "Config saved, power cycle BlueRetro adapter for Mode change to take effect.";
+    p.innerText = text.noticeOutput;
 
     div.appendChild(p);
     divOutputCfg.appendChild(div);
@@ -289,7 +338,7 @@ function initOutputMode() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:orange;");
-    p.innerText = "Mouse mode require setting <Default Mouse> preset.";
+    p.innerText = text.noticeOutputMouse;
 
     div.appendChild(p);
     divOutputCfg.appendChild(div);
@@ -304,18 +353,18 @@ function initInputSelect() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'Mapping Config';
+    header.innerText = text.headerMapping;
 
     divInputCfg.appendChild(header);
 
-    divInputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#24---mapping-config" target="_blank">Wiki doc for Mapping config</a><br><br>'
+    divInputCfg.innerHTML += `<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#24---mapping-config" target="_blank">${text.wikiMapping}</a><br><br>`;
 
     var div = document.createElement("div");
     div.setAttribute("style", "margin-bottom:1em;");
 
     /* Input select */
     var label = document.createElement("label");
-    label.innerText = 'Select Bluetooth device: ';
+    label.innerText = text.labelSelectDevice;
     label.setAttribute("for", "inputSelect");
 
     var main = document.createElement("select");
@@ -339,7 +388,7 @@ function initLabelSelect() {
     var div = document.createElement("div");
 
     var label = document.createElement("label");
-    label.innerText = 'Src label: ';
+    label.innerText = text.labelSrcType;
     label.setAttribute("for", "srcLabel");
 
     var main = document.createElement("select");
@@ -361,7 +410,7 @@ function initLabelSelect() {
     div.setAttribute("style", "margin-bottom:1em;");
 
     label = document.createElement("label");
-    label.innerText = 'Dst label: ';
+    label.innerText = text.labelDstType;
     label.setAttribute("for", "dstLabel");
 
     main = document.createElement("select");
@@ -389,7 +438,7 @@ function initFirstOutputMapping() {
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "This is the source button/axis on the Bluetooth controller";
     var label = document.createElement("label");
-    label.innerText = 'Src';
+    label.innerText = text.labelSrc;
     label.setAttribute("style", "display:block;");
 
     var src = document.createElement("select");
@@ -409,7 +458,7 @@ function initFirstOutputMapping() {
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "This is the destination button/axis on the wired interface.";
     label = document.createElement("label");
-    label.innerText = 'Dest';
+    label.innerText = text.labelDst;
     label.setAttribute("style", "display:block;");
 
     var dest = src.cloneNode(true);
@@ -423,7 +472,7 @@ function initFirstOutputMapping() {
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "This is the ID of the wired interface.";
     label = document.createElement("label");
-    label.innerText = 'Dest ID';
+    label.innerText = text.labelDstId;
     label.setAttribute("style", "display:block;");
 
     var destId = document.createElement("select");
@@ -443,7 +492,7 @@ function initFirstOutputMapping() {
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "If source & destination is an axis then this is the scaling factor base on the destination maximum. If source is a button & destination is an axis then this is the value base on destination maximum that the axis will be set.";
     label = document.createElement("label");
-    label.innerText = 'Max';
+    label.innerText = text.labelMax;
     label.setAttribute("style", "display:block;");
 
     var max = document.createElement("select");
@@ -464,7 +513,7 @@ function initFirstOutputMapping() {
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "If source is an axis and destination is a button, this is the threshold requires on the source axis before the button is pressed.";
     label = document.createElement("label");
-    label.innerText = 'Thres';
+    label.innerText = text.labelThres;
     label.setAttribute("style", "display:block;");
 
     var thres = document.createElement("select");
@@ -485,7 +534,7 @@ function initFirstOutputMapping() {
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "This is the axis dead zone around reset value.";
     label = document.createElement("label");
-    label.innerText = 'Deadzone';
+    label.innerText = text.labelDeadzone;
     label.setAttribute("style", "display:block;");
 
     var dz = document.createElement("select");
@@ -506,7 +555,7 @@ function initFirstOutputMapping() {
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "Turbo function base on the system frame rate.";
     label = document.createElement("label");
-    label.innerText = 'Turbo';
+    label.innerText = text.labelTurbo;
     label.setAttribute("style", "display:block;");
 
     var turbo = document.createElement("select");
@@ -526,7 +575,7 @@ function initFirstOutputMapping() {
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "Various response curve for scaling. (Only Passthrough and Linear, others TBD)";
     label = document.createElement("label");
-    label.innerText = 'Scaling';
+    label.innerText = text.labelScaling;
     label.setAttribute("style", "display:block;");
 
     var sca = document.createElement("select");
@@ -546,7 +595,7 @@ function initFirstOutputMapping() {
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "Diagonal scaling options between joystick type. (TBD Not implemented yet)";
     label = document.createElement("label");
-    label.innerText = 'Diagonal';
+    label.innerText = text.labelDiag;
     label.setAttribute("style", "display:block;");
 
     var diag = document.createElement("select");
@@ -566,7 +615,7 @@ function initFirstOutputMapping() {
 
     /* Add button */
     var addButton = document.createElement("button");
-    addButton.innerText = '+';
+    addButton.innerText = text.btnAdd;
     addButton.addEventListener("click", addInput);
 
     /* Save */
@@ -574,7 +623,7 @@ function initFirstOutputMapping() {
 
     var btn = document.createElement("button");
     btn.id = "inputSave";
-    btn.innerText = 'Save';
+    btn.innerText = text.btnSave;
     btn.addEventListener("click", saveInput);
     divSave.appendChild(btn);
     divSave.setAttribute("style", "margin-top:1em;");
@@ -584,7 +633,7 @@ function initFirstOutputMapping() {
     div.setAttribute("style", "display:none;margin-top:1em;");
     var p = document.createElement("p");
     p.setAttribute("style", "font-style:italic;font-size:small;color:green;");
-    p.innerText = "Config saved, mapping changes take effect immediately.";
+    p.innerText = text.noticeMapping;
 
     div.appendChild(p);
     divSave.appendChild(div);
@@ -732,14 +781,14 @@ function initBlueRetroCfg() {
 
 function loadGlobalCfg() {
     return new Promise(function(resolve, reject) {
-        log('Get Global Config CHRC...');
+        log('グローバル設定CHRCを取得中...');
         brService.getCharacteristic(brUuid[1])
         .then(chrc => {
-            log('Reading Global Config...');
+            log('グローバル設定を読み込み中...');
             return chrc.readValue();
         })
         .then(value => {
-            log('Global Config size: ' + value.byteLength);
+            log('グローバル設定サイズ: ' + value.byteLength);
             document.getElementById("systemCfg").value = value.getUint8(0);
             document.getElementById("multitapCfg").value = value.getUint8(1);
             if (apiVersion > 0) {
@@ -758,24 +807,24 @@ function loadGlobalCfg() {
 
 function loadOutputCfg(cfgId) {
     return new Promise(function(resolve, reject) {
-        log('Get Output ' + cfgId + ' CTRL CHRC...');
+        log('出力 ' + cfgId + ' のCTRL CHRCを取得中...');
         brService.getCharacteristic(brUuid[2])
         .then(chrc => {
-            log('Set Output ' + cfgId + ' on CTRL chrc...');
+            log('出力 ' + cfgId + ' をCTRL CHRCへ設定中...');
             var outputCtrl = new Uint16Array(1);
             outputCtrl[0] = Number(cfgId);
             return chrc.writeValue(outputCtrl);
         })
         .then(_ => {
-            log('Get Output ' + cfgId + ' DATA CHRC...');
+            log('出力 ' + cfgId + ' のDATA CHRCを取得中...');
             return brService.getCharacteristic(brUuid[3]);
         })
         .then(chrc => {
-            log('Reading Output ' + cfgId + ' Config...');
+            log('出力 ' + cfgId + ' の設定を読み込み中...');
             return chrc.readValue();
         })
         .then(value => {
-            log('Output ' + cfgId + ' Config size: ' + value.byteLength);
+            log('出力 ' + cfgId + ' 設定サイズ: ' + value.byteLength);
             document.getElementById("outputMode").value = value.getUint8(0);
             document.getElementById("outputAcc").value = value.getUint8(1);
             resolve();
@@ -788,17 +837,17 @@ function loadOutputCfg(cfgId) {
 
 function writeReadRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
     return new Promise(function(resolve, reject) {
-        log('Set Input Ctrl CHRC... ' + inputCtrl[1]);
+        log('入力CTRL CHRCを設定中... ' + inputCtrl[1]);
         ctrl_chrc.writeValue(inputCtrl)
         .then(_ => {
-            log('Reading Input Data CHRC...');
+            log('入力DATA CHRCを読み込み中...');
             return data_chrc.readValue();
         })
         .then(value => {
-            log('Got Input Data ' + value.byteLength);
+            log('入力DATA取得: ' + value.byteLength);
             var tmp = new Uint8Array(value.buffer);
             cfg.set(tmp, inputCtrl[1]);
-            log('Got Input Data ' + cfg[2] + ' ' + value.getUint8(2));
+            log('入力DATA取得: ' + cfg[2] + ' ' + value.getUint8(2));
             if (value.byteLength == 512) {
                 inputCtrl[1] += Number(512);
                 resolve(writeReadRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc));
@@ -830,7 +879,7 @@ function readInputCfg(cfgId, cfg) {
             return writeReadRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc);
         })
         .then(value => {
-            log('Input ' + cfgId + ' Config size: ' + cfg.byteLength);
+            log('入力 ' + cfgId + ' 設定サイズ: ' + cfg.byteLength);
             resolve(cfg);
         })
         .catch(error => {
@@ -842,10 +891,10 @@ function readInputCfg(cfgId, cfg) {
 function loadInputCfg(cfgId) {
     return new Promise(function(resolve, reject) {
         var cfg = new Uint8Array(2051);
-        log('Get Input ' + cfgId + ' Config CHRC...');
+        log('入力 ' + cfgId + ' 設定のCHRCを取得中...');
         readInputCfg(cfgId, cfg)
         .then(value => {
-            log('Input ' + cfgId + ' Config size: ' + value.byteLength);
+            log('入力 ' + cfgId + ' 設定サイズ: ' + value.byteLength);
             //document.getElementById("mainInput").value = value[0];
             //document.getElementById("subInput").value = value[1];
 
@@ -873,7 +922,7 @@ function loadInputCfg(cfgId) {
             var scaling = document.getElementsByClassName("scaling");
             var diag = document.getElementsByClassName("diag");
 
-            log('Loading Mapping Found: ' + src.length + ' nbMapping: ' + nbMapping + ' cfg: ' + value[2]);
+            log(text.logLoadMapping + src.length + ' / nbMapping: ' + nbMapping + ' / cfg: ' + value[2]);
 
             var j = 3;
             for (var i = 0; i < nbMapping; i++) {
@@ -918,7 +967,7 @@ function saveGlobal() {
         saveGlobalCfg(brService, data)
         .then(_ => {
             document.getElementById("globalSaveText").style.display = 'block';
-            log('Global Config saved');
+            log(text.logSaveGlobal);
             resolve();
         })
         .catch(error => {
@@ -941,7 +990,7 @@ function saveOutput() {
             if (data[0] == 3) {
                 document.getElementById("outputSaveMouse").style.display = 'block';
             }
-            log('Output ' + cfgId + ' Config saved');
+            log('出力 ' + cfgId + ' の設定を保存しました');
             resolve();
         })
         .catch(error => {
@@ -952,10 +1001,10 @@ function saveOutput() {
 
 function writeWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
     return new Promise(function(resolve, reject) {
-        log('Set Input Ctrl CHRC... ' + inputCtrl[1]);
+        log('入力CTRL CHRCを設定中... ' + inputCtrl[1]);
         ctrl_chrc.writeValue(inputCtrl)
         .then(_ => {
-            log('Writing Input Data CHRC...');
+            log('入力DATA CHRCへ書き込み中...');
             var tmpViewSize = cfg.byteLength - inputCtrl[1];
             if (tmpViewSize > 512) {
                 tmpViewSize = 512;
@@ -964,7 +1013,7 @@ function writeWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc) {
             return data_chrc.writeValue(tmpView);
         })
         .then(_ => {
-            log('Input Data Written');
+            log('入力DATAを書き込みました');
             inputCtrl[1] += Number(512);
             if (inputCtrl[1] < cfg.byteLength) {
                 resolve(writeWriteRecursive(cfg, inputCtrl, ctrl_chrc, data_chrc));
@@ -1040,7 +1089,7 @@ function saveInput() {
         writeInputCfg(cfgId, cfg)
         .then(_ => {
             document.getElementById("inputSaveText").style.display = 'block';
-            log('Input ' + cfgId + ' Config saved');
+            log('入力 ' + cfgId + ' の設定を保存しました');
             resolve();
         })
         .catch(error => {
@@ -1050,7 +1099,7 @@ function saveInput() {
 }
 
 function onDisconnected() {
-    log('> Bluetooth Device disconnected');
+    log('> Bluetoothデバイスが切断されました');
     document.getElementById("divBtConn").style.display = 'block';
     document.getElementById("divInfo").style.display = 'none';
     document.getElementById("divCfgSel").style.display = 'none';
@@ -1105,26 +1154,30 @@ function initCfgSelection() {
 
     let header = document.createElement("h2");
     header.style.margin = 0;
-    header.innerText = 'Config Selection';
+    header.innerText = text.cfgSelectionHeader;
 
     divCfgSel.appendChild(header);
 
-    divCfgSel.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#21---config-selection" target="_blank">Wiki doc for Config Selection</a><br><br>'
+    divCfgSel.innerHTML += `<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#21---config-selection" target="_blank">${text.wikiGlobal}</a><br><br>`;
 
     cfgBtn.id = "cfgSw";
+    const cfgNotice = document.createElement("p");
+    cfgNotice.style.marginTop = "0.5em";
+    cfgNotice.innerText = text.cfgSelectionNotice;
+    divCfgSel.appendChild(cfgNotice);
 
     if (current_cfg == 0) {
-        cfgBtn.innerText += 'Switch to GameID';
+        cfgBtn.innerText += 'GameIDへ切替';
         cfgBtn.addEventListener("click", swGameIdCfg);
-        divCfgSel.innerHTML += 'Current config: Global';
+        divCfgSel.innerHTML += '現在の設定: グローバル';
         if (gameid.length) {
             cfgSw.appendChild(cfgBtn);
         }
     }
     else {
-        cfgBtn.innerText = 'Switch to Global';
+        cfgBtn.innerText = 'グローバルへ切替';
         cfgBtn.addEventListener("click", swDefaultCfg);
-        divCfgSel.innerHTML += 'Current config: GameID';
+        divCfgSel.innerHTML += '現在の設定: GameID';
         cfgSw.appendChild(cfgBtn);
     }
     cfgSw.setAttribute("style", "margin-top:1em;");
@@ -1132,24 +1185,24 @@ function initCfgSelection() {
 }
 
 export function btConn() {
-    log('Requesting Bluetooth Device...');
+    log(text.logRequestDevice);
     navigator.bluetooth.requestDevice(
-        {filters: [{namePrefix: 'BlueRetro'}],
+        {filters: [{namePrefix: 'VS-C4'}],
         optionalServices: [brUuid[0]]})
     .then(device => {
-        log('Connecting to GATT Server...');
+        log(text.logConnectGatt);
         name = device.name;
         bluetoothDevice = device;
         bluetoothDevice.addEventListener('gattserverdisconnected', onDisconnected);
         return bluetoothDevice.gatt.connect();
     })
     .then(server => {
-        log('Getting BlueRetro Service...');
+        log(text.logGetService);
         return server.getPrimaryService(brUuid[0]);
     })
     .catch(error => {
         log(error.name);
-        throw 'Couldn\'t connect to BlueRetro';
+        throw text.logCannotConnect;
     })
     .then(service => {
         brService = service;
@@ -1189,7 +1242,7 @@ export function btConn() {
     .then(value => {
         current_cfg = value;
         log("ABI version: " + apiVersion);
-        log('Init Cfg DOM...');
+        log(text.logInitCfg);
         initBlueRetroCfg();
         return loadGlobalCfg();
     })
@@ -1200,11 +1253,11 @@ export function btConn() {
         return loadInputCfg(0);
     })
     .then(() => {
-        document.getElementById("divInfo").innerHTML = 'Connected to: ' + name + ' (' + bdaddr + ') [' + app_ver
-            + ']<br> Current Game: ' + gamename + ' (' + gameid + ')';
+        document.getElementById("divInfo").innerHTML = text.infoConnectedPrefix + name + ' (' + bdaddr + ') [' + app_ver
+            + ']<br>' + text.infoCurrentGame + gamename + ' (' + gameid + ')';
         try {
             if (app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>Download latest FW ' + latest_ver + ' from <a href=\'https://github.com/darthcloud/BlueRetro/releases\' target=\'_blank\'>GitHub</a>';
+                document.getElementById("divInfo").innerHTML += `<br><br>${text.infoUpdate}${latest_ver}${text.infoUpdateSuffix}`;
             }
         }
         catch (e) {
@@ -1219,7 +1272,7 @@ export function btConn() {
         document.getElementById("divInputCfg").style.display = 'block';
     })
     .catch(error => {
-        log('Argh! ' + error);
+        log('エラー: ' + error);
     });
 }
 
@@ -1451,4 +1504,3 @@ function changeDstLabel() {
     }
     mappingElement.querySelector('.dest').innerHTML = str;
 }
-
