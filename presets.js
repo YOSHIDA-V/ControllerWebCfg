@@ -237,7 +237,7 @@ function initCfgSelection() {
 export function btConn() {
     log('Bluetooth デバイスを要求しています...');
     navigator.bluetooth.requestDevice(
-        {filters: [{namePrefix: 'BlueRetro'}],
+        {filters: [{namePrefix: 'BlueRetro'}, {namePrefix: 'VS-C4'}],
         optionalServices: [brUuid[0]]})
     .then(device => {
         log('GATT サーバーに接続しています...');
