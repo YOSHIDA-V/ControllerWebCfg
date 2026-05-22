@@ -484,7 +484,7 @@ outputandconsole {
   margin: 12px 0;
 }
 
-#divMapping > div {
+#divMapping > .mapping-row {
   display: grid;
   grid-template-columns: minmax(260px, 1.5fr) minmax(220px, 1.1fr) minmax(110px, 0.65fr) minmax(140px, 0.75fr) auto;
   gap: 10px;
@@ -495,18 +495,29 @@ outputandconsole {
   background: #fbfcfc;
 }
 
-#divMapping > div > span {
+#divMapping > .mapping-row > span {
   display: flex !important;
   max-width: none !important;
   min-width: 0;
   flex-direction: column;
 }
 
-#divMapping > div > span[style*="display: none"] {
+#divMapping > .mapping-row > span[style*="display: none"] {
   display: none !important;
 }
 
-#divMapping.mapping-detail-hidden > div {
+#divMapping > .mapping-row > span > label {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+}
+
+#divMapping.mapping-detail-hidden > .mapping-row {
   grid-template-columns: minmax(280px, 1.5fr) minmax(220px, 1fr) auto;
 }
 
@@ -515,10 +526,30 @@ outputandconsole {
   display: none !important;
 }
 
-#divMapping > div > button {
+#divMapping > .mapping-row > button {
   min-width: 68px;
   border-color: var(--vsc4-primary-strong);
   background: var(--vsc4-primary-strong);
+}
+
+.mapping-column-header {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.5fr) minmax(220px, 1.1fr) minmax(110px, 0.65fr) minmax(140px, 0.75fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 0 12px;
+  color: var(--vsc4-muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+#divMapping.mapping-detail-hidden > .mapping-column-header {
+  grid-template-columns: minmax(280px, 1.5fr) minmax(220px, 1fr) auto;
+}
+
+#divMapping.mapping-detail-hidden > .mapping-column-header .mapping-deadzone,
+#divMapping.mapping-detail-hidden > .mapping-column-header .mapping-scaling {
+  display: none;
 }
 
 .mapping-display-options {
@@ -602,7 +633,10 @@ outputandconsole {
     padding: 20px;
   }
 
-  #divMapping > div {
+  #divMapping > .mapping-row,
+  #divMapping > .mapping-column-header,
+  #divMapping.mapping-detail-hidden > .mapping-row,
+  #divMapping.mapping-detail-hidden > .mapping-column-header {
     grid-template-columns: 1fr;
   }
 

@@ -39,7 +39,7 @@
     });
   }
 
-  function labeledSelect(labelText, className, labels, wrapClass) {
+  function labeledSelect(labelText, className, labels, wrapClass, hideLabel) {
     const wrap = document.createElement('span');
     const label = document.createElement('label');
     const select = document.createElement('select');
@@ -49,8 +49,13 @@
     }
     label.textContent = labelText;
     select.className = className || '';
+    if (hideLabel) {
+      select.setAttribute('aria-label', labelText);
+    }
     fillOptions(select, labels);
-    wrap.appendChild(label);
+    if (!hideLabel) {
+      wrap.appendChild(label);
+    }
     wrap.appendChild(select);
     return wrap;
   }
@@ -58,10 +63,10 @@
   function makeMappingRow(input, output) {
     const row = document.createElement('div');
     row.className = 'mapping-row';
-    row.appendChild(labeledSelect('入力', 'src', [input, '右ボタン 左（GP RB Left / KB Q）', 'Home（GP MT / KB L Win）']));
-    row.appendChild(labeledSelect('出力', 'dest', [output, '□', '○', '×', '▵']));
-    row.appendChild(labeledSelect('デッドゾーン', 'dz', ['0.0135%', '0.05%', '0.1%'], 'mapping-deadzone'));
-    row.appendChild(labeledSelect('スケーリング', 'scaling', ['リニア', 'パススルー'], 'mapping-scaling'));
+    row.appendChild(labeledSelect('入力', 'src', [input, '右ボタン 左（GP RB Left / KB Q）', 'Home（GP MT / KB L Win）'], '', true));
+    row.appendChild(labeledSelect('出力', 'dest', [output, '□', '○', '×', '▵'], '', true));
+    row.appendChild(labeledSelect('デッドゾーン', 'dz', ['0.0135%', '0.05%', '0.1%'], 'mapping-deadzone', true));
+    row.appendChild(labeledSelect('スケーリング', 'scaling', ['リニア', 'パススルー'], 'mapping-scaling', true));
 
     const del = document.createElement('button');
     del.type = 'button';
@@ -90,6 +95,23 @@
     options.appendChild(note);
 
     return options;
+  }
+
+  function makeMappingHeader() {
+    const header = document.createElement('div');
+    header.className = 'mapping-column-header';
+    ['入力', '出力', 'デッドゾーン', 'スケーリング', ''].forEach((text, index) => {
+      const span = document.createElement('span');
+      span.textContent = text;
+      if (index === 2) {
+        span.className = 'mapping-deadzone';
+      }
+      else if (index === 3) {
+        span.className = 'mapping-scaling';
+      }
+      header.appendChild(span);
+    });
+    return header;
   }
 
   function showInfo() {
@@ -145,6 +167,7 @@
       map.id = 'divMapping';
       map.className = 'mapping-detail-hidden';
       input.appendChild(makeMappingDisplayOptions(map));
+      map.appendChild(makeMappingHeader());
       map.appendChild(makeMappingRow('右ボタン 左（GP RB Left / KB Q）', '□'));
       map.appendChild(makeMappingRow('右ボタン 右（GP RB Right / KB R）', '○'));
       map.appendChild(makeMappingRow('Home（GP MT / KB L Win）', '□ / ○ / × / ▵'));

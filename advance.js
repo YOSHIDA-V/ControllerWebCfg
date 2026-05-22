@@ -171,6 +171,37 @@ function initMappingDisplayOptions() {
     return div;
 }
 
+function createMappingColumnHeader() {
+    var header = document.createElement("div");
+    header.className = "mapping-column-header";
+
+    var src = document.createElement("span");
+    src.className = "mapping-src";
+    src.innerText = "入力";
+    header.appendChild(src);
+
+    var dest = document.createElement("span");
+    dest.className = "mapping-dest";
+    dest.innerText = "出力";
+    header.appendChild(dest);
+
+    var dz = document.createElement("span");
+    dz.className = "mapping-deadzone";
+    dz.innerText = "デッドゾーン";
+    header.appendChild(dz);
+
+    var scaling = document.createElement("span");
+    scaling.className = "mapping-scaling";
+    scaling.innerText = "スケーリング";
+    header.appendChild(scaling);
+
+    var action = document.createElement("span");
+    action.className = "mapping-action";
+    header.appendChild(action);
+
+    return header;
+}
+
 function initGlobalCfg() {
     var divGlobalCfg = document.getElementById("divGlobalCfg");
 
@@ -532,8 +563,8 @@ function initFirstOutputMapping() {
 
     var src = document.createElement("select");
     src.setAttribute("class", "src");
+    src.setAttribute("aria-label", "入力");
     updateSelectOptions(src, srcLabel);
-    span.appendChild(label);
     span.appendChild(src);
     mappingElement.appendChild(span);
 
@@ -549,8 +580,8 @@ function initFirstOutputMapping() {
     var dest = document.createElement("select");
     dest.setAttribute("class", "dest");
     dest.setAttribute("style", "width:100%;");
+    dest.setAttribute("aria-label", "出力");
     updateSelectOptions(dest, destLabel);
-    span.appendChild(label);
     span.appendChild(dest);
     mappingElement.appendChild(span);
 
@@ -632,6 +663,7 @@ function initFirstOutputMapping() {
     label.setAttribute("style", "display:block;font-size:0.8em;");
 
     var dz = document.createElement("select");
+    dz.setAttribute("aria-label", "デッドゾーン");
     for (var i = 0; i <= maxMax; i += 5) {
         var option  = document.createElement("option");
         option.value = i;
@@ -640,7 +672,6 @@ function initFirstOutputMapping() {
     }
     dz.setAttribute("class", "dz");
     dz.value = 135;
-    span.appendChild(label);
     span.appendChild(dz);
     mappingElement.appendChild(span);
 
@@ -677,6 +708,7 @@ function initFirstOutputMapping() {
     label.setAttribute("style", "display:block;font-size:0.8em;");
 
     var sca = document.createElement("select");
+    sca.setAttribute("aria-label", "スケーリング");
     const allowedScaling = new Set([0, 5]); // Linear / パススルーのみ
     for (var i = 0; i < scaling.length; i++) {
         if (!allowedScaling.has(i)) continue;
@@ -686,7 +718,6 @@ function initFirstOutputMapping() {
         sca.add(option);
     }
     sca.setAttribute("class", "scaling");
-    span.appendChild(label);
     span.appendChild(sca);
     mappingElement.appendChild(span);
 
@@ -743,8 +774,9 @@ function initFirstOutputMapping() {
     /* 最初にcfgを追加する */
     var divMappingGrp = document.createElement("div");
     var divMapping = document.createElement("div");
-    divMapping.appendChild(mappingElement);
     divMapping.id = "divMapping";
+    divMapping.appendChild(createMappingColumnHeader());
+    divMapping.appendChild(mappingElement);
     var divInputCfg = document.getElementById("divInputCfg");
     divMappingGrp.appendChild(divMapping);
     divMappingGrp.appendChild(addButton);
