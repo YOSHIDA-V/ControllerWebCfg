@@ -175,6 +175,7 @@ code {
 
 html {
   background: var(--vsc4-bg);
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -182,7 +183,7 @@ body {
   max-width: 1180px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 24px;
+  padding: clamp(10px, 3vw, 24px);
   color: var(--vsc4-text);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(153, 194, 204, 0) 280px),
@@ -205,7 +206,7 @@ a {
 
 h1 {
   margin: 0 0 8px;
-  font-size: 2.25rem;
+  font-size: clamp(1.55rem, 6vw, 2.25rem);
   line-height: 1.2;
 }
 
@@ -213,7 +214,7 @@ h2 {
   margin: 0 0 16px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--vsc4-line);
-  font-size: 1.35rem;
+  font-size: clamp(1.15rem, 4vw, 1.35rem);
 }
 
 h3 {
@@ -407,8 +408,8 @@ h3 {
 button,
 input[type="button"],
 input[type="submit"] {
-  min-height: 42px;
-  padding: 9px 16px;
+  min-height: 48px;
+  padding: 10px 16px;
   border: 1px solid var(--vsc4-primary);
   border-radius: var(--vsc4-radius);
   background: var(--vsc4-primary);
@@ -416,6 +417,7 @@ input[type="submit"] {
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 button:hover,
@@ -434,7 +436,7 @@ select,
 input[type="text"],
 input[type="number"],
 input[type="file"] {
-  min-height: 42px;
+  min-height: 48px;
   width: 100%;
   max-width: 100%;
   padding: 8px 10px;
@@ -443,6 +445,7 @@ input[type="file"] {
   background: #ffffff;
   color: var(--vsc4-text);
   font: inherit;
+  font-size: 16px;
 }
 
 label {
@@ -626,21 +629,140 @@ outputandconsole {
 
 @media screen and (max-width: 760px) {
   body {
-    padding: 16px;
+    padding: 10px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  .pageIcon {
+    width: 34px;
+    height: 34px;
+    margin-right: 8px;
+  }
+
+  .app-shell {
+    gap: 12px;
   }
 
   .hero {
-    padding: 20px;
+    padding: 16px;
   }
 
-  #divMapping > .mapping-row,
-  #divMapping > .mapping-column-header,
-  #divMapping.mapping-detail-hidden > .mapping-row,
-  #divMapping.mapping-detail-hidden > .mapping-column-header {
+  .quick-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .tool-card,
+  .doc-link-panel,
+  #divBtConn,
+  #divInfo,
+  #divCfgSel,
+  #divGlobalCfg,
+  #divOutputCfg,
+  #divInputCfg,
+  #divFile,
+  #divFwSelect,
+  #divFwUpdate,
+  #divFileSelect,
+  #divFileTransfer,
+  #divSleep,
+  #divReset,
+  #divFactory {
+    padding: 14px;
+    border-radius: 10px;
   }
 
   .availability {
     flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    font-size: 0.95rem;
+  }
+
+  .availability a,
+  .preview-button {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    padding: 6px 10px;
+    border: 1px solid rgba(231, 20, 26, 0.35);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+  }
+
+  button,
+  input[type="button"],
+  input[type="submit"] {
+    width: 100%;
+  }
+
+  .outputHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .outputHeader button {
+    min-height: 44px;
+  }
+
+  #log {
+    max-height: 240px;
+    font-size: 0.82rem;
+  }
+
+  .mapping-display-options {
+    align-items: stretch;
+    padding: 10px;
+  }
+
+  .mapping-display-options label {
+    width: 100%;
+  }
+
+  .mapping-column-header,
+  #divMapping.mapping-detail-hidden > .mapping-column-header {
+    display: none;
+  }
+
+  #divMapping > .mapping-row,
+  #divMapping.mapping-detail-hidden > .mapping-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  #divMapping > .mapping-row > span::before {
+    color: var(--vsc4-muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  #divMapping > .mapping-row > .mapping-src::before {
+    content: "入力";
+  }
+
+  #divMapping > .mapping-row > .mapping-dest::before {
+    content: "出力";
+  }
+
+  #divMapping > .mapping-row > .mapping-deadzone::before {
+    content: "デッドゾーン";
+  }
+
+  #divMapping > .mapping-row > .mapping-scaling::before {
+    content: "スケーリング";
+  }
+
+  #divMapping > .mapping-row > button {
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  outputandconsole {
+    grid-template-columns: 1fr;
   }
 }

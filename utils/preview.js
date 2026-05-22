@@ -63,8 +63,8 @@
   function makeMappingRow(input, output) {
     const row = document.createElement('div');
     row.className = 'mapping-row';
-    row.appendChild(labeledSelect('入力', 'src', [input, '右ボタン 左（GP RB Left / KB Q）', 'Home（GP MT / KB L Win）'], '', true));
-    row.appendChild(labeledSelect('出力', 'dest', [output, '□', '○', '×', '▵'], '', true));
+    row.appendChild(labeledSelect('入力', 'src', [input, '右ボタン 左（GP RB Left / KB Q）', 'Home（GP MT / KB L Win）'], 'mapping-src', true));
+    row.appendChild(labeledSelect('出力', 'dest', [output, '□', '○', '×', '▵'], 'mapping-dest', true));
     row.appendChild(labeledSelect('デッドゾーン', 'dz', ['0.0135%', '0.05%', '0.1%'], 'mapping-deadzone', true));
     row.appendChild(labeledSelect('スケーリング', 'scaling', ['リニア', 'パススルー'], 'mapping-scaling', true));
 
