@@ -1,16 +1,24 @@
+const CACHE_NAME = 'web-bluetooth-vsc4-20260522-2';
+
 function addToCache(request, networkResponse) {
-  return caches.open('web-bluetooth')
+  if (request.method !== 'GET' || !networkResponse || !networkResponse.ok) {
+    return Promise.resolve();
+  }
+
+  return caches.open(CACHE_NAME)
     .then(cache => cache.put(request, networkResponse));
 }
 
 function getCacheResponse(request) {
-  return caches.open('web-bluetooth').then(cache => {
+  return caches.open(CACHE_NAME).then(cache => {
     return cache.match(request);
   });
 }
 
 function getNetworkOrCacheResponse(request) {
-  return fetch(request).then(networkResponse => {
+  const freshRequest = new Request(request, { cache: 'reload' });
+
+  return fetch(freshRequest).then(networkResponse => {
     addToCache(request, networkResponse.clone());
     return networkResponse;
   }).catch(_ => {
@@ -18,6 +26,20 @@ function getNetworkOrCacheResponse(request) {
       .then(cacheResponse => cacheResponse || Response.error());
   });
 }
+
+self.addEventListener('install', event => {
+  event.waitUntil(self.skipWaiting());
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(keys
+        .filter(key => key !== CACHE_NAME)
+        .map(key => caches.delete(key))))
+      .then(() => self.clients.claim())
+  );
+});
 
 self.addEventListener('fetch', event => {
   if (event.request.url.startsWith(self.location.origin)) {

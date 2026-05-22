@@ -298,6 +298,14 @@ h3 {
   display: none;
 }
 
+.app-shell > p[align="center"]:has(img[src$="brx_banner.png"]) {
+  display: none;
+}
+
+.app-shell > br {
+  display: none;
+}
+
 .banner-link img {
   display: block;
   max-width: 180px;
