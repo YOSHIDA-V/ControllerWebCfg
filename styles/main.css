@@ -243,6 +243,7 @@ h3 {
 }
 
 .hero,
+.doc-link-panel,
 .tool-card,
 #divBtConn,
 #divInfo,
@@ -250,6 +251,14 @@ h3 {
 #divGlobalCfg,
 #divOutputCfg,
 #divInputCfg,
+#divFile,
+#divFwSelect,
+#divFwUpdate,
+#divFileSelect,
+#divFileTransfer,
+#divSleep,
+#divReset,
+#divFactory,
 .output {
   border: 1px solid var(--vsc4-line);
   border-radius: var(--vsc4-radius);
@@ -274,6 +283,25 @@ h3 {
   max-width: 760px;
   margin: 0;
   color: var(--vsc4-muted);
+}
+
+.doc-link-panel {
+  display: block;
+  padding: 14px 18px;
+}
+
+.doc-link-panel p {
+  margin: 0;
+}
+
+.banner-link {
+  display: none;
+}
+
+.banner-link img {
+  display: block;
+  max-width: 180px;
+  height: auto;
 }
 
 .quick-grid {
@@ -340,7 +368,15 @@ h3 {
 #divCfgSel,
 #divGlobalCfg,
 #divOutputCfg,
-#divInputCfg {
+#divInputCfg,
+#divFile,
+#divFwSelect,
+#divFwUpdate,
+#divFileSelect,
+#divFileTransfer,
+#divSleep,
+#divReset,
+#divFactory {
   padding: 18px;
 }
 
@@ -420,6 +456,18 @@ outputandconsole {
 
 outputandconsole {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+#progress_bar {
+  border-color: var(--vsc4-line);
+  border-radius: var(--vsc4-radius);
+  background: #ffffff;
+}
+
+#progress_bar .percent {
+  min-height: 16px;
+  border-radius: 6px;
+  background-color: var(--vsc4-primary);
 }
 
 #divMapping {

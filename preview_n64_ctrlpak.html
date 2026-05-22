@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BlueRetro N64 controller pak preview</title>
+    <link rel="icon" href="icon.png">
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body>
+    <img class="pageIcon" src="icon.png" alt="">
+    <h1>BlueRetro N64 controller pak manager</h1>
+    <p class="availability"><a href="preview_index.html">Preview Index</a> | <a href="n64_ctrlpak.html">通常ページ</a></p>
+    <main class="app-shell">
+      <div class="doc-link-panel">
+        <p class="banner-link"><a href="https://blueretro.com/products/brx"><img src="brx_banner.png" alt="BlueRetro"></a></p>
+        <p>Please consult the documentation found on the wiki:<br><a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#71---n64-controller-pak-manager-page" target="_blank">7.1 - N64 controller pak manager page</a></p>
+      </div>
+      <div id="divBtConn"><button type="button">Connect BlueRetro</button><small><i>Disconnect all controllers before connecting.</i></small></div>
+      <div id="divInfo" style="display:block;">Preview mode: layout check without device connection</div>
+      <div id="divFileSelect" style="display:block;"><h2>N64 controller pak manager</h2><label>Pak bank</label><select><option>Pak 1</option><option>Pak 2</option></select><button type="button">Read</button><button type="button">Format</button><button type="button">Write</button><label>.MPK file</label><input type="file"></div>
+      <div id="divFileTransfer" style="display:block;"><h2>Transfer</h2><div id="progress_bar" class="loading"><div class="percent" style="width:45%;">&nbsp;</div></div><button type="button">Cancel</button></div>
+    </main>
+  </body>
+</html>

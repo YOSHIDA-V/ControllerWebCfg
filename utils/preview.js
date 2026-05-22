@@ -162,6 +162,64 @@
     }
   }
 
+  function showTransferPreview(targetId, title, bodyHtml) {
+    showInfo();
+
+    const target = document.getElementById(targetId);
+    if (target) {
+      target.style.display = 'block';
+      target.innerHTML = '<h2>' + title + '</h2>' + bodyHtml;
+    }
+
+    const transfer = document.getElementById('divFileTransfer') || document.getElementById('divFwUpdate');
+    if (transfer) {
+      transfer.style.display = 'block';
+      transfer.innerHTML = '<h2>転送状態</h2><div id="progress_bar" class="loading"><div class="percent" style="width: 45%;">&nbsp;</div></div><button type="button">キャンセル</button>';
+    }
+  }
+
+  function previewSystem() {
+    showInfo();
+
+    [
+      ['divSleep', 'Deep Sleepにする'],
+      ['divReset', 'リセット'],
+      ['divFactory', '出荷時リセット']
+    ].forEach(([id, text]) => {
+      const target = document.getElementById(id);
+      if (target) {
+        target.style.display = 'block';
+        target.innerHTML = '<button type="button">' + text + '</button>';
+      }
+    });
+  }
+
+  function previewOta() {
+    showTransferPreview('divFwSelect', 'ファームウェア更新', '<label>ファームウェアを選択</label><input type="file"><button type="button">ファームウェアを更新</button>');
+  }
+
+  function previewFiles() {
+    showInfo();
+
+    const file = document.getElementById('divFile');
+    if (file) {
+      file.style.display = 'block';
+      file.innerHTML = '<h2>ファイル管理</h2><p>内部ファイル一覧の表示を確認中</p><button type="button">ファイル一覧を更新</button>';
+    }
+  }
+
+  function previewDebug() {
+    showTransferPreview('divFileSelect', 'デバッグ', '<button type="button">デバッグトレースをダウンロード</button>');
+  }
+
+  function previewN64CtrlPak() {
+    showTransferPreview('divFileSelect', 'N64 controller pak manager', '<label>Pak bank</label><select><option>Pak 1</option><option>Pak 2</option></select><button type="button">Read</button><button type="button">Format</button><button type="button">Write</button><label>.MPK file</label><input type="file">');
+  }
+
+  function previewDcVmu() {
+    showTransferPreview('divFileSelect', 'DC VMU管理', '<button type="button">読み出し</button><button type="button">書き込み</button><label>.BIN ファイル</label><input type="file">');
+  }
+
   window.addEventListener('DOMContentLoaded', function () {
     addPreviewLink();
 
@@ -175,6 +233,24 @@
     }
     else if (location.pathname.endsWith('presets.html')) {
       previewPresets();
+    }
+    else if (location.pathname.endsWith('system.html')) {
+      previewSystem();
+    }
+    else if (location.pathname.endsWith('ota.html')) {
+      previewOta();
+    }
+    else if (location.pathname.endsWith('files.html')) {
+      previewFiles();
+    }
+    else if (location.pathname.endsWith('debug.html')) {
+      previewDebug();
+    }
+    else if (location.pathname.endsWith('n64_ctrlpak.html')) {
+      previewN64CtrlPak();
+    }
+    else if (location.pathname.endsWith('dc_vmu.html')) {
+      previewDcVmu();
     }
   });
 }());

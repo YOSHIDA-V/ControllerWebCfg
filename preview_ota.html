@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VS-C4 OTAプレビュー</title>
+    <link rel="icon" href="icon.png">
+    <link rel="stylesheet" href="styles/main.css">
+  </head>
+  <body>
+    <img class="pageIcon" src="icon.png" alt="">
+    <h1>VS-C4 OTA ファームウェア更新</h1>
+    <p class="availability"><a href="preview_index.html">Preview Index</a> | <a href="ota.html">通常ページ</a></p>
+    <main class="app-shell">
+      <div class="doc-link-panel">
+        <p class="banner-link"><a href="https://blueretro.com/products/brx"><img src="brx_banner.png" alt="BlueRetro"></a></p>
+        <p>ドキュメント（Wiki）を参照してください:<br><a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#5---ota-fw-update-page" target="_blank">5 - OTA ファームウェア更新ページ</a></p>
+      </div>
+      <div id="divBtConn"><button type="button">VS-C4に接続</button><small><i>設定前にVS-C4からすべてのコントローラーを切断。</i></small></div>
+      <div id="divInfo" style="display:block;">プレビュー表示: VS-C4未接続でもレイアウト確認中</div>
+      <div id="divFwSelect" style="display:block;"><h2>ファームウェア更新</h2><label>ファームウェアを選択</label><input type="file"><button type="button">ファームウェアを更新</button></div>
+      <div id="divFwUpdate" style="display:block;"><h2>転送状態</h2><div id="progress_bar" class="loading"><div class="percent" style="width:45%;">&nbsp;</div></div><button type="button">キャンセル</button></div>
+    </main>
+  </body>
+</html>
