@@ -38,6 +38,139 @@ const allowedDestLabelNames = [
     'PSX / PS2',
 ];
 
+var mappingDetailVisible = false;
+
+const mappingInputLabelMap = new Map([
+    ['GP: LX Left; KB: A', '左スティック 左（GP LX Left / KB A）'],
+    ['GP: LX Right; KB: D', '左スティック 右（GP LX Right / KB D）'],
+    ['GP: LY Down; KB: S', '左スティック 下（GP LY Down / KB S）'],
+    ['GP: LY Up; KB: W', '左スティック 上（GP LY Up / KB W）'],
+    ['GP: RX Left; M: X Left', '右スティック 左（GP RX Left / Mouse X Left）'],
+    ['GP: RX Right; M: X Right', '右スティック 右（GP RX Right / Mouse X Right）'],
+    ['GP: RY Down; M: Y Down', '右スティック 下（GP RY Down / Mouse Y Down）'],
+    ['GP: RY Up; M: Y Up', '右スティック 上（GP RY Up / Mouse Y Up）'],
+    ['GP: LD Left; KB: Left', '十字キー 左（GP LD Left / KB Left）'],
+    ['GP: LD Right; KB: Right', '十字キー 右（GP LD Right / KB Right）'],
+    ['GP: LD Down; KB: Down', '十字キー 下（GP LD Down / KB Down）'],
+    ['GP: LD Up; KB: Up', '十字キー 上（GP LD Up / KB Up）'],
+    ['GP: RD Left; M: WX Left', '右側十字 左（GP RD Left / Mouse Wheel X Left）'],
+    ['GP: RD Right; M: WX Right', '右側十字 右（GP RD Right / Mouse Wheel X Right）'],
+    ['GP: RD Down; M: WY Down', '右側十字 下（GP RD Down / Mouse Wheel Y Down）'],
+    ['GP: RD Up; M: WY Up', '右側十字 上（GP RD Up / Mouse Wheel Y Up）'],
+    ['GP: RB Left; KB: Q; M: 4', '右ボタン 左（GP RB Left / KB Q / Mouse 4）'],
+    ['GP: RB Right; KB: R; M: 5', '右ボタン 右（GP RB Right / KB R / Mouse 5）'],
+    ['GP: RB Down; KB: E; M: 6', '右ボタン 下（GP RB Down / KB E / Mouse 6）'],
+    ['GP: RB Up; KB: F; M: 7', '右ボタン 上（GP RB Up / KB F / Mouse 7）'],
+    ['GP: MM; KB: Esc', 'Start（GP MM / KB Esc）'],
+    ['GP: MS; KB: Enter', 'Select（GP MS / KB Enter）'],
+    ['GP: MT; KB: L Win', 'Home（GP MT / KB L Win）'],
+    ['GP: MQ; KB: Hash', '機能ボタン MQ（GP MQ / KB Hash）'],
+    ['GP: LM; M: Right', 'L2（GP LM / Mouse Right）'],
+    ['GP: LS; KB: Z', 'L1（GP LS / KB Z）'],
+    ['GP: LT; KB: L CTRL', 'Lトリガー デジタル（GP LT / KB L Ctrl）'],
+    ['GP: LJ; M: Middle', 'L3（GP LJ / Mouse Middle）'],
+    ['GP: RM; M: Left', 'R2（GP RM / Mouse Left）'],
+    ['GP: RS; KB: X; M: 8', 'R1（GP RS / KB X / Mouse 8）'],
+    ['GP: RT; KB: L Shift', 'Rトリガー デジタル（GP RT / KB L Shift）'],
+    ['GP: RJ; KB: Space', 'R3（GP RJ / KB Space）'],
+]);
+
+const mappingOutputLabelMap = new Map([
+    ['Left stick left', '左スティック 左'],
+    ['Left stick right', '左スティック 右'],
+    ['Left stick down', '左スティック 下'],
+    ['Left stick up', '左スティック 上'],
+    ['Right stick left', '右スティック 左'],
+    ['Right stick right', '右スティック 右'],
+    ['Right stick down', '右スティック 下'],
+    ['Right stick up', '右スティック 上'],
+    ['D-pad left', '十字キー 左'],
+    ['D-pad right', '十字キー 右'],
+    ['D-pad down', '十字キー 下'],
+    ['D-pad up', '十字キー 上'],
+    ['Square', '□'],
+    ['Circle', '○'],
+    ['X', '×'],
+    ['Triangle', '▵'],
+    ['Start', 'Start'],
+    ['Select', 'Select'],
+    ['Analog', 'Analog（モード切替）'],
+    ['L1', 'L1'],
+    ['L2', 'L2'],
+    ['L3', 'L3'],
+    ['R1', 'R1'],
+    ['R2', 'R2'],
+    ['R3', 'R3'],
+]);
+
+function normalizeMappingLabel(text) {
+    return String(text || '').replace(/\s+/g, ' ').trim();
+}
+
+function getDisplayLabel(text, labelIdx) {
+    var normalized = normalizeMappingLabel(text);
+    if (!normalized) {
+        return '未割り当て';
+    }
+
+    var label = labelName[labelIdx];
+    if (label === 'Default') {
+        if (mappingInputLabelMap.has(normalized)) {
+            return mappingInputLabelMap.get(normalized);
+        }
+        if (normalized.startsWith('KB: ')) {
+            return 'キーボード ' + normalized.slice(4);
+        }
+        if (normalized.startsWith('M: ')) {
+            return 'マウス ' + normalized.slice(3);
+        }
+    }
+    else if (label === 'PSX / PS2' && mappingOutputLabelMap.has(normalized)) {
+        return mappingOutputLabelMap.get(normalized);
+    }
+
+    return normalized;
+}
+
+function applyMappingDetailVisibility() {
+    var divMapping = document.getElementById("divMapping");
+    if (divMapping) {
+        divMapping.classList.toggle("mapping-detail-hidden", !mappingDetailVisible);
+    }
+
+    var checkbox = document.getElementById("mappingDetailToggle");
+    if (checkbox) {
+        checkbox.checked = mappingDetailVisible;
+    }
+}
+
+function initMappingDisplayOptions() {
+    var div = document.createElement("div");
+    div.className = "mapping-display-options";
+
+    var label = document.createElement("label");
+    label.setAttribute("for", "mappingDetailToggle");
+
+    var checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = "mappingDetailToggle";
+    checkbox.checked = mappingDetailVisible;
+    checkbox.addEventListener("change", function() {
+        mappingDetailVisible = this.checked;
+        applyMappingDetailVisibility();
+    });
+
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(" デッドゾーン / スケーリングを表示"));
+    div.appendChild(label);
+
+    var note = document.createElement("small");
+    note.innerText = "通常は非表示です。保存される値は変わりません。";
+    div.appendChild(note);
+
+    return div;
+}
+
 function initGlobalCfg() {
     var divGlobalCfg = document.getElementById("divGlobalCfg");
 
@@ -381,6 +514,7 @@ function initLabelSelect() {
     }
 
     divInputCfg.appendChild(div);
+    divInputCfg.appendChild(initMappingDisplayOptions());
 }
 
 function initFirstOutputMapping() {
@@ -389,6 +523,7 @@ function initFirstOutputMapping() {
 
     /* Src */
     var span = document.createElement("span");
+    span.className = "mapping-src";
     span.setAttribute("style", "max-width:20%;display:inline-block;");
     span.title = "Bluetoothコントローラ側の入力（ボタン/軸）です。";
     var label = document.createElement("label");
@@ -404,6 +539,7 @@ function initFirstOutputMapping() {
 
     /* Dest */
     span = document.createElement("span");
+    span.className = "mapping-dest";
     span.setAttribute("style", "max-width:20%;display:inline-block;");
     span.title = "コントローラの出力側（ボタン/軸）";
     label = document.createElement("label");
@@ -488,6 +624,7 @@ function initFirstOutputMapping() {
 
     /* デッドゾーン */
     span = document.createElement("span");
+    span.className = "mapping-deadzone";
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "軸のニュートラル付近のデッドゾーンです。";
     label = document.createElement("label");
@@ -532,6 +669,7 @@ function initFirstOutputMapping() {
 
     /* スケーリング */
     span = document.createElement("span");
+    span.className = "mapping-scaling";
     span.setAttribute("style", "max-width:10%;display:inline-block;");
     span.title = "スケーリング用の応答カーブです。（Passthrough / Linear のみ。他は未確定）";
     label = document.createElement("label");
@@ -612,6 +750,7 @@ function initFirstOutputMapping() {
     divMappingGrp.appendChild(addButton);
     divMappingGrp.appendChild(divSave);
     divInputCfg.appendChild(divMappingGrp);
+    applyMappingDetailVisibility();
 }
 
 function initBlueRetroCfg() {
@@ -1107,6 +1246,7 @@ function addInput() {
         newSubDiv.querySelector('.turbo').value = turboMask['Disable'];
         newSubDiv.querySelector('.diag').value = 0;
         div.appendChild(newSubDiv);
+        applyMappingDetailVisibility();
     }
 }
 
@@ -1182,7 +1322,8 @@ function updateSelectOptions(selectEl, labelIdx) {
         if (text === undefined || text === null) {
             text = '';
         }
-        option.text = text;
+        option.text = getDisplayLabel(text, labelIdx);
+        option.title = normalizeMappingLabel(text);
         selectEl.add(option);
     }
 }

@@ -486,7 +486,7 @@ outputandconsole {
 
 #divMapping > div {
   display: grid;
-  grid-template-columns: minmax(180px, 1.4fr) minmax(180px, 1.4fr) minmax(110px, 0.7fr) minmax(140px, 0.9fr) auto;
+  grid-template-columns: minmax(260px, 1.5fr) minmax(220px, 1.1fr) minmax(110px, 0.65fr) minmax(140px, 0.75fr) auto;
   gap: 10px;
   align-items: end;
   padding: 12px;
@@ -506,10 +506,47 @@ outputandconsole {
   display: none !important;
 }
 
+#divMapping.mapping-detail-hidden > div {
+  grid-template-columns: minmax(280px, 1.5fr) minmax(220px, 1fr) auto;
+}
+
+#divMapping.mapping-detail-hidden .mapping-deadzone,
+#divMapping.mapping-detail-hidden .mapping-scaling {
+  display: none !important;
+}
+
 #divMapping > div > button {
   min-width: 68px;
   border-color: var(--vsc4-primary-strong);
   background: var(--vsc4-primary-strong);
+}
+
+.mapping-display-options {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: -6px;
+  padding: 10px 12px;
+  border: 1px solid var(--vsc4-line);
+  border-radius: var(--vsc4-radius);
+  background: #fbfcfc;
+}
+
+.mapping-display-options label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.mapping-display-options input {
+  width: auto;
+  margin: 0;
+}
+
+.mapping-display-options small {
+  color: var(--vsc4-muted);
 }
 
 .mapping-add-button {

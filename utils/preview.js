@@ -39,11 +39,14 @@
     });
   }
 
-  function labeledSelect(labelText, className, labels) {
+  function labeledSelect(labelText, className, labels, wrapClass) {
     const wrap = document.createElement('span');
     const label = document.createElement('label');
     const select = document.createElement('select');
 
+    if (wrapClass) {
+      wrap.className = wrapClass;
+    }
     label.textContent = labelText;
     select.className = className || '';
     fillOptions(select, labels);
@@ -55,16 +58,38 @@
   function makeMappingRow(input, output) {
     const row = document.createElement('div');
     row.className = 'mapping-row';
-    row.appendChild(labeledSelect('入力', 'src', [input, 'A', 'B', 'Home', 'star']));
-    row.appendChild(labeledSelect('出力', 'dest', [output, 'Square', 'Circle', 'X', 'Triangle']));
-    row.appendChild(labeledSelect('デッドゾーン', 'dz', ['0.0135%', '0.05%', '0.1%']));
-    row.appendChild(labeledSelect('スケーリング', 'scaling', ['リニア', 'パススルー']));
+    row.appendChild(labeledSelect('入力', 'src', [input, '右ボタン 左（GP RB Left / KB Q）', 'Home（GP MT / KB L Win）']));
+    row.appendChild(labeledSelect('出力', 'dest', [output, '□', '○', '×', '▵']));
+    row.appendChild(labeledSelect('デッドゾーン', 'dz', ['0.0135%', '0.05%', '0.1%'], 'mapping-deadzone'));
+    row.appendChild(labeledSelect('スケーリング', 'scaling', ['リニア', 'パススルー'], 'mapping-scaling'));
 
     const del = document.createElement('button');
     del.type = 'button';
     del.textContent = '削除';
     row.appendChild(del);
     return row;
+  }
+
+  function makeMappingDisplayOptions(map) {
+    const options = document.createElement('div');
+    options.className = 'mapping-display-options';
+
+    const label = document.createElement('label');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.addEventListener('change', () => {
+      map.classList.toggle('mapping-detail-hidden', !checkbox.checked);
+    });
+
+    label.appendChild(checkbox);
+    label.appendChild(document.createTextNode(' デッドゾーン / スケーリングを表示'));
+    options.appendChild(label);
+
+    const note = document.createElement('small');
+    note.textContent = '通常は非表示です。保存される値は変わりません。';
+    options.appendChild(note);
+
+    return options;
   }
 
   function showInfo() {
@@ -118,9 +143,11 @@
 
       const map = document.createElement('div');
       map.id = 'divMapping';
-      map.appendChild(makeMappingRow('Y', 'Square'));
-      map.appendChild(makeMappingRow('A', 'Circle'));
-      map.appendChild(makeMappingRow('Home', 'Square / Circle / X / Triangle'));
+      map.className = 'mapping-detail-hidden';
+      input.appendChild(makeMappingDisplayOptions(map));
+      map.appendChild(makeMappingRow('右ボタン 左（GP RB Left / KB Q）', '□'));
+      map.appendChild(makeMappingRow('右ボタン 右（GP RB Right / KB R）', '○'));
+      map.appendChild(makeMappingRow('Home（GP MT / KB L Win）', '□ / ○ / × / ▵'));
       input.appendChild(map);
 
       const add = document.createElement('button');
