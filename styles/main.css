@@ -731,14 +731,22 @@ outputandconsole {
   #divMapping > .mapping-row,
   #divMapping.mapping-detail-hidden > .mapping-row {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 12px;
     padding: 10px;
   }
 
+  #divMapping > .mapping-row > span {
+    display: grid !important;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
+  }
+
   #divMapping > .mapping-row > span::before {
-    color: var(--vsc4-muted);
-    font-size: 0.78rem;
+    color: var(--vsc4-text);
+    font-size: 1rem;
     font-weight: 800;
+    text-align: left;
   }
 
   #divMapping > .mapping-row > .mapping-src::before {
