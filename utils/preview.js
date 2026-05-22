@@ -271,12 +271,11 @@
   }
 
   window.addEventListener('DOMContentLoaded', function () {
-    addPreviewLink();
-
     if (!previewEnabled) {
       return;
     }
 
+    addPreviewLink();
     document.body.classList.add('preview-mode');
     if (location.pathname.endsWith('advance.html')) {
       previewAdvance();
