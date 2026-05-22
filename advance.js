@@ -148,7 +148,7 @@ function initGlobalCfg() {
 
     var btn = document.createElement("button");
     btn.id = "globalSave";
-    btn.innerText = 'Save';
+    btn.innerText = 'グローバル設定を保存';
     btn.addEventListener("click", saveGlobal);
     div.appendChild(btn);
     div.setAttribute("style", "margin-top:1em;");
@@ -259,7 +259,7 @@ function initOutputMode() {
 
     var btn = document.createElement("button");
     btn.id = "outputSave";
-    btn.innerText = 'Save';
+    btn.innerText = '出力設定を保存';
     btn.addEventListener("click", saveOutput);
     div.appendChild(btn);
     div.setAttribute("style", "margin-top:1em;");
@@ -385,6 +385,7 @@ function initLabelSelect() {
 
 function initFirstOutputMapping() {
     mappingElement = document.createElement("div");
+    mappingElement.className = "mapping-row";
 
     /* Src */
     var span = document.createElement("span");
@@ -577,7 +578,8 @@ function initFirstOutputMapping() {
 
     /* Add button */
     var addButton = document.createElement("button");
-    addButton.innerText = '+';
+    addButton.className = "mapping-add-button";
+    addButton.innerText = 'マッピングを追加';
     addButton.addEventListener("click", addInput);
 
     /* 保存 */
@@ -585,7 +587,7 @@ function initFirstOutputMapping() {
 
     var btn = document.createElement("button");
     btn.id = "inputSave";
-    btn.innerText = 'Save';
+    btn.innerText = 'マッピングを保存';
     btn.addEventListener("click", saveInput);
     divSave.appendChild(btn);
     divSave.setAttribute("style", "margin-top:1em;");
@@ -1096,7 +1098,7 @@ function addInput() {
         var div = document.getElementById("divMapping");
         var newSubDiv = mappingElement.cloneNode(true);
         var newButton = document.createElement("button");
-        newButton.innerText = '-';
+        newButton.innerText = '削除';
         newButton.addEventListener("click", delInput);
         newSubDiv.appendChild(newButton);
         newSubDiv.querySelector('.max').value = 100;

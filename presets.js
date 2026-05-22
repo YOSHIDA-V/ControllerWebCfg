@@ -77,7 +77,7 @@ function initOutputMapping() {
 
     var btn = document.createElement("button");
     btn.id = "inputSave";
-    btn.innerText = 'Save';
+    btn.innerText = 'プリセットを書き込む';
     btn.addEventListener("click", saveInput);
     divSave.appendChild(btn);
     divSave.setAttribute("style", "margin-top:1em;");

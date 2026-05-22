@@ -150,3 +150,370 @@ code {
 .vg { color: #008080 } /* Name.Variable.Global */
 .vi { color: #008080 } /* Name.Variable.Instance */
 .il { color: #009999 } /* Literal.Number.Integer.Long */
+
+/* VS-C4 operator UI */
+:root {
+  --vsc4-bg: #99c2cc;
+  --vsc4-panel: #ffffff;
+  --vsc4-text: #111111;
+  --vsc4-muted: #5d5d5d;
+  --vsc4-line: #dddddd;
+  --vsc4-primary: #e7141a;
+  --vsc4-primary-strong: #b80010;
+  --vsc4-accent: #000000;
+  --vsc4-warn-bg: #fff1f1;
+  --vsc4-warn-line: #efb6b8;
+  --vsc4-ok-bg: #f1f1f1;
+  --vsc4-ok-text: #111111;
+  --vsc4-ok-line: #c9c9c9;
+  --vsc4-radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--vsc4-bg);
+}
+
+body {
+  width: auto;
+  max-width: 1180px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px;
+  color: var(--vsc4-text);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(153, 194, 204, 0) 280px),
+    var(--vsc4-bg);
+  font-family: "Yu Gothic UI", "Meiryo", "Segoe UI", sans-serif;
+  line-height: 1.65;
+}
+
+@media screen and (min-width: 832px) {
+  body {
+    width: auto;
+    margin: 0 auto;
+  }
+}
+
+a {
+  color: var(--vsc4-primary);
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+h2 {
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--vsc4-line);
+  font-size: 1.35rem;
+}
+
+h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.pageIcon {
+  width: 44px;
+  height: 44px;
+  margin: 0 12px 0 0;
+  float: left;
+}
+
+.availability {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 24px;
+  color: var(--vsc4-muted);
+}
+
+.app-shell {
+  clear: both;
+  display: grid;
+  gap: 18px;
+}
+
+.hero,
+.tool-card,
+#divBtConn,
+#divInfo,
+#divCfgSel,
+#divGlobalCfg,
+#divOutputCfg,
+#divInputCfg,
+.output {
+  border: 1px solid var(--vsc4-line);
+  border-radius: var(--vsc4-radius);
+  background: var(--vsc4-panel);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.hero {
+  display: grid;
+  gap: 16px;
+  padding: 28px;
+}
+
+.hero h2 {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  font-size: 1.6rem;
+}
+
+.hero p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--vsc4-muted);
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.tool-card {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.tool-card strong {
+  font-size: 1.1rem;
+}
+
+.tool-card span {
+  color: var(--vsc4-muted);
+  font-weight: 400;
+}
+
+.tool-card.primary {
+  border-color: rgba(231, 20, 26, 0.45);
+  background: linear-gradient(180deg, #ffffff, #fff2f2);
+}
+
+.note-panel {
+  padding: 16px 18px;
+  border: 1px solid var(--vsc4-warn-line);
+  border-radius: var(--vsc4-radius);
+  background: var(--vsc4-warn-bg);
+}
+
+.preview-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.preview-button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  padding: 9px 16px;
+  border: 1px solid var(--vsc4-primary);
+  border-radius: var(--vsc4-radius);
+  background: #ffffff;
+  color: var(--vsc4-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.preview-mode #divBtConn {
+  border-color: var(--vsc4-warn-line);
+  background: var(--vsc4-warn-bg);
+}
+
+#divBtConn,
+#divInfo,
+#divCfgSel,
+#divGlobalCfg,
+#divOutputCfg,
+#divInputCfg {
+  padding: 18px;
+}
+
+#divBtConn {
+  display: grid;
+  gap: 10px;
+}
+
+#divBtConn small {
+  color: var(--vsc4-muted);
+}
+
+#divInfo {
+  border-color: var(--vsc4-ok-line);
+  background: var(--vsc4-ok-bg);
+  color: var(--vsc4-ok-text);
+  font-weight: 700;
+}
+
+button,
+input[type="button"],
+input[type="submit"] {
+  min-height: 42px;
+  padding: 9px 16px;
+  border: 1px solid var(--vsc4-primary);
+  border-radius: var(--vsc4-radius);
+  background: var(--vsc4-primary);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  background: var(--vsc4-primary-strong);
+}
+
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+select,
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+  min-height: 42px;
+  width: 100%;
+  max-width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--vsc4-line);
+  border-radius: var(--vsc4-radius);
+  background: #ffffff;
+  color: var(--vsc4-text);
+  font: inherit;
+}
+
+label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--vsc4-muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+#divGlobalCfg > div,
+#divOutputCfg > div,
+#divInputCfg > div,
+outputandconsole {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+outputandconsole {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+#divMapping {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+#divMapping > div {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.4fr) minmax(180px, 1.4fr) minmax(110px, 0.7fr) minmax(140px, 0.9fr) auto;
+  gap: 10px;
+  align-items: end;
+  padding: 12px;
+  border: 1px solid var(--vsc4-line);
+  border-radius: var(--vsc4-radius);
+  background: #fbfcfc;
+}
+
+#divMapping > div > span {
+  display: flex !important;
+  max-width: none !important;
+  min-width: 0;
+  flex-direction: column;
+}
+
+#divMapping > div > span[style*="display: none"] {
+  display: none !important;
+}
+
+#divMapping > div > button {
+  min-width: 68px;
+  border-color: var(--vsc4-primary-strong);
+  background: var(--vsc4-primary-strong);
+}
+
+.mapping-add-button {
+  justify-self: start;
+}
+
+.output {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.outputHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--vsc4-line);
+}
+
+.outputHeader button {
+  min-height: 34px;
+  padding: 6px 10px;
+  border-color: var(--vsc4-line);
+  background: #ffffff;
+  color: var(--vsc4-primary);
+}
+
+#content,
+#status,
+#log {
+  padding-inline: 14px;
+}
+
+#log {
+  max-height: 320px;
+  margin: 0;
+  padding-block: 12px;
+  overflow: auto;
+  border-top: 1px solid var(--vsc4-line);
+  background: var(--vsc4-accent);
+  color: #f2f2f2;
+  font-size: 0.9rem;
+}
+
+@media screen and (max-width: 760px) {
+  body {
+    padding: 16px;
+  }
+
+  .hero {
+    padding: 20px;
+  }
+
+  #divMapping > div {
+    grid-template-columns: 1fr;
+  }
+
+  .availability {
+    flex-wrap: wrap;
+  }
+}

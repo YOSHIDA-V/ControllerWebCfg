@@ -5,7 +5,9 @@
         return typeof argument === 'string' ? argument : JSON.stringify(argument);
       }).join(' ');
 
-      document.querySelector('#log').textContent += line + '\n';
+      var logEl = document.querySelector('#log');
+      logEl.textContent += line + '\n';
+      logEl.scrollTop = logEl.scrollHeight;
     },
 
     clearLog: function() {
@@ -26,8 +28,11 @@
   };
 </script>
 
-<h3>出力</h3>
 <div id="output" class="output">
+  <div class="outputHeader">
+    <h3>処理ログ</h3>
+    <button type="button" onclick="ChromeSamples.clearLog()">ログ消去</button>
+  </div>
   <div id="content">{{ include.initial_output_content }}</div>
   <div id="status"></div>
   <pre id="log"></pre>
