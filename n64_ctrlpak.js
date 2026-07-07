@@ -1,6 +1,6 @@
 // Base on https://www.html5rocks.com/en/tutorials/file/dndfiles//
 
-import { brUuid, pakSize } from './utils/constants.js';
+import { brUuid, pakSize, showLatestFirmwareNotice } from './utils/constants.js';
 import { downloadFile } from './utils/downloadFile.js';
 import { getLatestRelease } from './utils/getLatestRelease.js';
 import { getAppVersion } from './utils/getAppVersion.js';
@@ -185,7 +185,7 @@ export function btConn() {
         app_ver = value;
         document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
         try {
-            if (app_ver.indexOf(latest_ver) == -1) {
+            if (showLatestFirmwareNotice && app_ver.indexOf(latest_ver) == -1) {
                 document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
             }
         }

@@ -1,6 +1,6 @@
 // Base on https://www.html5rocks.com/en/tutorials/file/dndfiles//
 
-import { brUuid, cfg_cmd_get_file, cfg_cmd_open_dir, cfg_cmd_close_dir, cfg_cmd_del_file } from './utils/constants.js';
+import { brUuid, cfg_cmd_get_file, cfg_cmd_open_dir, cfg_cmd_close_dir, cfg_cmd_del_file, showLatestFirmwareNotice } from './utils/constants.js';
 import { getLatestRelease } from './utils/getLatestRelease.js';
 import { getAppVersion } from './utils/getAppVersion.js';
 import { getBdAddr } from './utils/getBdAddr.js';
@@ -194,7 +194,7 @@ export function btConn() {
         initFile();
         document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
         try {
-            if (app_ver.indexOf(latest_ver) == -1) {
+            if (showLatestFirmwareNotice && app_ver.indexOf(latest_ver) == -1) {
                 document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>からダウンロードしてください';
             }
         }

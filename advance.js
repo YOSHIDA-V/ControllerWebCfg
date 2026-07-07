@@ -1,7 +1,7 @@
 import { brUuid, labelName, btnList, systemCfg,
     multitapCfg, inquiryMode, devCfg, accCfg, turboMask,
     scaling, diagScaling, maxMainInput, maxOutput,
-    maxMax, maxThres }
+    maxMax, maxThres, showLatestFirmwareNotice }
     from './utils/constants.js';
 import { saveGlobalCfg } from './utils/saveGlobalCfg.js'
 import { saveOutputCfg } from './utils/saveOutputCfg.js'
@@ -30,7 +30,6 @@ var gameid = '';
 var gamename = '';
 var cfgSource = 0;
 
-const showLatestFirmwareNotice = false; // Set true when the official VS-C4 update flow is ready.
 const fixedWiredIndex = 2; // Web UI uses "デバイス 3" (WIRED2)
 
 const allowedSrcLabelNames = [];

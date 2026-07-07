@@ -1,4 +1,4 @@
-import { brUuid, maxMainInput } from './utils/constants.js';
+import { brUuid, maxMainInput, showLatestFirmwareNotice } from './utils/constants.js';
 import { getLatestRelease } from './utils/getLatestRelease.js';
 import { getAppVersion } from './utils/getAppVersion.js';
 import { getBdAddr } from './utils/getBdAddr.js';
@@ -294,7 +294,7 @@ export function btConn() {
         document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver
             + ']<br> Current Game: ' + gamename + ' (' + gameid + ')';
         try {
-            if (app_ver.indexOf(latest_ver) == -1) {
+            if (showLatestFirmwareNotice && app_ver.indexOf(latest_ver) == -1) {
                 document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
             }
         }
