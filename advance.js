@@ -30,6 +30,7 @@ var gameid = '';
 var gamename = '';
 var cfgSource = 0;
 
+const showLatestFirmwareNotice = false; // Set true when the official VS-C4 update flow is ready.
 const fixedWiredIndex = 2; // Web UI uses "デバイス 3" (WIRED2)
 
 const allowedSrcLabelNames = [];
@@ -302,6 +303,7 @@ function initGlobalCfg() {
         option.text = 'デバッグモード';
         sel.add(option);
         sel.id = "banksel";
+        div.style.display = "none";
         div.appendChild(label);
         div.appendChild(sel);
 
@@ -1243,7 +1245,7 @@ export function btConn() {
         document.getElementById("divInfo").innerHTML = '接続先情報: ' + name + ' (' + bdaddr + ') [' + app_ver
             + ']<br> 現在のゲームモード: ' + gamename + ' (' + gameid + ')';
         try {
-            if (app_ver.indexOf(latest_ver) == -1) {
+            if (showLatestFirmwareNotice && app_ver.indexOf(latest_ver) == -1) {
                 document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\' target=\'_blank\'>GitHub</a> からダウンロード';
             }
         }
