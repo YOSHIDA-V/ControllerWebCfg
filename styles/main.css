@@ -263,6 +263,7 @@ h3 {
   position: relative;
   z-index: 1;
   display: inline-flex;
+  min-height: 44px;
   align-items: center;
   gap: 10px;
   color: var(--vsc4-text);
@@ -303,7 +304,7 @@ h3 {
 .availability a,
 .preview-button {
   display: inline-flex;
-  min-height: 40px;
+  min-height: 44px;
   align-items: center;
   justify-content: center;
   padding: 7px 14px;
@@ -430,6 +431,15 @@ h3 {
   color: var(--vsc4-muted);
 }
 
+.page-guide > a,
+.doc-link-panel > a,
+.developer-reference li > a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 8px 0;
+}
+
 .caution-guide {
   border-left-color: var(--vsc4-primary-strong);
   background: var(--vsc4-warn-bg);
@@ -504,10 +514,10 @@ h3 {
   box-shadow: 0 18px 36px rgba(55, 0, 4, 0.13);
 }
 
-.tool-card:focus-visible,
-.availability a:focus-visible,
-.preview-button:focus-visible,
-.help-link-list a:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
 summary:focus-visible {
   outline: 3px solid #111111;
   outline-offset: 3px;
@@ -537,7 +547,7 @@ summary:focus-visible {
 }
 
 .tool-card.primary span {
-  color: rgba(255, 255, 255, 0.86);
+  color: #ffffff;
 }
 
 .tool-card.caution {
@@ -600,7 +610,10 @@ summary:focus-visible {
 }
 
 .help-toc a {
-  padding: 6px 0;
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 8px 0;
   text-decoration: none;
 }
 
@@ -661,6 +674,9 @@ summary:focus-visible {
 
 .advanced-disclosure summary,
 .developer-reference summary {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
   cursor: pointer;
   color: var(--vsc4-primary);
   font-weight: 800;
@@ -683,7 +699,7 @@ summary:focus-visible {
 
 .preview-button {
   display: inline-flex;
-  min-height: 42px;
+  min-height: 44px;
   align-items: center;
   padding: 9px 16px;
   border: 1px solid var(--vsc4-primary);
@@ -730,6 +746,28 @@ summary:focus-visible {
   background: var(--vsc4-ok-bg);
   color: var(--vsc4-ok-text);
   font-weight: 700;
+}
+
+.action-description {
+  margin: 0 0 10px;
+  color: var(--vsc4-muted);
+}
+
+.file-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--vsc4-line);
+}
+
+.file-row:last-child {
+  border-bottom: 0;
+}
+
+.file-name {
+  overflow-wrap: anywhere;
 }
 
 button,
@@ -896,13 +934,16 @@ outputandconsole {
 
 .mapping-display-options label {
   display: inline-flex;
+  min-height: 44px;
   align-items: center;
   gap: 6px;
   font-weight: 700;
 }
 
 .mapping-display-options input {
-  width: auto;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
   margin: 0;
 }
 
@@ -930,7 +971,7 @@ outputandconsole {
 }
 
 .outputHeader button {
-  min-height: 34px;
+  min-height: 44px;
   padding: 6px 10px;
   border-color: var(--vsc4-line);
   background: #ffffff;
@@ -1061,7 +1102,7 @@ outputandconsole {
   .availability a,
   .preview-button {
     display: inline-flex;
-    min-height: 40px;
+    min-height: 44px;
     align-items: center;
     padding: 6px 10px;
     border: 1px solid rgba(231, 20, 26, 0.35);
@@ -1078,6 +1119,10 @@ outputandconsole {
   input[type="button"],
   input[type="submit"] {
     width: 100%;
+  }
+
+  .file-row {
+    grid-template-columns: 1fr;
   }
 
   .outputHeader {

@@ -225,7 +225,7 @@
     const transfer = document.getElementById('divFileTransfer') || document.getElementById('divFwUpdate');
     if (transfer) {
       transfer.style.display = 'block';
-      transfer.innerHTML = '<h2>転送状態</h2><div id="progress_bar" class="loading"><div class="percent" style="width: 45%;">&nbsp;</div></div><button type="button">キャンセル</button>';
+      transfer.innerHTML = '<h2>転送状態</h2><div id="progress_bar" class="loading" role="progressbar" aria-label="転送の進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45"><div class="percent" style="width: 45%;">45%</div></div><button type="button">キャンセル</button>';
     }
   }
 
@@ -233,14 +233,14 @@
     showInfo();
 
     [
-      ['divSleep', 'Deep Sleepにする'],
-      ['divReset', 'リセット'],
-      ['divFactory', '出荷時リセット']
-    ].forEach(([id, text]) => {
+      ['divSleep', 'VS-C4をDeep Sleepに移行します。', 'Deep Sleepにする'],
+      ['divReset', 'VS-C4を再起動します。', 'リセット'],
+      ['divFactory', '保存済み設定を消去して出荷時状態に戻します。', '出荷時リセット']
+    ].forEach(([id, description, text]) => {
       const target = document.getElementById(id);
       if (target) {
         target.style.display = 'block';
-        target.innerHTML = '<button type="button">' + text + '</button>';
+        target.innerHTML = '<p class="action-description">' + description + '</p><button type="button">' + text + '</button>';
       }
     });
   }

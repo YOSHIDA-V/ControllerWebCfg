@@ -20,15 +20,15 @@ parent_label: メンテナンス
     <button id="btConn">VS-C4に接続</button><br>
     <small><i>設定のために接続する前に、VS-C4からすべてのコントローラーを切断してください。</i></small>
 </div>
-<div id="divInfo" style="display:none;margin-bottom:1em;"></div>
+<div id="divInfo" role="status" aria-live="polite" style="display:none;margin-bottom:1em;"></div>
 <div id="divFwSelect" style="display:none;margin-bottom:1em;">
     <label for="fwFile">VS-C4用ファームウェアを選択</label>
     <input type="file" id="fwFile" name="fw.bin"/><br>
     <button id="btnFwUpdate">ファームウェアを更新</button>
 </div>
 <div id="divFwUpdate" style="display:none;margin-bottom:1em;">
-    <div id="progress_bar"><div class="percent"></div></div>
-    <button id="btnFwUpdateCancel">キャンセル</button>
+    <div id="progress_bar" role="progressbar" aria-label="ファームウェア更新の進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="percent">0%</div></div>
+    <button type="button" id="btnFwUpdateCancel">キャンセル</button>
 </div>
 
 {% include output_helper.html %}

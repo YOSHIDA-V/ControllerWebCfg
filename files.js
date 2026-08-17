@@ -92,12 +92,27 @@ function getFiles() {
     });
 }
 
-function deleteFile() {
-    let div = this.parentNode;
-    this.remove();
-    let filename = div.innerText;
-    div.remove();
-    deleteFileCmd(filename);
+async function deleteFile() {
+    const button = this;
+    const row = button.parentNode;
+    const filename = button.dataset.filename;
+
+    if (!window.confirm('「' + filename + '」をVS-C4から削除します。この操作は元に戻せません。実行しますか？')) {
+        log('ファイル削除をキャンセルしました: ' + filename);
+        return;
+    }
+
+    button.disabled = true;
+    log('ファイルを削除しています: ' + filename);
+    try {
+        await deleteFileCmd(filename);
+        row.remove();
+        log('ファイルを削除しました: ' + filename);
+    }
+    catch (error) {
+        button.disabled = false;
+        log('ファイルを削除できませんでした: ' + filename + ' (' + error + ')');
+    }
 }
 
 function initFile() {
@@ -113,12 +128,19 @@ function initFile() {
 
     for (let i = 0; i < fileList.length; i++) {
         let div = document.createElement("div");
+        div.className = 'file-row';
+        let filename = document.createElement("span");
+        filename.className = 'file-name';
+        filename.innerText = fileList[i];
         let button = document.createElement("button");
         button.id = i;
-        button.innerText = '削除'
-        button.addEventListener('click', deleteFile)
+        button.type = 'button';
+        button.innerText = '削除';
+        button.dataset.filename = fileList[i];
+        button.setAttribute('aria-label', fileList[i] + 'を削除');
+        button.addEventListener('click', deleteFile);
+        div.append(filename);
         div.append(button);
-        div.append(' ' + fileList[i]);
         div.title = gidList[i];
         divFile.append(div);
     }

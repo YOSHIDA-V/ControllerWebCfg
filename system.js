@@ -24,16 +24,55 @@ function onDisconnected() {
     document.getElementById("divFactory").style.display = 'none';
 }
 
+function executeSystemAction(buttonId, confirmMessage, actionName, action) {
+    if (!window.confirm(confirmMessage)) {
+        log(actionName + 'をキャンセルしました');
+        return Promise.resolve(false);
+    }
+
+    const button = document.getElementById(buttonId);
+    button.disabled = true;
+    log(actionName + 'を実行しています...');
+
+    return action(brService)
+      .then(() => {
+          log(actionName + 'を実行しました');
+          return true;
+      })
+      .catch(error => {
+          log(actionName + 'に失敗しました: ' + error);
+          return false;
+      })
+      .finally(() => {
+          button.disabled = false;
+      });
+}
+
 export function setDeepSleepEvent() {
-    setDeepSleep(brService);
+    return executeSystemAction(
+      'btnSleep',
+      'VS-C4をDeep Sleepにします。実行しますか？',
+      'Deep Sleep',
+      setDeepSleep
+    );
 }
 
 export function setResetEvent() {
-    setReset(brService);
+    return executeSystemAction(
+      'btnReset',
+      'VS-C4をリセットします。実行しますか？',
+      'リセット',
+      setReset
+    );
 }
 
 export function setFactoryResetEvent() {
-    setFactoryReset(brService);
+    return executeSystemAction(
+      'btnFactory',
+      'VS-C4を出荷時リセットします。保存済み設定は消去されます。実行しますか？',
+      '出荷時リセット',
+      setFactoryReset
+    );
 }
 
 export function btConn() {

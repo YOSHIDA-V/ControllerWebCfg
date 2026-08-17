@@ -16,7 +16,7 @@ index: index.html
     <button id="btConn">VS-C4に接続</button><br>
     <small><i>VMU 管理のために接続する前に、VS-C4からすべてのコントローラーを切断してください。</i></small>
 </div>
-<div id="divInfo" style="display:none;margin-bottom:1em;"></div>
+<div id="divInfo" role="status" aria-live="polite" style="display:none;margin-bottom:1em;"></div>
 <div id="divFileSelect" style="display:none;margin-bottom:1em;">
     <button id="btnPakRead">読み出し</button><br><br>
     <button id="btnPakWrite">書き込み</button>
@@ -24,7 +24,7 @@ index: index.html
     <input type="file" id="pakFile"/><br><br>
 </div>
 <div id="divFileTransfer" style="display:none;margin-bottom:1em;">
-    <div id="progress_bar"><div class="percent"></div></div>
+    <div id="progress_bar" role="progressbar" aria-label="VMU転送の進捗" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="percent">0%</div></div>
     <button id="btnFileTransferCancel">キャンセル</button>
 </div>
 

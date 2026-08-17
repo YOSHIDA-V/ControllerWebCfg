@@ -10,6 +10,7 @@ import { dcReadFile } from './utils/dcReadFile.js';
 var bluetoothDevice;
 let brService = null;
 var progress = document.querySelector('.percent');
+var progressBar = document.getElementById('progress_bar');
 var cancel = 0;
 var bdaddr = '';
 var app_ver = '';
@@ -23,12 +24,12 @@ export function abortFileTransfer() {
 function setProgress(percent) {
     progress.style.width = percent + '%';
     progress.textContent = percent + '%';
+    progressBar.setAttribute('aria-valuenow', percent);
 }
 
 export function pakRead(evt) {
     // Reset progress indicator on new file selection.
-    progress.style.width = '0%';
-    progress.textContent = '0%';
+    setProgress(0);
 
     readFile()
     .then(value => {

@@ -26,10 +26,14 @@ export const otaWriteFirmware = (brService, data, setProgress, cancel) => {
         resolve();
       })
       .catch((error) => {
-        cmd[0] = cfg_cmd_ota_abort;
-        return ctrl_chrc.writeValue(cmd).then((_) => {
+        if (!ctrl_chrc) {
           reject(error);
-        });
+          return;
+        }
+        cmd[0] = cfg_cmd_ota_abort;
+        return ctrl_chrc.writeValue(cmd)
+          .then(() => reject(error))
+          .catch(() => reject(error));
       });
   });
 };

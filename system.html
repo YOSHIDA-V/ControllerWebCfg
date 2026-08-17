@@ -20,15 +20,18 @@ parent_label: メンテナンス
     <button id="btConn">VS-C4に接続</button><br>
     <small><i>設定のために接続する前に、VS-C4からすべてのコントローラーを切断してください。</i></small>
 </div>
-<div id="divInfo" style="display:none;margin-bottom:1em;"></div>
+<div id="divInfo" role="status" aria-live="polite" style="display:none;margin-bottom:1em;"></div>
 <div id="divSleep" style="display:none;margin-bottom:1em;">
-    <button id="btnSleep">Deep Sleepにする</button>
+    <p class="action-description">VS-C4をDeep Sleepに移行します。</p>
+    <button type="button" id="btnSleep">Deep Sleepにする</button>
 </div>
 <div id="divReset" style="display:none;margin-bottom:1em;">
-    <button id="btnReset">リセット</button>
+    <p class="action-description">VS-C4を再起動します。</p>
+    <button type="button" id="btnReset">リセット</button>
 </div>
 <div id="divFactory" style="display:none;margin-bottom:1em;">
-    <button id="btnFactory">出荷時リセット</button>
+    <p class="action-description">保存済み設定を消去して出荷時状態に戻します。</p>
+    <button type="button" id="btnFactory">出荷時リセット</button>
 </div>
 
 

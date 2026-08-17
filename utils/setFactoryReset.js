@@ -1,20 +1,13 @@
 import { brUuid, cfg_cmd_sys_factory } from "../utils/constants.js";
-import ChromeSamples from "../utils/ChromeSamples.js";
 
 export function setFactoryReset(brService) {
     var cmd = new Uint8Array(1);
-    let ctrl_chrc = null;
-    brService
+    return brService
       .getCharacteristic(brUuid[7])
       .then((chrc) => {
-        ctrl_chrc = chrc;
         cmd[0] = cfg_cmd_sys_factory;
-        return ctrl_chrc.writeValue(cmd);
-      })
-      .catch((error) => {
-        ChromeSamples.log("エラー:" + error);
-        return ctrl_chrc.writeValue(cmd);
+        return chrc.writeValue(cmd);
       });
-  }
+}
 
-  export default setFactoryReset;
+export default setFactoryReset;

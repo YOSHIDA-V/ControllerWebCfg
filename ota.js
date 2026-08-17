@@ -11,7 +11,9 @@ var bluetoothDevice;
 let brService = null;
 var reader;
 var progress = document.querySelector('.percent');
-var cancel = 0;
+var progressBar = document.getElementById('progress_bar');
+var cancel = { current: 0 };
+var transferActive = false;
 var bdaddr = '';
 var app_ver = '';
 var app_name = '';
@@ -20,12 +22,19 @@ var name = '';
 let cur_fw_is_hw2 = 0;
 
 export function abortFwUpdate() {
-    cancel = 1;
+    if (!transferActive) {
+        return;
+    }
+    cancel.current = 1;
+    document.getElementById('btnFwUpdateCancel').disabled = true;
+    log('ファームウェア更新のキャンセルを要求しました');
 }
 
 function setProgress(percent) {
-    progress.style.width = percent + '%';
-    progress.textContent = percent + '%';
+    var safePercent = Math.max(0, Math.min(100, percent));
+    progress.style.width = safePercent + '%';
+    progress.textContent = safePercent + '%';
+    progressBar.setAttribute('aria-valuenow', safePercent);
 }
 
 function errorHandler(evt) {
@@ -47,15 +56,31 @@ function updateProgress(total, loaded) {
     var percentLoaded = Math.round((loaded / total) * 100);
     // Increase the progress bar length.
     if (percentLoaded < 100) {
-        progress.style.width = percentLoaded + '%';
-        progress.textContent = percentLoaded + '%';
+        setProgress(percentLoaded);
     }
 }
 
 export function firmwareUpdate(evt) {
     // Reset progress indicator on new file selection.
-    progress.style.width = '0%';
-    progress.textContent = '0%';
+    setProgress(0);
+    cancel.current = 0;
+
+    const fileInput = document.getElementById('fwFile');
+    const selectedFile = fileInput.files[0];
+    if (!selectedFile) {
+        log('ファームウェアファイルを選択してください');
+        return;
+    }
+
+    if (!selectedFile.name.toLowerCase().endsWith('.bin')) {
+        log('ファイル形式が対応している形式ではありません。zipを展開してから指定してください');
+        return;
+    }
+
+    if (!window.confirm('「' + selectedFile.name + '」をVS-C4へ書き込みます。更新中は電源や接続を切らないでください。実行しますか？')) {
+        log('ファームウェア更新をキャンセルしました');
+        return;
+    }
 
     reader = new FileReader();
     reader.onerror = errorHandler;
@@ -77,37 +102,46 @@ export function firmwareUpdate(evt) {
         }
     }
 
-    let file = document.getElementById("fwFile").value;
-    let ext = file.match(/\.[0-9a-z]+$/i);
-
-    if (ext[0] == '.bin') {
-        // Read in the image file as a binary string.
-        reader.readAsArrayBuffer(document.getElementById("fwFile").files[0]);
-    }
-    else {
-        log("ファイル形式が対応している形式ではありません。zipを展開してから指定してください");
-    }
+    // Read in the image file as a binary string.
+    reader.readAsArrayBuffer(selectedFile);
 }
 
 function writeFirmware(data) {
+    transferActive = true;
+    document.getElementById('btnFwUpdateCancel').disabled = false;
     document.getElementById('progress_bar').className = 'loading';
     document.getElementById("divBtConn").style.display = 'none';
     document.getElementById("divInfo").style.display = 'block';
     document.getElementById("divFwSelect").style.display = 'none';
     document.getElementById("divFwUpdate").style.display = 'block';
     otaWriteFirmware(brService, data, setProgress, cancel)
+    .then(() => {
+        setProgress(100);
+        log('ファームウェア更新が完了しました');
+    })
     .catch(error => {
-        log('エラー:' + error);
+        if (cancel.current === 1) {
+            log('ファームウェア更新をキャンセルしました');
+        }
+        else {
+            log('ファームウェア更新に失敗しました: ' + error);
+        }
         document.getElementById("divBtConn").style.display = 'none';
         document.getElementById("divInfo").style.display = 'block';
         document.getElementById("divFwSelect").style.display = 'block';
         document.getElementById("divFwUpdate").style.display = 'none';
+    })
+    .finally(() => {
+        transferActive = false;
+        cancel.current = 0;
+        document.getElementById('btnFwUpdateCancel').disabled = true;
     });
 }
 
 function onDisconnected() {
     log('> Bluetooth デバイスが切断されました');
-    cancel = 0;
+    cancel.current = 0;
+    transferActive = false;
     document.getElementById("divBtConn").style.display = 'block';
     document.getElementById("divInfo").style.display = 'none';
     document.getElementById("divFwSelect").style.display = 'none';
