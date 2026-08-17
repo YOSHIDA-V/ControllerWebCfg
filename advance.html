@@ -6,10 +6,12 @@ index: index.html
 
 {% include_relative _includes/intro.html %}
 
-<div class="doc-link-panel">
-    <p><strong>このページの説明</strong><br>
-    <a href="help.html#advance">詳細設定の使い方</a></p>
-</div>
+<section class="page-guide">
+    <span class="eyebrow">個別に調整する</span>
+    <h2>入力割り当てと出力設定を変更します</h2>
+    <p>設定項目を確認しながら、VS-C4の動作を細かく調整するページです。</p>
+    <a href="help.html#advance">詳細設定の使い方を確認</a>
+</section>
 
 <div id="divBtConn">
     <button id="btConn">VS-C4に接続</button><br>
@@ -29,7 +31,7 @@ index: index.html
 
 <script src='sql.js/sql-wasm.js'></script>
 <script type="module">
-  import { btConn } from './advance.js?v=vsc4-20260522-7';
+  import { btConn } from './advance.js?v=vsc4-20260817-1';
   import { isWebBluetoothEnabled } from './utils/isWebBluetoothEnabled.js';
 
   document.getElementById("btConn").addEventListener('click', function() {

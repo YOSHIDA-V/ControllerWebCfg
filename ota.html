@@ -1,15 +1,19 @@
 ---
-feature_name: VS-C4 OTA ファームウェア更新
+feature_name: VS-C4 ファームウェア更新
 icon_url: icon.png
 index: index.html
+parent_url: maintenance.html
+parent_label: メンテナンス
 ---
 
 {% include_relative _includes/intro.html %}
 
-<div class="doc-link-panel">
-    <p><strong>このページの説明</strong><br>
-    <a href="help.html#ota">ファームウェア更新の使い方</a></p>
-</div>
+<section class="page-guide caution-guide">
+    <span class="eyebrow">本体メンテナンス</span>
+    <h2>VS-C4のファームウェアを書き換えます</h2>
+    <p>VS-C4用ファームウェアを準備してから接続してください。更新中は電源や接続を切らないでください。</p>
+    <a href="help.html#ota">更新手順と注意点を確認</a>
+</section>
 
 <!-- Base on https://www.html5rocks.com/en/tutorials/file/dndfiles// -->
 <div id="divBtConn">
@@ -18,7 +22,7 @@ index: index.html
 </div>
 <div id="divInfo" style="display:none;margin-bottom:1em;"></div>
 <div id="divFwSelect" style="display:none;margin-bottom:1em;">
-    ファームウェアを選択:
+    <label for="fwFile">VS-C4用ファームウェアを選択</label>
     <input type="file" id="fwFile" name="fw.bin"/><br>
     <button id="btnFwUpdate">ファームウェアを更新</button>
 </div>

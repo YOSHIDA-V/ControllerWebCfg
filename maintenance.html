@@ -1,0 +1,42 @@
+---
+feature_name: VS-C4 本体メンテナンス
+icon_url: icon.png
+index: index.html
+---
+
+{% include_relative _includes/intro.html %}
+
+<section class="hero compact-hero">
+  <div>
+    <span class="eyebrow">本体の管理</span>
+    <h2>行う作業を選んでください</h2>
+    <p>通常のコントローラー設定は、ホームの「かんたん設定」または「詳細設定」を使用します。</p>
+  </div>
+  <div class="note-panel">
+    メンテナンス中はVS-C4からコントローラーを外し、処理が終わるまで電源や接続を切らないでください。
+  </div>
+</section>
+
+<section class="quick-grid maintenance-grid" aria-label="メンテナンス機能">
+  <a class="tool-card primary" href="ota.html">
+    <span class="card-badge">ファームウェアを書き換える</span>
+    <strong>ファームウェア更新</strong>
+    <span>VS-C4用ファームウェアを選択して更新します。</span>
+  </a>
+  <a class="tool-card" href="system.html">
+    <span class="card-badge neutral">本体を再起動・初期化する</span>
+    <strong>本体操作</strong>
+    <span>Deep Sleep、リセット、出荷時リセットを行います。</span>
+  </a>
+  <a class="tool-card caution" href="files.html">
+    <span class="card-badge neutral">内容が分かる場合のみ</span>
+    <strong>内部ファイル管理</strong>
+    <span>VS-C4内部のファイルを確認・管理します。</span>
+  </a>
+</section>
+
+<details class="advanced-disclosure">
+  <summary>不具合調査を行う</summary>
+  <p>サポートや開発者から案内された場合は、デバッグトレースを取得できます。</p>
+  <a class="preview-button" href="debug.html">デバッグページを開く</a>
+</details>

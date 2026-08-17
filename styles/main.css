@@ -222,19 +222,43 @@ h3 {
   font-size: 1rem;
 }
 
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+}
+
+.site-header h1 {
+  margin: 0;
+}
+
 .pageIcon {
   width: 44px;
   height: 44px;
-  margin: 0 12px 0 0;
-  float: left;
+  margin: 0;
+  flex: 0 0 auto;
 }
 
 .availability {
   display: flex;
   gap: 12px;
   align-items: center;
-  margin: 0 0 24px;
+  margin: 10px 0 24px;
   color: var(--vsc4-muted);
+}
+
+.availability a,
+.preview-button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border: 1px solid rgba(231, 20, 26, 0.35);
+  border-radius: var(--vsc4-radius);
+  background: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
 }
 
 .app-shell {
@@ -273,6 +297,11 @@ h3 {
   padding: 28px;
 }
 
+.compact-hero {
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
+  align-items: start;
+}
+
 .hero h2 {
   margin: 0 0 8px;
   padding: 0;
@@ -286,9 +315,57 @@ h3 {
   color: var(--vsc4-muted);
 }
 
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 5px;
+  color: var(--vsc4-primary-strong);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.task-steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 14px 16px 14px 38px;
+  border: 1px solid var(--vsc4-line);
+  border-radius: var(--vsc4-radius);
+  background: #f7fbfc;
+}
+
+.task-steps li {
+  padding-left: 4px;
+}
+
 .doc-link-panel {
   display: block;
   padding: 14px 18px;
+}
+
+.page-guide {
+  padding: 18px;
+  border: 1px solid var(--vsc4-line);
+  border-left: 5px solid var(--vsc4-primary);
+  border-radius: var(--vsc4-radius);
+  background: var(--vsc4-panel);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.page-guide h2 {
+  margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+}
+
+.page-guide p {
+  margin: 0 0 10px;
+  color: var(--vsc4-muted);
+}
+
+.caution-guide {
+  border-left-color: #a35a00;
+  background: #fffaf1;
 }
 
 .doc-link-panel p {
@@ -327,6 +404,15 @@ h3 {
   text-decoration: none;
 }
 
+.tool-card:focus-visible,
+.availability a:focus-visible,
+.preview-button:focus-visible,
+.help-link-list a:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #111111;
+  outline-offset: 3px;
+}
+
 .tool-card strong {
   font-size: 1.1rem;
 }
@@ -339,6 +425,26 @@ h3 {
 .tool-card.primary {
   border-color: rgba(231, 20, 26, 0.45);
   background: linear-gradient(180deg, #ffffff, #fff2f2);
+}
+
+.tool-card.caution {
+  border-color: #d1a566;
+  background: linear-gradient(180deg, #ffffff, #fff8ec);
+}
+
+.card-badge {
+  justify-self: start;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--vsc4-primary);
+  color: #ffffff !important;
+  font-size: 0.75rem;
+  font-weight: 800 !important;
+}
+
+.card-badge.neutral {
+  background: #e5edef;
+  color: #26383c !important;
 }
 
 .note-panel {
@@ -396,6 +502,59 @@ h3 {
 
 .help-section li + li {
   margin-top: 6px;
+}
+
+.help-section ol {
+  padding-left: 1.35em;
+}
+
+.help-link-list {
+  display: grid;
+  gap: 8px;
+}
+
+.help-link-list a {
+  display: grid;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid var(--vsc4-line);
+  border-radius: var(--vsc4-radius);
+  background: #f7fbfc;
+  color: var(--vsc4-text);
+  text-decoration: none;
+}
+
+.help-link-list a strong {
+  color: var(--vsc4-primary);
+}
+
+.help-link-list a span {
+  color: var(--vsc4-muted);
+  font-weight: 400;
+}
+
+.advanced-disclosure {
+  padding: 14px 16px;
+  border: 1px solid var(--vsc4-line);
+  border-radius: var(--vsc4-radius);
+  background: var(--vsc4-panel);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.advanced-disclosure summary,
+.developer-reference summary {
+  cursor: pointer;
+  color: var(--vsc4-primary);
+  font-weight: 800;
+}
+
+.advanced-disclosure p {
+  color: var(--vsc4-muted);
+}
+
+.developer-reference {
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .preview-actions {
@@ -700,12 +859,17 @@ outputandconsole {
     padding: 16px;
   }
 
+  .compact-hero {
+    grid-template-columns: 1fr;
+  }
+
   .quick-grid {
     grid-template-columns: 1fr;
     gap: 10px;
   }
 
   .tool-card,
+  .page-guide,
   .doc-link-panel,
   #divBtConn,
   #divInfo,
@@ -742,6 +906,10 @@ outputandconsole {
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.65);
     text-decoration: none;
+  }
+
+  .task-steps {
+    padding: 12px 12px 12px 34px;
   }
 
   button,

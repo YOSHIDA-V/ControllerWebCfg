@@ -1,136 +1,93 @@
 ---
-feature_name: VS-C4 ヘルプ
+feature_name: VS-C4 使い方・困ったとき
 icon_url: icon.png
 index: index.html
+is_help: true
 ---
 
-<section class="hero">
+<section class="hero compact-hero">
   <div>
-    <h2>VS-C4 設定ツールの使い方</h2>
-    <p>VS-C4を設定する作業者向けに、接続前の準備、各ページの役割、注意点をまとめています。</p>
+    <span class="eyebrow">VS-C4 Web設定ガイド</span>
+    <h2>目的に合うページを選びます</h2>
+    <p>通常の設定は「かんたん設定」または「詳細設定」を使用します。本体管理はメンテナンスから行います。</p>
   </div>
-  <div class="note-panel">
-    設定を書き込む前に、VS-C4からコントローラーを外してください。ChromeまたはEdgeで開く必要があります。
-  </div>
+  <ol class="task-steps">
+    <li>VS-C4からコントローラーを外す</li>
+    <li>ChromeまたはEdgeで開く</li>
+    <li>目的のページで「VS-C4に接続」を押す</li>
+  </ol>
 </section>
 
 <section class="help-layout">
-  <nav class="help-toc" aria-label="ヘルプ目次">
-    <strong>目次</strong>
-    <a href="#start">最初に確認すること</a>
+  <nav class="help-toc" aria-label="使い方目次">
+    <strong>目的から選ぶ</strong>
+    <a href="#presets">かんたん設定</a>
     <a href="#advance">詳細設定</a>
-    <a href="#mapping-config">マッピング設定</a>
-    <a href="#presets">プリセット設定</a>
-    <a href="#system">システム管理</a>
-    <a href="#ota">ファームウェア更新</a>
-    <a href="#files">ファイル管理</a>
-    <a href="#debug">デバッグ</a>
-    <a href="#preview">画面確認</a>
-    <a href="#reference">参考情報</a>
+    <a href="#maintenance">本体メンテナンス</a>
+    <a href="#troubleshooting">困ったとき</a>
   </nav>
 
   <div>
-    <section id="start" class="help-section">
-      <h2>最初に確認すること</h2>
-      <ul>
-        <li>VS-C4とPCをUSBまたはBLEで接続できる状態にします。</li>
-        <li>設定のために接続する前に、VS-C4から接続中のコントローラーを切断します。</li>
-        <li>設定作業はChromeまたはEdgeで行います。Web Bluetoothに対応していないブラウザーでは接続できません。</li>
-        <li>どのページでも、まず「VS-C4に接続」を押して対象のVS-C4を選びます。</li>
-      </ul>
+    <section id="presets" class="help-section">
+      <span class="eyebrow">初めての設定におすすめ</span>
+      <h2>かんたん設定</h2>
+      <p>接続するコントローラーと出力先に合うプリセットを選び、設定をまとめて書き込みます。</p>
+      <ol>
+        <li>「VS-C4に接続」を押します。</li>
+        <li>書き込み先、本体、プリセットを選びます。</li>
+        <li>「プリセットを書き込む」を押します。</li>
+      </ol>
+      <a class="preview-button" href="presets.html">かんたん設定を開く</a>
     </section>
 
     <section id="advance" class="help-section">
+      <span class="eyebrow">項目ごとに調整</span>
       <h2>詳細設定</h2>
-      <p>出力設定、入力マッピング、VS-C4で使う主要設定を編集するページです。</p>
+      <p>VS-C4全体の設定、出力設定、入力マッピングを個別に変更します。</p>
       <ul>
-        <li id="global-config"><strong>グローバル設定:</strong> VS-C4全体に関係する基本設定を扱います。</li>
-        <li id="output-config"><strong>出力設定:</strong> VS-C4から接続先機器へ出すコントローラー種別や出力関連設定を扱います。</li>
-        <li id="mapping-config"><strong>マッピング設定:</strong> 入力コントローラーの操作を、PSX / PS2などの出力ボタンへ割り当てます。</li>
-        <li id="config-selection"><strong>設定選択:</strong> VS-C4固有FWでは基本的にグローバル設定を使用します。</li>
+        <li id="global-config"><strong>グローバル設定:</strong> VS-C4全体に関係する設定です。</li>
+        <li id="output-config"><strong>出力設定:</strong> 接続先へ送るコントローラー種別などを設定します。</li>
+        <li id="mapping-config"><strong>マッピング設定:</strong> 入力側の操作をPSX / PS2側のボタンやスティックへ割り当てます。</li>
+        <li><strong>デッドゾーン / スケーリング:</strong> 通常は非表示のままで使用し、必要な場合だけ表示します。</li>
       </ul>
+      <a class="preview-button" href="advance.html">詳細設定を開く</a>
     </section>
 
-    <section id="mapping" class="help-section">
-      <h2>マッピング設定の見方</h2>
+    <section id="maintenance" class="help-section">
+      <span class="eyebrow">必要なときだけ使用</span>
+      <h2>本体メンテナンス</h2>
+      <p>設定ページと本体管理ページを分けています。目的に合う機能だけを開いてください。</p>
+      <div class="help-link-list">
+        <a id="ota" href="ota.html"><strong>ファームウェア更新</strong><span>VS-C4用ファームウェアを書き換える</span></a>
+        <a id="system" href="system.html"><strong>本体操作</strong><span>Deep Sleep、リセット、出荷時リセット</span></a>
+        <a id="files" href="files.html"><strong>内部ファイル管理</strong><span>内容が分かる場合だけ使用する</span></a>
+      </div>
+    </section>
+
+    <section id="troubleshooting" class="help-section">
+      <span class="eyebrow">困ったとき</span>
+      <h2>接続できない場合</h2>
       <ul>
-        <li>「入力」は、接続しているコントローラー側の操作です。</li>
-        <li>「出力」は、VS-C4から接続先へ送るPSX / PS2側のボタンまたはスティックです。</li>
-        <li>通常作業では、デッドゾーンとスケーリングは非表示で問題ありません。必要な場合だけチェックボックスで表示します。</li>
-        <li>変更後は「マッピングを保存」を押してVS-C4へ書き込みます。</li>
+        <li>ChromeまたはEdgeで開いているか確認します。</li>
+        <li>VS-C4からコントローラーを外してから、もう一度接続します。</li>
+        <li>別のページがVS-C4へ接続中の場合は、そのページを閉じます。</li>
       </ul>
+      <details class="advanced-disclosure">
+        <summary>調査用データを取得する</summary>
+        <p>サポートや開発者から案内された場合だけ、デバッグトレースを取得します。</p>
+        <a class="preview-button" href="debug.html">デバッグページを開く</a>
+      </details>
     </section>
 
-    <section id="presets" class="help-section">
-      <h2>プリセット設定</h2>
-      <p>既定の組み合わせを選び、VS-C4へマッピングを書き込むページです。</p>
-      <ul>
-        <li>通常は対象コントローラーと出力先に合うプリセットを選びます。</li>
-        <li>細かい割り当てを調整する場合は、書き込み後に詳細設定ページで確認します。</li>
-      </ul>
-    </section>
-
-    <section id="system" class="help-section">
-      <h2>システム管理</h2>
-      <p>VS-C4本体の再起動、スリープ、出荷時リセットを行うページです。</p>
-      <ul>
-        <li>リセットや出荷時リセットは本体状態に影響します。実行前に対象のVS-C4を確認してください。</li>
-        <li>通常の設定変更だけなら、このページを使う必要はありません。</li>
-      </ul>
-    </section>
-
-    <section id="ota" class="help-section">
-      <h2>ファームウェア更新</h2>
-      <p>VS-C4へファームウェアを書き込むページです。</p>
-      <ul>
-        <li>更新中はページを閉じず、VS-C4の電源を切らないでください。</li>
-        <li>書き込むファームウェアがVS-C4用であることを確認してください。</li>
-      </ul>
-    </section>
-
-    <section id="files" class="help-section">
-      <h2>ファイル管理</h2>
-      <p>VS-C4内部のファイル確認や管理を行うページです。</p>
-      <ul>
-        <li>不要なファイル削除は動作に影響する場合があります。内容が不明なファイルは削除しないでください。</li>
-      </ul>
-    </section>
-
-    <section id="debug" class="help-section">
-      <h2>デバッグ</h2>
-      <p>調査用のデバッグトレースを取得するページです。</p>
-      <ul>
-        <li>通常の設定作業では使いません。</li>
-        <li>不具合調査時に、接続状態や処理ログと合わせて確認します。</li>
-      </ul>
-    </section>
-
-    <section id="n64-ctrlpak" class="help-section">
-      <h2>N64 コントローラーパック管理</h2>
-      <p>N64用のコントローラーパックデータを扱うページです。PSX / PS2用の通常設定では使いません。</p>
-    </section>
-
-    <section id="dc-vmu" class="help-section">
-      <h2>DC VMU管理</h2>
-      <p>Dreamcast VMUデータを読み書きするページです。PSX / PS2用の通常設定では使いません。</p>
-    </section>
-
-    <section id="preview" class="help-section">
-      <h2>画面確認</h2>
-      <p>VS-C4を接続できない環境でも、URLに <code>?preview=1</code> を付けると一部ページのレイアウト確認ができます。</p>
-      <ul>
-        <li>プレビューでは実際の読み込みや書き込みは行いません。</li>
-        <li>公開ページの操作確認は、実機接続できる通常ページで行います。</li>
-      </ul>
-    </section>
-
-    <section id="reference" class="help-section">
-      <h2>参考情報</h2>
-      <p>以下は元BlueRetro側の参考資料です。VS-C4向けの通常作業は、このヘルプと各ページの案内を優先してください。</p>
-      <ul>
-        <li><a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual" target="_blank">BlueRetro BLE Web Config User Manual</a></li>
-        <li><a href="https://github.com/darthcloud/BlueRetroWiki/blob/master/Debug-trace.md" target="_blank">BlueRetro Debug trace</a></li>
-      </ul>
+    <section class="help-section developer-reference">
+      <details>
+        <summary>開発者向け参考情報</summary>
+        <ul>
+          <li><a href="https://github.com/YOSHIDA-V/ControllerWebCfg" target="_blank" rel="noopener">VS-C4 Web設定のソースコード</a></li>
+          <li><a href="https://github.com/YOSHIDA-V/blueretro-vs-c4-firmware/tree/v1.0" target="_blank" rel="noopener">VS-C4 ファームウェア v1.0</a></li>
+          <li><a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual" target="_blank" rel="noopener">元BlueRetro Web設定資料</a></li>
+        </ul>
+      </details>
     </section>
   </div>
 </section>
