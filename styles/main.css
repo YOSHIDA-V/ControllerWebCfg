@@ -347,6 +347,56 @@ h3 {
   border-radius: var(--vsc4-radius);
   background: var(--vsc4-warn-bg);
 }
+.doc-link-panel strong {
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.help-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, 260px) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.help-toc,
+.help-section {
+  border: 1px solid var(--vsc4-line);
+  border-radius: var(--vsc4-radius);
+  background: var(--vsc4-panel);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.help-toc {
+  position: sticky;
+  top: 12px;
+  align-self: start;
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+}
+
+.help-toc a {
+  padding: 6px 0;
+  text-decoration: none;
+}
+
+.help-section {
+  padding: 18px;
+  margin-bottom: 12px;
+}
+
+.help-section p,
+.help-section ul {
+  margin-top: 0;
+}
+
+.help-section ul {
+  padding-left: 1.2em;
+}
+
+.help-section li + li {
+  margin-top: 6px;
+}
 
 .preview-actions {
   display: flex;
@@ -712,6 +762,14 @@ outputandconsole {
   #log {
     max-height: 240px;
     font-size: 0.82rem;
+  }
+
+  .help-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .help-toc {
+    position: static;
   }
 
   .mapping-display-options {

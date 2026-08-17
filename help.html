@@ -1,0 +1,136 @@
+---
+feature_name: VS-C4 ヘルプ
+icon_url: icon.png
+index: index.html
+---
+
+<section class="hero">
+  <div>
+    <h2>VS-C4 設定ツールの使い方</h2>
+    <p>VS-C4を設定する作業者向けに、接続前の準備、各ページの役割、注意点をまとめています。</p>
+  </div>
+  <div class="note-panel">
+    設定を書き込む前に、VS-C4からコントローラーを外してください。ChromeまたはEdgeで開く必要があります。
+  </div>
+</section>
+
+<section class="help-layout">
+  <nav class="help-toc" aria-label="ヘルプ目次">
+    <strong>目次</strong>
+    <a href="#start">最初に確認すること</a>
+    <a href="#advance">詳細設定</a>
+    <a href="#mapping-config">マッピング設定</a>
+    <a href="#presets">プリセット設定</a>
+    <a href="#system">システム管理</a>
+    <a href="#ota">ファームウェア更新</a>
+    <a href="#files">ファイル管理</a>
+    <a href="#debug">デバッグ</a>
+    <a href="#preview">画面確認</a>
+    <a href="#reference">参考情報</a>
+  </nav>
+
+  <div>
+    <section id="start" class="help-section">
+      <h2>最初に確認すること</h2>
+      <ul>
+        <li>VS-C4とPCをUSBまたはBLEで接続できる状態にします。</li>
+        <li>設定のために接続する前に、VS-C4から接続中のコントローラーを切断します。</li>
+        <li>設定作業はChromeまたはEdgeで行います。Web Bluetoothに対応していないブラウザーでは接続できません。</li>
+        <li>どのページでも、まず「VS-C4に接続」を押して対象のVS-C4を選びます。</li>
+      </ul>
+    </section>
+
+    <section id="advance" class="help-section">
+      <h2>詳細設定</h2>
+      <p>出力設定、入力マッピング、VS-C4で使う主要設定を編集するページです。</p>
+      <ul>
+        <li id="global-config"><strong>グローバル設定:</strong> VS-C4全体に関係する基本設定を扱います。</li>
+        <li id="output-config"><strong>出力設定:</strong> VS-C4から接続先機器へ出すコントローラー種別や出力関連設定を扱います。</li>
+        <li id="mapping-config"><strong>マッピング設定:</strong> 入力コントローラーの操作を、PSX / PS2などの出力ボタンへ割り当てます。</li>
+        <li id="config-selection"><strong>設定選択:</strong> VS-C4固有FWでは基本的にグローバル設定を使用します。</li>
+      </ul>
+    </section>
+
+    <section id="mapping" class="help-section">
+      <h2>マッピング設定の見方</h2>
+      <ul>
+        <li>「入力」は、接続しているコントローラー側の操作です。</li>
+        <li>「出力」は、VS-C4から接続先へ送るPSX / PS2側のボタンまたはスティックです。</li>
+        <li>通常作業では、デッドゾーンとスケーリングは非表示で問題ありません。必要な場合だけチェックボックスで表示します。</li>
+        <li>変更後は「マッピングを保存」を押してVS-C4へ書き込みます。</li>
+      </ul>
+    </section>
+
+    <section id="presets" class="help-section">
+      <h2>プリセット設定</h2>
+      <p>既定の組み合わせを選び、VS-C4へマッピングを書き込むページです。</p>
+      <ul>
+        <li>通常は対象コントローラーと出力先に合うプリセットを選びます。</li>
+        <li>細かい割り当てを調整する場合は、書き込み後に詳細設定ページで確認します。</li>
+      </ul>
+    </section>
+
+    <section id="system" class="help-section">
+      <h2>システム管理</h2>
+      <p>VS-C4本体の再起動、スリープ、出荷時リセットを行うページです。</p>
+      <ul>
+        <li>リセットや出荷時リセットは本体状態に影響します。実行前に対象のVS-C4を確認してください。</li>
+        <li>通常の設定変更だけなら、このページを使う必要はありません。</li>
+      </ul>
+    </section>
+
+    <section id="ota" class="help-section">
+      <h2>ファームウェア更新</h2>
+      <p>VS-C4へファームウェアを書き込むページです。</p>
+      <ul>
+        <li>更新中はページを閉じず、VS-C4の電源を切らないでください。</li>
+        <li>書き込むファームウェアがVS-C4用であることを確認してください。</li>
+      </ul>
+    </section>
+
+    <section id="files" class="help-section">
+      <h2>ファイル管理</h2>
+      <p>VS-C4内部のファイル確認や管理を行うページです。</p>
+      <ul>
+        <li>不要なファイル削除は動作に影響する場合があります。内容が不明なファイルは削除しないでください。</li>
+      </ul>
+    </section>
+
+    <section id="debug" class="help-section">
+      <h2>デバッグ</h2>
+      <p>調査用のデバッグトレースを取得するページです。</p>
+      <ul>
+        <li>通常の設定作業では使いません。</li>
+        <li>不具合調査時に、接続状態や処理ログと合わせて確認します。</li>
+      </ul>
+    </section>
+
+    <section id="n64-ctrlpak" class="help-section">
+      <h2>N64 コントローラーパック管理</h2>
+      <p>N64用のコントローラーパックデータを扱うページです。PSX / PS2用の通常設定では使いません。</p>
+    </section>
+
+    <section id="dc-vmu" class="help-section">
+      <h2>DC VMU管理</h2>
+      <p>Dreamcast VMUデータを読み書きするページです。PSX / PS2用の通常設定では使いません。</p>
+    </section>
+
+    <section id="preview" class="help-section">
+      <h2>画面確認</h2>
+      <p>VS-C4を接続できない環境でも、URLに <code>?preview=1</code> を付けると一部ページのレイアウト確認ができます。</p>
+      <ul>
+        <li>プレビューでは実際の読み込みや書き込みは行いません。</li>
+        <li>公開ページの操作確認は、実機接続できる通常ページで行います。</li>
+      </ul>
+    </section>
+
+    <section id="reference" class="help-section">
+      <h2>参考情報</h2>
+      <p>以下は元BlueRetro側の参考資料です。VS-C4向けの通常作業は、このヘルプと各ページの案内を優先してください。</p>
+      <ul>
+        <li><a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual" target="_blank">BlueRetro BLE Web Config User Manual</a></li>
+        <li><a href="https://github.com/darthcloud/BlueRetroWiki/blob/master/Debug-trace.md" target="_blank">BlueRetro Debug trace</a></li>
+      </ul>
+    </section>
+  </div>
+</section>

@@ -151,7 +151,7 @@ export const pakSize = 32 * 1024;
 export const vmuSize = 128 * 1024;
 export const mtu = 244;
 
-export const urlLatestRelease = 'https://api.github.com/repos/darthcloud/BlueRetro/releases/latest'
+export const urlLatestRelease = 'https://api.github.com/repos/YOSHIDA-V/blueretro-vs-c4-firmware/releases/latest'
 export const showLatestFirmwareNotice = false; // Set true when the official VS-C4 update flow is ready.
 
 export const cfg_cmd_get_abi_ver = 0x01;

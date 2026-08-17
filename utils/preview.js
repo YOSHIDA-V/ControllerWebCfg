@@ -263,7 +263,7 @@
   }
 
   function previewN64CtrlPak() {
-    showTransferPreview('divFileSelect', 'N64 controller pak manager', '<label>Pak bank</label><select><option>Pak 1</option><option>Pak 2</option></select><button type="button">Read</button><button type="button">Format</button><button type="button">Write</button><label>.MPK file</label><input type="file">');
+    showTransferPreview('divFileSelect', 'N64 コントローラーパック管理', '<label>パックバンク</label><select><option>Pak 1</option><option>Pak 2</option></select><button type="button">読み出し</button><button type="button">初期化</button><button type="button">書き込み</button><label>.MPK ファイル</label><input type="file">');
   }
 
   function previewDcVmu() {

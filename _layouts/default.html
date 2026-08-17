@@ -44,7 +44,7 @@ limitations under the License.
     {% else %}
     <link rel="icon" href="{{ relative_path_to_root }}images/favicon.ico">
     {% endif %}
-    <link rel="stylesheet" href="{{ relative_path_to_root }}styles/main.css?v=vsc4-20260522-6">
+    <link rel="stylesheet" href="{{ relative_path_to_root }}styles/main.css?v=vsc4-20260522-7">
     {% for local_css_file in page.local_css_files %}<link rel="stylesheet" href="{{ local_css_file }}">{% endfor %}
     {% if page.additional_head_content %}{{ page.additional_head_content }}{% endif %}
     {% if site.google_analytics and jekyll.environment == 'production' %}
@@ -56,13 +56,14 @@ limitations under the License.
     {% if page.icon_url %}<img class="pageIcon" src="{{ page.icon_url }}">{% endif %}
     <h1>{% if page.title %}{{ page.title }}{% else %}{{ page.feature_name }}{% endif %}</h1>
     <p class="availability">
-      <a {% if page.index == null %}target="_blank"{% endif %} href="{% if page.index %}{{ page.index }}{% else %}https://darthcloud.github.io/BlueRetroWebCfg/index.html{% endif %}">Index</a> |
-      <a target="_blank" href="https://github.com/darthcloud/BlueRetro">GitHubで表示</a>
+      <a href="{% if page.index %}{{ page.index }}{% else %}{{ relative_path_to_root }}index.html{% endif %}">Index</a> |
+      <a href="{{ relative_path_to_root }}help.html">ヘルプ</a> |
+      <a target="_blank" href="https://github.com/YOSHIDA-V/ControllerWebCfg">GitHubで表示</a>
     </p>
     <main class="app-shell">
       {{ content }}
     </main>
-    <script src="{{ relative_path_to_root }}utils/preview.js?v=vsc4-20260522-6"></script>
+    <script src="{{ relative_path_to_root }}utils/preview.js?v=vsc4-20260522-7"></script>
     {% for local_js_file in page.local_js_files %}<script src="{{ local_js_file }}"></script>{% endfor %}
   </body>
 </html>

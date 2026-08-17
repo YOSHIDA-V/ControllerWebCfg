@@ -1,4 +1,4 @@
-const CACHE_NAME = 'web-bluetooth-vsc4-20260522-6';
+const CACHE_NAME = 'web-bluetooth-vsc4-20260522-7';
 
 function addToCache(request, networkResponse) {
   if (request.method !== 'GET' || !networkResponse || !networkResponse.ok) {

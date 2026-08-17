@@ -188,7 +188,7 @@ export function btConn() {
         document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
         try {
             if (showLatestFirmwareNotice && app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
+                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/YOSHIDA-V/blueretro-vs-c4-firmware/releases\'>GitHub</a>';
             }
         }
         catch (e) {

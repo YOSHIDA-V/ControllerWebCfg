@@ -213,7 +213,7 @@ function initGlobalCfg() {
 
     divGlobalCfg.appendChild(header);
 
-    divGlobalCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#22---global-config" target="_blank">グローバル設定のWiki</a><br><br>'
+    divGlobalCfg.innerHTML += '<a href="help.html#global-config">グローバル設定の説明</a><br><br>'
 
     var div = document.createElement("div");
 
@@ -342,7 +342,7 @@ function initOutputSelect() {
 
     divOutputCfg.appendChild(header);
 
-    divOutputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#23---output-config" target="_blank">出力設定のWiki</a><br><br>'
+    divOutputCfg.innerHTML += '<a href="help.html#output-config">出力設定の説明</a><br><br>'
 
     var div = document.createElement("div");
 
@@ -463,7 +463,7 @@ function initInputSelect() {
 
     divInputCfg.appendChild(header);
 
-    divInputCfg.innerHTML += '<a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#24---mapping-config" target="_blank">マッピング設定のWiki</a><br><br>';
+    divInputCfg.innerHTML += '<a href="help.html#mapping-config">マッピング設定の説明</a><br><br>';
 
     var div = document.createElement("div");
     div.setAttribute("style", "margin-bottom:1em;");
@@ -1245,7 +1245,7 @@ export function btConn() {
             + ']<br> 現在のゲームモード: ' + gamename + ' (' + gameid + ')';
         try {
             if (showLatestFirmwareNotice && app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\' target=\'_blank\'>GitHub</a> からダウンロード';
+                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/YOSHIDA-V/blueretro-vs-c4-firmware/releases\' target=\'_blank\'>GitHub</a> からダウンロード';
             }
         }
         catch (e) {

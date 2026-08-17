@@ -7,9 +7,8 @@ index: index.html
 {% include_relative _includes/intro.html %}
 
 <div class="doc-link-panel">
-    <p class="banner-link"><a href="https://blueretro.com/products/brx"><img src="brx_banner.png" alt="BlueRetro"/></a></p>
-    <p>ドキュメント（Wiki）を参照してください:<br>
-    <a href="https://github.com/darthcloud/BlueRetro/wiki/BlueRetro-BLE-Web-Config-User-Manual#2---advance-config-page" target="_blank">2 - 詳細設定ページ</a></p>
+    <p><strong>このページの説明</strong><br>
+    <a href="help.html#advance">詳細設定の使い方</a></p>
 </div>
 
 <div id="divBtConn">
@@ -30,7 +29,7 @@ index: index.html
 
 <script src='sql.js/sql-wasm.js'></script>
 <script type="module">
-  import { btConn } from './advance.js?v=vsc4-20260522-6';
+  import { btConn } from './advance.js?v=vsc4-20260522-7';
   import { isWebBluetoothEnabled } from './utils/isWebBluetoothEnabled.js';
 
   document.getElementById("btConn").addEventListener('click', function() {

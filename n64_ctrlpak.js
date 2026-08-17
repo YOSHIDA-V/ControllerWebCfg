@@ -155,12 +155,12 @@ export function btConn() {
         return bluetoothDevice.gatt.connect();
     })
     .then(server => {
-        log('BlueRetro サービスを取得しています...');
+        log('VS-C4 サービスを取得しています...');
         return server.getPrimaryService(brUuid[0]);
     })
     .catch(error => {
         log(error.name);
-        throw 'BlueRetro に接続できませんでした';
+        throw 'VS-C4 に接続できませんでした';
     })
     .then(service => {
         brService = service;
@@ -186,7 +186,7 @@ export function btConn() {
         document.getElementById("divInfo").innerHTML = '接続先: ' + name + ' (' + bdaddr + ') [' + app_ver + ']';
         try {
             if (showLatestFirmwareNotice && app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
+                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/YOSHIDA-V/blueretro-vs-c4-firmware/releases\'>GitHub</a>';
             }
         }
         catch (e) {

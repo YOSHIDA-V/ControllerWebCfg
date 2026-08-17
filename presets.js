@@ -141,7 +141,7 @@ function onlyUnique(value, index, self) {
 }
 
 function initBlueRetroCfg() {
-    getMapList('https://api.github.com/repos/darthcloud/BlueRetroWebCfg/contents/map/')
+    getMapList('https://api.github.com/repos/YOSHIDA-V/ControllerWebCfg/contents/map/')
     .then(files => {
         return fetchMap(presets, files, 0);
     })
@@ -295,7 +295,7 @@ export function btConn() {
             + ']<br> Current Game: ' + gamename + ' (' + gameid + ')';
         try {
             if (showLatestFirmwareNotice && app_ver.indexOf(latest_ver) == -1) {
-                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/darthcloud/BlueRetro/releases\'>GitHub</a>';
+                document.getElementById("divInfo").innerHTML += '<br><br>最新FW ' + latest_ver + ' を <a href=\'https://github.com/YOSHIDA-V/blueretro-vs-c4-firmware/releases\'>GitHub</a>';
             }
         }
         catch (e) {
