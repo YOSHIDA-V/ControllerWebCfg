@@ -44,7 +44,7 @@ limitations under the License.
     {% else %}
     <link rel="icon" href="{{ relative_path_to_root }}images/favicon.ico">
     {% endif %}
-    <link rel="stylesheet" href="{{ relative_path_to_root }}styles/main.css?v=vsc4-20260817-1">
+    <link rel="stylesheet" href="{{ relative_path_to_root }}styles/main.css?v=vsc4-20260817-2">
     {% for local_css_file in page.local_css_files %}<link rel="stylesheet" href="{{ local_css_file }}">{% endfor %}
     {% if page.additional_head_content %}{{ page.additional_head_content }}{% endif %}
     {% if site.google_analytics and jekyll.environment == 'production' %}
@@ -52,25 +52,35 @@ limitations under the License.
     {% endif %}
   </head>
 
-  <body>
-    <header class="site-header">
-      {% if page.icon_url %}<img class="pageIcon" src="{{ page.icon_url }}" alt="">{% endif %}
-      <h1>{% if page.title %}{{ page.title }}{% else %}{{ page.feature_name }}{% endif %}</h1>
-    </header>
-    <nav class="availability" aria-label="主要ナビゲーション">
+  <body class="{% if page.is_home %}home-page{% else %}tool-page{% endif %}">
+    {% assign full_title = page.title | default: page.feature_name %}
+    {% assign display_title = full_title | remove_first: 'VS-C4 ' %}
+    <div class="site-frame">
+      <header class="site-header">
+        <a class="site-brand" href="{% if page.index %}{{ page.index }}{% else %}{{ relative_path_to_root }}index.html{% endif %}" aria-label="VS-C4 Web設定ホーム">
+          {% if page.icon_url %}<img class="pageIcon" src="{{ page.icon_url }}" alt="">{% endif %}
+          <span>VS-C4</span>
+        </a>
+        <div class="site-heading">
+          <span class="site-kicker">WEB CONFIGURATION</span>
+          <h1>{{ display_title }}</h1>
+        </div>
+      </header>
       {% unless page.is_home %}
-      <a href="{% if page.index %}{{ page.index }}{% else %}{{ relative_path_to_root }}index.html{% endif %}">ホーム</a>
+      <nav class="availability" aria-label="主要ナビゲーション">
+        <a href="{% if page.index %}{{ page.index }}{% else %}{{ relative_path_to_root }}index.html{% endif %}">ホーム</a>
+        {% if page.parent_url %}
+        <a href="{{ page.parent_url }}">{{ page.parent_label }}</a>
+        {% endif %}
+        {% unless page.is_help %}
+        <a href="{{ relative_path_to_root }}help.html">使い方</a>
+        {% endunless %}
+      </nav>
       {% endunless %}
-      {% if page.parent_url %}
-      <a href="{{ page.parent_url }}">{{ page.parent_label }}</a>
-      {% endif %}
-      {% unless page.is_help %}
-      <a href="{{ relative_path_to_root }}help.html">使い方</a>
-      {% endunless %}
-    </nav>
-    <main class="app-shell">
-      {{ content }}
-    </main>
+      <main class="app-shell">
+        {{ content }}
+      </main>
+    </div>
     <script src="{{ relative_path_to_root }}utils/preview.js?v=vsc4-20260817-3"></script>
     {% for local_js_file in page.local_js_files %}<script src="{{ local_js_file }}"></script>{% endfor %}
   </body>
