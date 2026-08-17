@@ -432,7 +432,7 @@ h3 {
 }
 
 .page-guide > a,
-.doc-link-panel > a,
+.doc-link-panel a,
 .developer-reference li > a {
   display: inline-flex;
   min-height: 44px;
