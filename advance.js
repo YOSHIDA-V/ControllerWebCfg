@@ -224,7 +224,7 @@ function initGlobalCfg() {
 
     var sel = document.createElement("select");
 
-    const allowedSystem = new Set([11, 17]);
+    const allowedSystem = new Set([0, 11, 17]);
     for (var i = 0; i < systemCfg.length; i++) {
         if (!allowedSystem.has(i)) continue;
 

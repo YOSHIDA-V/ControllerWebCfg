@@ -136,7 +136,7 @@
     if (global) {
       global.style.display = 'block';
       global.innerHTML = '<h2>グローバル設定</h2>';
-      global.appendChild(labeledSelect('システム', '', ['SPI2 / PSX', 'SPI3 / PS2']));
+      global.appendChild(labeledSelect('システム', '', ['Auto', 'SPI2 / PSX', 'SPI3 / PS2']));
       global.appendChild(labeledSelect('ペアリングモード', '', ['Auto', 'ボタンペアリング']));
       const save = document.createElement('button');
       save.type = 'button';
