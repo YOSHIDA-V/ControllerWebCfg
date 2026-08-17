@@ -70,6 +70,7 @@
 
     const del = document.createElement('button');
     del.type = 'button';
+    del.className = 'mapping-delete-button';
     del.textContent = '削除';
     row.appendChild(del);
     return row;

@@ -746,6 +746,13 @@ function initFirstOutputMapping() {
     span.appendChild(diag);
     mappingElement.appendChild(span);
 
+    var deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "mapping-delete-button";
+    deleteButton.innerText = '削除';
+    deleteButton.addEventListener("click", delInput);
+    mappingElement.appendChild(deleteButton);
+
     /* Add button */
     var addButton = document.createElement("button");
     addButton.className = "mapping-add-button";
@@ -1269,10 +1276,8 @@ function addInput() {
         nbMapping++;
         var div = document.getElementById("divMapping");
         var newSubDiv = mappingElement.cloneNode(true);
-        var newButton = document.createElement("button");
-        newButton.innerText = '削除';
+        var newButton = newSubDiv.querySelector(".mapping-delete-button");
         newButton.addEventListener("click", delInput);
-        newSubDiv.appendChild(newButton);
         newSubDiv.querySelector('.max').value = 100;
         newSubDiv.querySelector('.thres').value = 50;
         newSubDiv.querySelector('.dz').value = 135;
